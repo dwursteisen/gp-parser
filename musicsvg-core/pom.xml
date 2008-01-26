@@ -12,16 +12,6 @@
   </parent>
     
     <url>http://musicsvg.sourceforge.net/</url>
-    <repositories>
-        <repository>
-            <id>fest-repository</id>
-            <url>http://fest.googlecode.com/svn/trunk/fest/m2/repository/</url>
-        </repository>
-        <repository>
-            <id>personnal-repository</id>
-            <url>http://cyberkats.free.fr/maven/</url>
-        </repository>
-    </repositories>
     <build>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
@@ -36,34 +26,6 @@
             </testResource>
         </testResources>
         <plugins>     
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>net.sourceforge.musicsvg.main.Main</mainClass>
-                            <addClasspath>true</addClasspath>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <configuration>
-                    <executable>java</executable>
-                    <arguments>
-                        <argument>-classpath</argument>
-                        <!-- automatically creates the classpath using all project dependencies, 
-                 also adding the project build directory -->
-                        <classpath></classpath>
-                        <argument>net.sourceforge.musicsvg.main.Main</argument>
-                    </arguments>
-                </configuration>
-            </plugin>      
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>RELEASE</version>
@@ -83,67 +45,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <!--
-                <configuration>
-                    <excludedGroups>gui</excludedGroups> 
-                </configuration>
-                -->
-            </plugin>
+               </plugin>
         </plugins>
     </build>
-    <profiles>
-        <profile>
-            <id>netbeans-public</id>
-            <activation>
-                <property>
-                    <name>netbeans.execution</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <addClasspath>true</addClasspath>
-                                    <classpathPrefix>lib</classpathPrefix>
-                                    <mainClass>net.sourceforge.musicsvg.main.Main</mainClass>
-                                </manifest>
-                            </archive>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>nb</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>directory</goal>
-                                </goals>
-                                <configuration>
-                                    <descriptor>${basedir}/src/main/assemblies/netbeans-run.xml</descriptor>
-                                    <finalName>executable</finalName>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
     <dependencies>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.mevenide</groupId>
-            <artifactId>netbeans-run-plugin</artifactId>
-            <version>1.1.4</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.guice</groupId>
@@ -163,46 +72,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>batik</groupId>
-            <artifactId>batik-svg-dom</artifactId>
-            <version>1.6</version>
-        </dependency>
-        <dependency>
-            <groupId>batik</groupId>
-            <artifactId>batik-util</artifactId>
-            <version>1.6-1</version>
-        </dependency>
-        <dependency>
-            <groupId>batik</groupId>
-            <artifactId>batik-swing</artifactId>
-            <version>1.6-1</version>
-        </dependency>
-        <dependency>
-            <groupId>batik</groupId>
-            <artifactId>batik-dom</artifactId>
-            <version>1.6-1</version>
-        </dependency>
-        <dependency>
-            <groupId>batik</groupId>
-            <artifactId>batik-parser</artifactId>
-            <version>1.6-1</version>
-        </dependency>
-        <dependency>
-            <groupId>code.google.com</groupId>
-            <artifactId>abc4j</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>5.1</version>
             <classifier>jdk15</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>fest</groupId>
-            <artifactId>fest-swing-testng</artifactId>
-            <version>0.6.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

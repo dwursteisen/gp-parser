@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.musicsvg.model.Note;
+import net.sourceforge.musicsvg.utils.MusicSVGLogger;
+import org.easymock.EasyMock;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

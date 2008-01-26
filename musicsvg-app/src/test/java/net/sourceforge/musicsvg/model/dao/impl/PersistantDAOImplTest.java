@@ -7,6 +7,8 @@ package net.sourceforge.musicsvg.model.dao.impl;
 
 
 import net.sourceforge.musicsvg.model.Note;
+import net.sourceforge.musicsvg.utils.MusicSVGLogger;
+import org.easymock.EasyMock;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

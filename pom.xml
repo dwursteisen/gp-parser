@@ -12,5 +12,6 @@
    <modules>
 	<module>musicsvg-core</module>
         <module>musicsvg-parser</module>
+        <module>musicsvg-app</module>
    </modules>
 </project>
