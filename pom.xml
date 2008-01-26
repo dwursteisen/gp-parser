@@ -10,6 +10,7 @@
     
     <url>http://musicsvg.sourceforge.net/</url>
    <modules>
+   <module>musicsvg-utils</module>
 	<module>musicsvg-core</module>
         <module>musicsvg-parser</module>
         <module>musicsvg-app</module>
