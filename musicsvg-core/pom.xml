@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>musicSVG.sourceforge.org</groupId>
-    <artifactId>musicSVG</artifactId>
-    <name>Music SVG</name>
-    <version>0.1</version>
-    
+    <groupId>musicsvg.sourceforge.org</groupId>
+    <artifactId>musicsvg-core</artifactId>
+    <name>Music SVG Core</name>
+    <version>1.0-SNAPSHOT</version>
+<parent>
+        <groupId>musicsvg.sourceforge.org</groupId>
+        <artifactId>musicsvg</artifactId>
+        <version>1.0-SNAPSHOT</version>
+  </parent>
     
     <url>http://musicsvg.sourceforge.net/</url>
     <repositories>
