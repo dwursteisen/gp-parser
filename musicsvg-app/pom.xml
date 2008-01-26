@@ -5,11 +5,11 @@
     <artifactId>musicsvg-app</artifactId>
     <name>Music SVG Application</name>
     <version>1.0-SNAPSHOT</version>
-<parent>
+    <parent>
         <groupId>musicsvg.sourceforge.org</groupId>
         <artifactId>musicsvg</artifactId>
         <version>1.0-SNAPSHOT</version>
-  </parent>
+    </parent>
     
     <url>http://musicsvg.sourceforge.net/</url>
     <repositories>
@@ -204,6 +204,11 @@
             <artifactId>fest-swing-testng</artifactId>
             <version>0.6.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>musicsvg.sourceforge.org</groupId>
+            <artifactId>musicsvg-parser</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
