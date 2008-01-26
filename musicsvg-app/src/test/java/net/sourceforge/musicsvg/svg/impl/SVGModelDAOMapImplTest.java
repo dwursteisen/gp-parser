@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package net.sourceforge.musicsvg.model.dao.impl;
+package net.sourceforge.musicsvg.svg.impl;
 
+import net.sourceforge.musicsvg.svg.impl.SVGModelDAOMapImpl;
 import java.util.List;
 import net.sourceforge.musicsvg.svg.SVGWidget;
 import net.sourceforge.musicsvg.svg.model.SVGModel;

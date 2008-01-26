@@ -8,9 +8,9 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
-import net.sourceforge.musicsvg.model.dao.SVGModelDAO;
+import net.sourceforge.musicsvg.render.svg.SVGModelDAO;
 import net.sourceforge.musicsvg.model.dao.impl.NoteDAOMapImpl;
-import net.sourceforge.musicsvg.model.dao.impl.SVGModelDAOMapImpl;
+import net.sourceforge.musicsvg.svg.impl.SVGModelDAOMapImpl;
 
 /**
  *

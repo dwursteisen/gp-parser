@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import net.sourceforge.musicsvg.model.Note;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
-import net.sourceforge.musicsvg.model.dao.SVGModelDAO;
+import net.sourceforge.musicsvg.render.svg.SVGModelDAO;
 import net.sourceforge.musicsvg.svg.SVGDocument;
 import net.sourceforge.musicsvg.svg.SVGModelFactory;
 import net.sourceforge.musicsvg.render.Renderer;

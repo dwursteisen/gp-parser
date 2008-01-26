@@ -8,7 +8,7 @@ import net.sourceforge.musicsvg.render.svg.SVGRendererImpl;
 import java.io.File;
 import java.io.IOException;
 import net.sourceforge.musicsvg.model.dao.impl.NoteDAOMapImpl;
-import net.sourceforge.musicsvg.model.dao.impl.SVGModelDAOMapImpl;
+import net.sourceforge.musicsvg.svg.impl.SVGModelDAOMapImpl;
 import net.sourceforge.musicsvg.svg.SVGDocument;
 import net.sourceforge.musicsvg.svg.SVGWidget;
 import net.sourceforge.musicsvg.svg.model.SVGModel;
