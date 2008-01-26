@@ -11,5 +11,6 @@
     <url>http://musicsvg.sourceforge.net/</url>
    <modules>
 	<module>musicsvg-core</module>
+        <module>musicsvg-parser</module>
    </modules>
 </project>
