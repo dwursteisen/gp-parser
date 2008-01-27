@@ -139,4 +139,10 @@ public class MainController {
     void pauseFile() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    public MainFrame getFrame() {
+        return frame;
+    }
+    
+    
 }

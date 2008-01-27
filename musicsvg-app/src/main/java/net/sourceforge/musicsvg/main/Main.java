@@ -15,13 +15,13 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import java.util.List;
 import java.util.Vector;
+import javax.swing.JFrame;
 import net.sourceforge.musicsvg.gui.MainController;
 import net.sourceforge.musicsvg.module.ABC4jModule;
 import net.sourceforge.musicsvg.module.DAOModule;
 import net.sourceforge.musicsvg.module.GUIModule;
 import net.sourceforge.musicsvg.module.MusicSVGModule;
 import net.sourceforge.musicsvg.module.ParsersModule;
-import net.sourceforge.musicsvg.module.SVGModule;
 import net.sourceforge.musicsvg.module.UtilsModule;
 
 /**
@@ -34,6 +34,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Main main = new Main();
+        main.startApplication();
+    }
+    
+    public JFrame startApplication() {
         List<Module> modules = new Vector<Module>();
         modules.add(new MusicSVGModule());
         modules.add(new DAOModule());
@@ -47,6 +52,6 @@ public class Main {
         
         MainController main = injector.getInstance(MainController.class);
         main.startApplication();
+        return main.getFrame();
     }
-    
 }

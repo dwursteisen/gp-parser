@@ -14,5 +14,6 @@
 	<module>musicsvg-core</module>
         <module>musicsvg-parser</module>
         <module>musicsvg-app</module>
+        <module>musicsvg-functionaltest</module>
    </modules>
 </project>
