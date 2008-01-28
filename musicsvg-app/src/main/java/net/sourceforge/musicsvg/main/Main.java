@@ -17,11 +17,12 @@ import java.util.List;
 import java.util.Vector;
 import javax.swing.JFrame;
 import net.sourceforge.musicsvg.gui.MainController;
+import net.sourceforge.musicsvg.io.module.ParserModule;
 import net.sourceforge.musicsvg.module.ABC4jModule;
 import net.sourceforge.musicsvg.module.DAOModule;
 import net.sourceforge.musicsvg.module.GUIModule;
 import net.sourceforge.musicsvg.module.MusicSVGModule;
-import net.sourceforge.musicsvg.module.ParsersModule;
+
 import net.sourceforge.musicsvg.module.UtilsModule;
 
 /**
@@ -43,7 +44,7 @@ public class Main {
         modules.add(new MusicSVGModule());
         modules.add(new DAOModule());
         modules.add(new GUIModule());
-        modules.add(new ParsersModule());
+        modules.add(new ParserModule());
         modules.add(new UtilsModule());
         //modules.add(new SVGModule());
         modules.add(new ABC4jModule());
