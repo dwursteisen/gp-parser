@@ -22,6 +22,7 @@ import java.io.InputStream;
  * @see http://dguitar.sourceforge.net/GP4format.html
  */
 public class GP4Parser {
+    private static final int GP4_NUMBER_OF_STRING = 7;
 
     GP4ParserListener listener = null;
     InputStream is = null;
@@ -251,11 +252,12 @@ public class GP4Parser {
         int numberOfStrings = readInt();
         this.listener.readTrackParameter(trackIndex, name, numberOfStrings, isDrumsTrack, is12StringedGuitarTrack, isBanjoTrack);
 
-        for (int stringIndex = 0; stringIndex < 7; stringIndex++) {
+        for (int stringIndex = 0; stringIndex < GP4_NUMBER_OF_STRING; stringIndex++) {
             int tunning = readInt();
-            if (numberOfStrings > stringIndex) {
+            // WTF ?? 
+            //if (numberOfStrings > stringIndex) {
                 this.listener.readStringTunning(trackIndex, stringIndex, tunning);
-            }
+            //}
         }
 
         int midiPort = readInt();
@@ -363,7 +365,7 @@ public class GP4Parser {
     protected int nbPlayerString(int stringsPlayer) {
         int res = 0;
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < GP4_NUMBER_OF_STRING; i++) {
             if ((stringsPlayer & (1 << i)) != 0) {
                 res++;
             }
@@ -373,7 +375,7 @@ public class GP4Parser {
     
      protected int getStringIndexFromStringCode(int stringCode, int index) {
         int tmpIndex = index;
-        for ( int i = 0; i < 7 ; i++) {
+        for ( int i = 0; i < GP4_NUMBER_OF_STRING ; i++) {
             if ( (stringCode & (1 << i)) != 0) {
                 if (tmpIndex == 0) {
                     return i;
@@ -552,7 +554,7 @@ public class GP4Parser {
         int n;
         int aux;
         n = 0;
-        for (i = 0; i < 7; i++) {
+        for (i = 0; i < GP4_NUMBER_OF_STRING; i++) {
             aux = readByte();
             if ((i != 0) && (aux != -1)) {
                 pos[n] = i;
@@ -702,7 +704,7 @@ public class GP4Parser {
 
             this.is.skip(8);
 
-            for (int i = 1; i <= 7; i++) {
+            for (int i = 1; i <= GP4_NUMBER_OF_STRING; i++) {
                 int fingering = readByte();
             }
 

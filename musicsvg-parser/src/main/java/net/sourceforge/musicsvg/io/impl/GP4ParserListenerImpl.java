@@ -128,51 +128,41 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
     public void readStringTunning(int track, int string, int stringTunning) {
         // @see http://www.harmony-central.com/MIDI/Doc/table2.html
         int noteIndex = stringTunning % 12;
-        NoteHeight tunning = NoteHeight.C;
-        NoteAccident accident = NoteAccident.None;
-        switch (noteIndex) {
-            default:
-            case 0:
-                tunning = NoteHeight.C;
-                break;
-            case 1:
-                tunning = NoteHeight.C;
-                accident = NoteAccident.Sharp;
-                break;
-            case 2:
-                tunning = NoteHeight.D;
-                break;
-            case 3:
-                tunning = NoteHeight.D;
-                accident = NoteAccident.Sharp;
-                break;
-            case 4:
-                tunning = NoteHeight.E;
-                break;
-            case 5:
-                tunning = NoteHeight.F;
-                break;
-            case 6:
-                tunning = NoteHeight.F;
-                accident = NoteAccident.Sharp;
-                break;
-            case 7:
-                tunning = NoteHeight.G;
-                break;
-            case 8:
-                tunning = NoteHeight.G;
-                accident = NoteAccident.Sharp;
-                break;
-            case 9:
-                tunning = NoteHeight.A;
-                break;
-            case 10:
-                tunning = NoteHeight.B;
-                break;
-            case 11:
-                tunning = NoteHeight.B;
-                accident = NoteAccident.Sharp;
-                break;
+        final NoteHeight[] tunnings = {
+            NoteHeight.C,
+            NoteHeight.C,
+            NoteHeight.D,
+            NoteHeight.D,
+            NoteHeight.E,
+            NoteHeight.F,
+            NoteHeight.F,
+            NoteHeight.G,
+            NoteHeight.G,
+            NoteHeight.A,
+            NoteHeight.B,
+            NoteHeight.B
+        };
+
+        final NoteAccident[] accidents = {
+            NoteAccident.None,
+            NoteAccident.Sharp,
+            NoteAccident.None,
+            NoteAccident.Sharp,
+            NoteAccident.None,
+            NoteAccident.None,
+            NoteAccident.Sharp,
+            NoteAccident.None,
+            NoteAccident.Sharp,
+            NoteAccident.None,
+            NoteAccident.None,
+            NoteAccident.Sharp
+        };
+
+        NoteHeight tunning = null;
+        NoteAccident accident = null;
+        if (noteIndex != -1) {
+            tunning = tunnings[noteIndex];
+            accident = accidents[noteIndex];
         }
         currentSong.get(track).setTunning(string, tunning);
         currentSong.get(track).setAccident(string, accident);
@@ -208,8 +198,20 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
     public void readNote(int track, int mesure, int beat, int stringPlayer, int fretNumber, int duration) {
         NoteTablature note = noteFactory.createNoteTablature();
 
-        note.setFret(fretNumber);
         Track t = currentSong.get(track);
+        NoteHeight stringHeight = t.getTunning(stringPlayer);
+        NoteAccident stringAccident = t.getAccident(stringPlayer);
+        if ( stringHeight == null) { // dirty fix for a NPE. TODO: fix it corretly
+            return;
+        }
+        
+        int newOrdinal = stringHeight.getHeight() + fretNumber + stringAccident.getAccident();
+        int nbNoteValue = NoteHeight.SCALE.length;
+        int ord = newOrdinal % nbNoteValue;
+        NoteHeight height = NoteHeight.SCALE[ord];
+
+        note.setFret(fretNumber);
+        note.setNoteHeight(height);
         note.setString(t.getTunning(stringPlayer));
         note.setAccident(t.getAccident(stringPlayer));
         NoteDuration d = NoteDuration.values()[duration + 2];
