@@ -38,16 +38,4 @@ public class NoteTablature extends Note {
         return this.fret;
     }
 
-    @Override
-    public NoteHeight getNoteHeight() {
-        // return fret + string
-        NoteHeight noteHeight = super.getNoteHeight();
-        if (noteHeight != null) {
-            return noteHeight;
-        }
-        int newOrdinal = this.string.getHeight() + fret + this.getAccident().getAccident();
-        int nbNoteValue = NoteHeight.SCALE.length;
-        int ord = newOrdinal % nbNoteValue;
-        return NoteHeight.SCALE[ord];
-    }
 }
