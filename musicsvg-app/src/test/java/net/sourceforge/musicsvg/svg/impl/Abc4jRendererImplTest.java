@@ -6,6 +6,7 @@
 package net.sourceforge.musicsvg.svg.impl;
 
 import abc.notation.Tune;
+import abc.notation.Tune.Music;
 import abc.ui.swing.JScoreComponent;
 import org.easymock.classextension.EasyMock;
 import org.testng.annotations.Test;
@@ -32,22 +33,22 @@ public class Abc4jRendererImplTest {
         abc.notation.Note noteB = new abc.notation.Note(abc.notation.Note.B);
         abc.notation.Note noteC = new abc.notation.Note(abc.notation.Note.C);
         
-        Tune.Score score = EasyMock.createMock(Tune.Score.class);
-        score.addElement(noteA);
-        score.addElement(noteB);
-        score.addElement(noteC);
-        EasyMock.replay(score);
+        Music music = EasyMock.createMock(Music.class);
+        music.addElement(noteA);
+        music.addElement(noteB);
+        music.addElement(noteC);
+        EasyMock.replay(music);
         
         Tune tune = EasyMock.createMock(Tune.class);
-        tune.getScore();
-        EasyMock.expectLastCall().andStubReturn(score);
+        tune.getMusic();
+        EasyMock.expectLastCall().andStubReturn(music);
         EasyMock.replay(tune);
         
         JScoreComponent jscore = EasyMock.createMock(JScoreComponent.class);
         jscore.setTune(tune);
         EasyMock.replay(jscore);
         
-        EasyMock.verify(score);
+        EasyMock.verify(music);
         EasyMock.verify(jscore);
     }
             
