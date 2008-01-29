@@ -15,7 +15,6 @@ import java.io.IOException;
 
 import net.sourceforge.musicsvg.gui.mainframe.MainFrame;
 import net.sourceforge.musicsvg.io.GP4Parser;
-import net.sourceforge.musicsvg.midi.impl.MidiControllerImpl;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
 import net.sourceforge.musicsvg.render.Renderer;
 import net.sourceforge.musicsvg.utils.MusicSVGLogger;
@@ -28,7 +27,6 @@ public class MainController {
 
     private FileChooser fileChooser;
     private Renderer renderer;
-    private MidiControllerImpl midi = null;
     private MainFrame frame;
     private MusicSVGLogger log;
     private NoteDAO noteDAO;
@@ -114,10 +112,6 @@ public class MainController {
     public void startApplication() {
         log.info(getClass(), "Starting Application !");
         frame.setVisible(true);
-    }
-
-    public void playFile() {
-        midi.play();
     }
 
     public void prompOpenFile() {
