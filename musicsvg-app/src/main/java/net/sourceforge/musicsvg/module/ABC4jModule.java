@@ -11,8 +11,10 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import javax.swing.JComponent;
 import net.sourceforge.musicsvg.annotations.MainCanvas;
+import net.sourceforge.musicsvg.render.NoteTranslater;
 import net.sourceforge.musicsvg.render.Renderer;
 import net.sourceforge.musicsvg.render.abc4j.Abc4jRendererImpl;
+import net.sourceforge.musicsvg.render.abc4j.Abc4jTranslater;
 
 /**
  *
@@ -22,6 +24,9 @@ public class ABC4jModule implements Module{
 
     @Override
     public void configure(Binder binder) {
+        Abc4jTranslater translater = new Abc4jTranslater();
+        binder.bind(NoteTranslater.class).toInstance(translater);
+        
         Tune tune = new Tune();
         binder.bind(Tune.class).toInstance(tune);
         JScoreComponent jscore = new JScoreComponent();
