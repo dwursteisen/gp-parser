@@ -18,9 +18,9 @@ import java.util.Vector;
 import javax.swing.JFrame;
 import net.sourceforge.musicsvg.gui.MainController;
 import net.sourceforge.musicsvg.io.module.ParserModule;
+import net.sourceforge.musicsvg.gui.module.GUIModule;
 import net.sourceforge.musicsvg.module.ABC4jModule;
 import net.sourceforge.musicsvg.module.DAOModule;
-import net.sourceforge.musicsvg.module.GUIModule;
 import net.sourceforge.musicsvg.module.MusicSVGModule;
 
 import net.sourceforge.musicsvg.module.UtilsModule;
