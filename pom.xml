@@ -13,6 +13,7 @@
         <module>musicsvg-utils</module>
         <module>musicsvg-core</module>
         <module>musicsvg-parser</module>
+        <module>musicsvg-gui</module>
         <module>musicsvg-app</module>
         <module>musicsvg-functionaltest</module>
         <module>musicsvg-site</module>
