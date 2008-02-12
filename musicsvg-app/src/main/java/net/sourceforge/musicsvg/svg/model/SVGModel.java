@@ -77,24 +77,13 @@ public class SVGModel implements PersistantObject {
     public void setId(final Integer id) {
         this.id = id;
     }
+    
     public void setType(final String type) {
         this.type = type;
     }
     
     public void setParentId(final Integer id) {
         this.parentId = id;
-    }
-    
-    // Parent ID will be deleted...or not :P
-    @Deprecated
-    public void addChild(final SVGModel child) {
-        child.setParentId(this.getId());
-        childrens.add(child);
-    }
-    
-    @Deprecated
-    public List<SVGModel> getChilds() {
-        return childrens;
     }
     
     public void setHeight(final int expResult) {
@@ -123,11 +112,12 @@ public class SVGModel implements PersistantObject {
     public void removeChild(final String type) {
         this.childrens.remove(type);
     }
+    
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("ID: " + getId());
-        buffer.append(" - NbChild: " + getChilds().size());
+        buffer.append(" - NbChild: " + getChildrens().size());
         return buffer.toString();
     }
 
@@ -138,6 +128,5 @@ public class SVGModel implements PersistantObject {
     public void setChildrens(List<SVGModel> childrens) {
         this.childrens = childrens;
     }
-
     
 }

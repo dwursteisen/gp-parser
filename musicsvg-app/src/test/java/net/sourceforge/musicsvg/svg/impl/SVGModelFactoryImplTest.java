@@ -28,36 +28,36 @@ public class SVGModelFactoryImplTest {
         note.setNoteDuration(NoteDuration.wholeNote);
         result = factory.createSVGModel(note);
         Assert.assertEquals(result.getSvgWidget(), SVGWidget.ROOT);
-        Assert.assertEquals(result.getChilds().size(), 1);
+        Assert.assertEquals(result.getChildrens().size(), 1);
         
         note.setNoteDuration(NoteDuration.thirtySecondNote);
         result = factory.createSVGModel(note);
         Assert.assertEquals(result.getSvgWidget(), SVGWidget.ROOT);
-        Assert.assertEquals(result.getChilds().size(), 2);
+        Assert.assertEquals(result.getChildrens().size(), 2);
         
         note.setNoteDuration(NoteDuration.sixtyFourthNote);
         result = factory.createSVGModel(note);
         Assert.assertEquals(result.getSvgWidget(), SVGWidget.ROOT);
-        Assert.assertEquals(result.getChilds().size(), 2);
+        Assert.assertEquals(result.getChildrens().size(), 2);
         
         note.setNoteDuration(NoteDuration.sixteenthNote);
         result = factory.createSVGModel(note);
         Assert.assertEquals(result.getSvgWidget(), SVGWidget.ROOT);
-        Assert.assertEquals(result.getChilds().size(), 3);
+        Assert.assertEquals(result.getChildrens().size(), 3);
         
         note.setNoteDuration(NoteDuration.quarterNote);
         result = factory.createSVGModel(note);
         Assert.assertEquals(result.getSvgWidget(), SVGWidget.ROOT);
-        Assert.assertEquals(result.getChilds().size(), 3);
+        Assert.assertEquals(result.getChildrens().size(), 3);
         
         note.setNoteDuration(NoteDuration.halfNote);
         result = factory.createSVGModel(note);
         Assert.assertEquals(result.getSvgWidget(), SVGWidget.ROOT);
-        Assert.assertEquals(result.getChilds().size(), 3);
+        Assert.assertEquals(result.getChildrens().size(), 3);
         
         note.setNoteDuration(NoteDuration.eighthNote);
         result = factory.createSVGModel(note);
         Assert.assertEquals(result.getSvgWidget(), SVGWidget.ROOT);
-        Assert.assertEquals(result.getChilds().size(), 3);
+        Assert.assertEquals(result.getChildrens().size(), 3);
     }
 }

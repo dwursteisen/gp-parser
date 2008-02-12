@@ -62,32 +62,12 @@ public class MainController {
         this.fileChooser = fileChooser;
     }
 
-    public boolean openFile(final String file) {
-        return openFile(new File(file));
-    }
-
     public boolean openFile(final File file) {
         boolean result = false;
         try {
-            // String filepath = file.getName();
-
             parser.openFile(file);
             renderer.init();
             renderer.render();
-            /*
-            NoteReader reader = readerSelector(filepath);
-            reader.openFile(file);
-            score.clear();
-            Note n = null;
-            while((n = reader.readNote()) != null) {
-            score.addNote(n);
-            midi.addNote(n);
-            }
-            score.validate();
-            score.saveToFile("score_output.svg");
-            midi.saveToFile("midi_output.midi");
-             */
-
             result = true;
         } catch (IOException ex) {
             log.error(getClass(), "Unable to read the file " + file.getName(), ex);
@@ -124,14 +104,6 @@ public class MainController {
     public void quitApplication() {
         log.info(getClass(), "Bye Bye");
         System.exit(0);
-    }
-
-    void stopFile() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    void pauseFile() {
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     public MainFrame getFrame() {

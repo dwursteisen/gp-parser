@@ -61,7 +61,6 @@ public class Dispatcher implements ActionListener {
 
     @Inject 
     void injectFrame(MainFrame frame) {
-        log.info(getClass(), "Frame injection");
         setQuitButton(frame.getQuitButton());
         setOpenButton(frame.getOpenButton());
         setExportButton(frame.getExportButton());
@@ -69,7 +68,6 @@ public class Dispatcher implements ActionListener {
     
     @Inject
     public void injectController(MainController controller) {
-        log.info(getClass(), "Controller injection");
         this.controller = controller;
     }
 

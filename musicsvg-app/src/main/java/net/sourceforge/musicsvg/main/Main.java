@@ -22,8 +22,7 @@ import net.sourceforge.musicsvg.gui.module.GUIModule;
 import net.sourceforge.musicsvg.module.ABC4jModule;
 import net.sourceforge.musicsvg.module.DAOModule;
 import net.sourceforge.musicsvg.module.MusicSVGModule;
-
-import net.sourceforge.musicsvg.module.UtilsModule;
+import net.sourceforge.musicsvg.utils.module.UtilsModule;
 
 /**
  *

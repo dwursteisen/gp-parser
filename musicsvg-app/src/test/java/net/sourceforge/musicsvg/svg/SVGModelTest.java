@@ -135,21 +135,5 @@ public class SVGModelTest {
         Integer result = instance.getParentId();
         Assert.assertEquals(expResult, result);
     }
-    
-    @Test
-    public void testGetChilds() {
-        System.out.println("getChilds");
-        SVGModel instance = new SVGModel();
-        
-        SVGModel dummy = new SVGModel();
-        dummy.setId(1);
-        instance.addChild(dummy);
-        
-        dummy = new SVGModel();
-        dummy.setId(2);
-        instance.addChild(dummy);
-        int result = instance.getChilds().size();
-        int expResult = 2;
-        Assert.assertEquals(result, expResult);
-    }
+   
 }
