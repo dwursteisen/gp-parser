@@ -9,12 +9,44 @@
     
     
     <url>http://musicsvg.sourceforge.net/</url>
-   <modules>
-   <module>musicsvg-utils</module>
-	<module>musicsvg-core</module>
+    <modules>
+        <module>musicsvg-utils</module>
+        <module>musicsvg-core</module>
         <module>musicsvg-parser</module>
         <module>musicsvg-app</module>
         <module>musicsvg-functionaltest</module>
         <module>musicsvg-site</module>
-   </modules>
+    </modules>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <configuration>
+                    <formats>
+                        <format>html</format>
+                    </formats>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.guice</groupId>
+            <artifactId>guice</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymockclassextension</artifactId>
+            <version>2.2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
