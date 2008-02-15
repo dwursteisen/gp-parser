@@ -8,8 +8,6 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import net.sourceforge.musicsvg.gui.Dispatcher;
 import net.sourceforge.musicsvg.gui.MainController;
-import net.sourceforge.musicsvg.model.factory.NoteTablatureFactory;
-import net.sourceforge.musicsvg.model.factory.impl.NoteTablatureFactoryImpl;
 
 /**
  *
@@ -19,8 +17,7 @@ public class MusicSVGModule implements Module {
 
     @Override
     public void configure(Binder binder) {
-        binder.bind(NoteTablatureFactory.class).to(NoteTablatureFactoryImpl.class);
-
+        
         // Main Controller
         MainController main = new MainController();
 

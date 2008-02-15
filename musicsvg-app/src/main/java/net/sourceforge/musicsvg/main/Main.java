@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import net.sourceforge.musicsvg.gui.MainController;
 import net.sourceforge.musicsvg.io.module.ParserModule;
 import net.sourceforge.musicsvg.gui.module.GUIModule;
+import net.sourceforge.musicsvg.model.module.CoreModule;
 import net.sourceforge.musicsvg.module.ABC4jModule;
 import net.sourceforge.musicsvg.module.DAOModule;
 import net.sourceforge.musicsvg.module.MusicSVGModule;
@@ -40,6 +41,7 @@ public class Main {
     
     public JFrame startApplication() {
         List<Module> modules = new Vector<Module>();
+        modules.add(new CoreModule());
         modules.add(new MusicSVGModule());
         modules.add(new DAOModule());
         modules.add(new GUIModule());
