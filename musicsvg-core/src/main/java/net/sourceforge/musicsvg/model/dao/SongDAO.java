@@ -12,5 +12,5 @@ import net.sourceforge.musicsvg.model.Song;
  * @author Dav
  */
 public interface SongDAO extends PersistantDAO<Song>{
-
+    Song getLastSong();
 }
