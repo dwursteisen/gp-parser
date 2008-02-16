@@ -23,6 +23,7 @@ public class MainFrame extends JFrame {
     JMenuItem quitItem = new JMenuItem();
     JMenuItem openItem = new JMenuItem();
     JMenuItem exportItem = new JMenuItem();
+    JMenuItem scoreInformationItem = new JMenuItem();
     JComponent mainCanvas;
     
     public MainFrame() {
@@ -35,6 +36,7 @@ public class MainFrame extends JFrame {
         fileMenu.setText("File");
         fileMenu.add(openItem);
         fileMenu.add(exportItem);
+        fileMenu.add(scoreInformationItem);
         fileMenu.add(quitItem);
         
         openItem.setName("openItem");
@@ -42,6 +44,9 @@ public class MainFrame extends JFrame {
         
         exportItem.setName("exportItem");
         exportItem.setText("Export...");
+        
+        scoreInformationItem.setName("infoItem");
+        scoreInformationItem.setText("Score properties");
         
         quitItem.setName("quitItem");
         quitItem.setText("Quit...");
@@ -64,6 +69,9 @@ public class MainFrame extends JFrame {
         return exportItem;
     }
     
+    public AbstractButton getSongInformation() {
+        return scoreInformationItem;
+    }
     
     public JComponent getMainCanvas() {
         return mainCanvas;
