@@ -21,6 +21,7 @@ public class Dispatcher implements ActionListener {
 
     private AbstractButton quitButton;
     private AbstractButton fileButton;
+    private AbstractButton songPropertiesButton;
     
     private MainController controller;
     private MusicSVGLogger log;
@@ -45,6 +46,11 @@ public class Dispatcher implements ActionListener {
         fileButton.addActionListener(this);
     }
     
+    public void setSongPropertiesButton(AbstractButton button) {
+        songPropertiesButton = button;
+        songPropertiesButton.addActionListener(this);
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
        
@@ -56,6 +62,8 @@ public class Dispatcher implements ActionListener {
            controller.prompOpenFile();
        } else if (obj == exportButton) {
            controller.exportFile();
+       } else if (obj == songPropertiesButton) {
+           controller.displaySongInformation();
        }
     }
 
@@ -64,6 +72,7 @@ public class Dispatcher implements ActionListener {
         setQuitButton(frame.getQuitButton());
         setOpenButton(frame.getOpenButton());
         setExportButton(frame.getExportButton());
+        setSongPropertiesButton(frame.getSongInformation());
     }
     
     @Inject

@@ -26,6 +26,7 @@ import net.sourceforge.musicsvg.utils.MusicSVGLogger;
  * @author Dav
  */
 public class MainController {
+    private Song currentSong;
     private NoteDAO noteDAO;
 
     private FileChooser fileChooser;
@@ -82,7 +83,7 @@ public class MainController {
             parser.openFile(file);
             renderer.init();
             renderer.render();
-            Song currentSong = songDAO.getLastSong();
+            currentSong = songDAO.getLastSong();
             frame.setTitle(currentSong.getTitle());
             result = true;
         } catch (IOException ex) {
@@ -124,6 +125,13 @@ public class MainController {
 
     public MainFrame getFrame() {
         return frame;
+    }
+
+    public void displaySongInformation() {
+        log.info(getClass(), "Display song Information");
+        SongInformation gui = new SongInformation();
+        gui.setSong(currentSong);
+        gui.setVisible(true);
     }
     
     
