@@ -16,6 +16,7 @@ import java.io.IOException;
 import net.sourceforge.musicsvg.gui.mainframe.MainFrame;
 import net.sourceforge.musicsvg.io.GP4Parser;
 import net.sourceforge.musicsvg.model.Song;
+import net.sourceforge.musicsvg.model.dao.NoteDAO;
 import net.sourceforge.musicsvg.model.dao.SongDAO;
 import net.sourceforge.musicsvg.render.Renderer;
 import net.sourceforge.musicsvg.utils.MusicSVGLogger;
@@ -25,6 +26,7 @@ import net.sourceforge.musicsvg.utils.MusicSVGLogger;
  * @author Dav
  */
 public class MainController {
+    private NoteDAO noteDAO;
 
     private FileChooser fileChooser;
     private Renderer renderer;
@@ -36,6 +38,11 @@ public class MainController {
     @Inject
     public void injectSongDAO(SongDAO songDAO) {
         this.songDAO = songDAO;
+    }
+    
+    @Inject 
+    public void injectNoteDAO(NoteDAO noteDAO) {
+        this.noteDAO = noteDAO;
     }
     
     @Inject
@@ -63,9 +70,15 @@ public class MainController {
         this.fileChooser = fileChooser;
     }
 
+    public void closeFile() {
+        songDAO.clear();
+        noteDAO.clear();
+    }
+    
     public boolean openFile(final File file) {
         boolean result = false;
         try {
+            closeFile();
             parser.openFile(file);
             renderer.init();
             renderer.render();

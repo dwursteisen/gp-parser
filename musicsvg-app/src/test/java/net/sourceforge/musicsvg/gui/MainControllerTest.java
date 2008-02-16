@@ -9,6 +9,8 @@ package net.sourceforge.musicsvg.gui;
 import java.io.File;
 import java.io.IOException;
 import net.sourceforge.musicsvg.gui.mainframe.MainFrame;
+import net.sourceforge.musicsvg.model.dao.NoteDAO;
+import net.sourceforge.musicsvg.model.dao.SongDAO;
 import net.sourceforge.musicsvg.render.Renderer;
 import net.sourceforge.musicsvg.utils.MusicSVGLogger;
 import org.easymock.classextension.EasyMock;
@@ -84,5 +86,28 @@ public class MainControllerTest {
         
         EasyMock.verify(fileChooser);
         EasyMock.verify(renderer);
+    }
+    
+    @Test(groups={"functional"})
+    public void testCloseFile() {
+        MusicSVGLogger logger = EasyMock.createMock(MusicSVGLogger.class);
+        
+        SongDAO songDAO = EasyMock.createMock(SongDAO.class);
+        songDAO.clear();
+        EasyMock.replay(songDAO);
+        
+        NoteDAO noteDAO = EasyMock.createMock(NoteDAO.class);
+        noteDAO.clear();
+        EasyMock.replay(noteDAO);
+        
+        MainController controller = new MainController();
+        controller.injectLog(logger);
+        controller.injectNoteDAO(noteDAO);
+        controller.injectSongDAO(songDAO);
+        
+        controller.closeFile();
+        
+        EasyMock.verify(noteDAO);
+        EasyMock.verify(songDAO);
     }
 }
