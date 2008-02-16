@@ -7,8 +7,10 @@ package net.sourceforge.musicsvg.io.impl;
 import net.sourceforge.musicsvg.model.NoteDuration;
 import net.sourceforge.musicsvg.model.NoteHeight;
 import net.sourceforge.musicsvg.model.NoteTablature;
+import net.sourceforge.musicsvg.model.Song;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
 import net.sourceforge.musicsvg.model.factory.NoteTablatureFactory;
+import net.sourceforge.musicsvg.model.factory.SongFactory;
 import org.easymock.classextension.EasyMock;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -58,5 +60,30 @@ public class GP4ParserListenerImplTest {
         Assert.assertEquals(NoteHeight.E, noteEString.getString());
         Assert.assertEquals(NoteDuration.quarterNote, noteEString.getNoteDuration());
 
+    }
+
+    @Test
+    public void testReadSongInformation() {
+        Song s = new Song();
+        SongFactory songFactory = EasyMock.createMock(SongFactory.class);
+        songFactory.createSong();
+        EasyMock.expectLastCall().andStubReturn(s);
+        EasyMock.replay(songFactory);
+
+        GP4ParserListenerImpl parser = new GP4ParserListenerImpl();
+        parser.injectSongFactory(songFactory);
+
+        parser.readTitle("title");
+        parser.readSubTitle("subtitle");
+        parser.readArtist("interpret");
+        parser.readAlbum("album");
+        parser.readSongAuthor("songAuthor");
+        
+        Assert.assertEquals(s.getTitle(), "title");
+        Assert.assertEquals(s.getSubTitle(), "subtitle");
+        Assert.assertEquals(s.getArtist(), "interpret");
+        Assert.assertEquals(s.getAlbum(), "album");
+        // Assert.assertEquals(s.getSongAuthor(), "interpret");
+        
     }
 }

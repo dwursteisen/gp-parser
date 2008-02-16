@@ -18,18 +18,19 @@ import net.sourceforge.musicsvg.model.NoteHeight;
 import net.sourceforge.musicsvg.model.NoteTablature;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
 import net.sourceforge.musicsvg.model.factory.NoteTablatureFactory;
+import net.sourceforge.musicsvg.model.factory.SongFactory;
+import net.sourceforge.musicsvg.model.factory.TrackFactory;
 
 /**
  *
  * @author Dav
  */
 public class GP4ParserListenerImpl implements GP4ParserListener {
-
-    /** Creates a new instance of GP4ParserListenerImpl */
-    public GP4ParserListenerImpl() {
-    }
+    private TrackFactory trackFactory;
+    private SongFactory songFactory;
     private NoteDAO noteDAO;
     private NoteTablatureFactory noteFactory;
+    private net.sourceforge.musicsvg.model.Song currentModelSong;
 
     @Inject
     public void injectNoteDAO(NoteDAO noteDAO) {
@@ -41,24 +42,39 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         this.noteFactory = noteFactory;
     }
 
+    @Inject
+    public void injectTrackFractory(TrackFactory trackFactory) {
+        this.trackFactory = trackFactory;
+    }
+    
+    @Inject
+    public void injectSongFactory(SongFactory songFactory) {
+        this.songFactory = songFactory;
+    }
+
     @Override
     public void readVersion(String version) {
     }
 
     @Override
     public void readTitle(String title) {
+        currentModelSong = songFactory.createSong();
+        currentModelSong.setTitle(title);
     }
 
     @Override
     public void readSubTitle(String subtitle) {
+        currentModelSong.setSubTitle(subtitle);
     }
 
     @Override
     public void readArtist(String interpret) {
+        currentModelSong.setArtist(interpret);
     }
 
     @Override
     public void readAlbum(String album) {
+        currentModelSong.setAlbum(album);
     }
 
     @Override
@@ -201,10 +217,10 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         Track t = currentSong.get(track);
         NoteHeight stringHeight = t.getTunning(stringPlayer);
         NoteAccident stringAccident = t.getAccident(stringPlayer);
-        if ( stringHeight == null) { // dirty fix for a NPE. TODO: fix it corretly
+        if (stringHeight == null) { // dirty fix for a NPE. TODO: fix it corretly
             return;
         }
-        
+
         int newOrdinal = stringHeight.getHeight() + fretNumber + stringAccident.getAccident();
         int nbNoteValue = NoteHeight.SCALE.length;
         int ord = newOrdinal % nbNoteValue;
