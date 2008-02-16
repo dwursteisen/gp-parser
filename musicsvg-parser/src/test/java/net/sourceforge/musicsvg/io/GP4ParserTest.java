@@ -9,6 +9,7 @@ package net.sourceforge.musicsvg.io;
 import java.io.File;
 import net.sourceforge.musicsvg.io.impl.GP4ParserListenerImpl;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
+import net.sourceforge.musicsvg.model.dao.SongDAO;
 import net.sourceforge.musicsvg.model.factory.impl.NoteTablatureFactoryImpl;
 import net.sourceforge.musicsvg.model.factory.impl.SongFactoryImpl;
 import org.easymock.EasyMock;
@@ -442,6 +443,7 @@ public class GP4ParserTest {
         listener.injectNoteDAO(EasyMock.createNiceMock(NoteDAO.class));
         listener.injectNoteFactory(new NoteTablatureFactoryImpl());
         listener.injectSongFactory(new SongFactoryImpl());
+        listener.injectSongDAO(EasyMock.createMock(SongDAO.class));
         
         instance.injectListener(listener);
         instance.openFile(file);

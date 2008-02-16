@@ -17,6 +17,7 @@ import net.sourceforge.musicsvg.model.NoteDuration;
 import net.sourceforge.musicsvg.model.NoteHeight;
 import net.sourceforge.musicsvg.model.NoteTablature;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
+import net.sourceforge.musicsvg.model.dao.SongDAO;
 import net.sourceforge.musicsvg.model.factory.NoteTablatureFactory;
 import net.sourceforge.musicsvg.model.factory.SongFactory;
 import net.sourceforge.musicsvg.model.factory.TrackFactory;
@@ -26,6 +27,7 @@ import net.sourceforge.musicsvg.model.factory.TrackFactory;
  * @author Dav
  */
 public class GP4ParserListenerImpl implements GP4ParserListener {
+    private SongDAO songDAO;
     private TrackFactory trackFactory;
     private SongFactory songFactory;
     private NoteDAO noteDAO;
@@ -52,6 +54,11 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         this.songFactory = songFactory;
     }
 
+    @Inject
+    public void injectSongDAO(SongDAO songDAO) {
+        this.songDAO = songDAO;
+    }
+    
     @Override
     public void readVersion(String version) {
     }
@@ -59,6 +66,8 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
     @Override
     public void readTitle(String title) {
         currentModelSong = songFactory.createSong();
+        songDAO.saveOrUpdate(currentModelSong);
+        
         currentModelSong.setTitle(title);
     }
 

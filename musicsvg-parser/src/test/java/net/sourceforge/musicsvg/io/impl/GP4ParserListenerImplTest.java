@@ -9,6 +9,7 @@ import net.sourceforge.musicsvg.model.NoteHeight;
 import net.sourceforge.musicsvg.model.NoteTablature;
 import net.sourceforge.musicsvg.model.Song;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
+import net.sourceforge.musicsvg.model.dao.SongDAO;
 import net.sourceforge.musicsvg.model.factory.NoteTablatureFactory;
 import net.sourceforge.musicsvg.model.factory.SongFactory;
 import org.easymock.classextension.EasyMock;
@@ -72,6 +73,7 @@ public class GP4ParserListenerImplTest {
 
         GP4ParserListenerImpl parser = new GP4ParserListenerImpl();
         parser.injectSongFactory(songFactory);
+        parser.injectSongDAO(EasyMock.createMock(SongDAO.class));
 
         parser.readTitle("title");
         parser.readSubTitle("subtitle");
