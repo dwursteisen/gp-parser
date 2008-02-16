@@ -15,7 +15,8 @@ import java.io.IOException;
 
 import net.sourceforge.musicsvg.gui.mainframe.MainFrame;
 import net.sourceforge.musicsvg.io.GP4Parser;
-import net.sourceforge.musicsvg.model.dao.NoteDAO;
+import net.sourceforge.musicsvg.model.Song;
+import net.sourceforge.musicsvg.model.dao.SongDAO;
 import net.sourceforge.musicsvg.render.Renderer;
 import net.sourceforge.musicsvg.utils.MusicSVGLogger;
 
@@ -29,9 +30,14 @@ public class MainController {
     private Renderer renderer;
     private MainFrame frame;
     private MusicSVGLogger log;
-    private NoteDAO noteDAO;
+    private SongDAO songDAO;
     private GP4Parser parser;
 
+    @Inject
+    public void injectSongDAO(SongDAO songDAO) {
+        this.songDAO = songDAO;
+    }
+    
     @Inject
     public void injectParser(GP4Parser parser) {
         this.parser = parser;
@@ -45,11 +51,6 @@ public class MainController {
     @Inject
     public void injectMainFrame(MainFrame frame) {
         this.frame = frame;
-    }
-
-    @Inject
-    public void injectNoteDAO(NoteDAO dao) {
-        this.noteDAO = dao;
     }
 
     @Inject
@@ -68,6 +69,8 @@ public class MainController {
             parser.openFile(file);
             renderer.init();
             renderer.render();
+            Song currentSong = songDAO.getLastSong();
+            frame.setTitle(currentSong.getTitle());
             result = true;
         } catch (IOException ex) {
             log.error(getClass(), "Unable to read the file " + file.getName(), ex);
