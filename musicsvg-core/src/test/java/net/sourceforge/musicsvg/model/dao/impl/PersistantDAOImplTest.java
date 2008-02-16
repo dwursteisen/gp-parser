@@ -43,4 +43,15 @@ public class PersistantDAOImplTest{
         
     }
     
+    @Test
+    public void testClear() {
+        PersistantDAOMapImpl<Note> dao = new PersistantDAOMapImpl<Note>();
+        Assert.assertEquals(0, dao.findAll().size());
+        dao.saveOrUpdate(new Note());
+        Assert.assertEquals(1, dao.findAll().size());
+        dao.clear();
+        Assert.assertEquals(0, dao.findAll().size());
+        
+    }
+    
 }

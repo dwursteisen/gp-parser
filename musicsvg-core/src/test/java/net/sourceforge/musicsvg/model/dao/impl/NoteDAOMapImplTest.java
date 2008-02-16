@@ -29,7 +29,7 @@ public class NoteDAOMapImplTest {
         
         NoteDAOMapImpl dao = new NoteDAOMapImpl();
         
-        dao.setNoteMaps(map);
+        dao.setPersistantMap(map);
         
         Note result = dao.findById(id);
         Assert.assertEquals(result, expResult);
@@ -40,7 +40,7 @@ public class NoteDAOMapImplTest {
     public void testSaveOrUpdate() {
         NoteDAOMapImpl dao = new NoteDAOMapImpl();
         Map<Integer, Note> map = new HashMap<Integer, Note>();
-        dao.setNoteMaps(map);
+        dao.setPersistantMap(map);
         
         Note expResult = new Note();
         final Integer id = new Integer(5);
@@ -72,7 +72,7 @@ public class NoteDAOMapImplTest {
         note.setId(2);
         map.put(note.getId(), note);
         
-        dao.setNoteMaps(map);
+        dao.setPersistantMap(map);
         
         List<Note> result = dao.findAll();
         Assert.assertEquals(result.size(), 2);

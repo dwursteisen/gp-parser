@@ -17,25 +17,21 @@ import net.sourceforge.musicsvg.model.dao.PersistantDAO;
  * @author Dav
  */
 public class PersistantDAOMapImpl<T extends PersistantObject> implements PersistantDAO<T> {
-    private Map<Integer, T> notes = new HashMap<Integer, T>();
+    private Map<Integer, T> persistantMap = new HashMap<Integer, T>();
     private int newId = 0;
     
-    public void setNoteMaps(Map<Integer, T> notes) {
-        this.notes = notes;
+    public void setPersistantMap(Map<Integer, T> map) {
+        this.persistantMap = map;
     }
     
     @Override
     public List<T> findAll() {
-        return new Vector<T>(notes.values());
+        return new Vector<T>(persistantMap.values());
     }
 
     @Override
     public T findById(Integer id) {
-        return notes.get(id);
-    }
-
-    public Map<Integer, T> getNotes() {
-        return notes;
+        return persistantMap.get(id);
     }
 
     @Override
@@ -43,7 +39,12 @@ public class PersistantDAOMapImpl<T extends PersistantObject> implements Persist
         if ( n.getId() == null) {
             n.setId(++newId);
         }
-        notes.put(n.getId(), n);
+        persistantMap.put(n.getId(), n);
+    }
+
+    @Override
+    public void clear() {
+        persistantMap.clear();
     }
 
 }

@@ -18,5 +18,7 @@ public interface PersistantDAO<T> {
     T findById(Integer id);
 
     void saveOrUpdate(T n);
+    
+    void clear();
 
 }
