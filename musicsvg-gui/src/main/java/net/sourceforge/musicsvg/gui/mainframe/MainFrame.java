@@ -46,7 +46,7 @@ public class MainFrame extends JFrame {
         exportItem.setText("Export...");
         
         scoreInformationItem.setName("infoItem");
-        scoreInformationItem.setText("Score properties");
+        scoreInformationItem.setText("Score properties...");
         
         quitItem.setName("quitItem");
         quitItem.setText("Quit...");
