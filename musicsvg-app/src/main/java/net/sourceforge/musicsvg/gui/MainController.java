@@ -13,12 +13,14 @@ import com.google.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.Locale;
 import net.sourceforge.musicsvg.gui.mainframe.MainFrame;
 import net.sourceforge.musicsvg.io.GP4Parser;
 import net.sourceforge.musicsvg.model.Song;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
 import net.sourceforge.musicsvg.model.dao.SongDAO;
 import net.sourceforge.musicsvg.render.Renderer;
+import net.sourceforge.musicsvg.utils.I18n;
 import net.sourceforge.musicsvg.utils.MusicSVGLogger;
 
 /**
@@ -26,6 +28,8 @@ import net.sourceforge.musicsvg.utils.MusicSVGLogger;
  * @author Dav
  */
 public class MainController {
+    private SongInformation songInformationFrame;
+    private I18n i18n;
     private Song currentSong;
     private NoteDAO noteDAO;
 
@@ -36,6 +40,11 @@ public class MainController {
     private SongDAO songDAO;
     private GP4Parser parser;
 
+    @Inject
+    public void injectI18n(I18n i18n) {
+        this.i18n = i18n;
+    }
+    
     @Inject
     public void injectSongDAO(SongDAO songDAO) {
         this.songDAO = songDAO;
@@ -61,6 +70,11 @@ public class MainController {
         this.frame = frame;
     }
 
+    @Inject
+    public void injectSongInformationFrame(SongInformation songInformationFrame) {
+        this.songInformationFrame = songInformationFrame;
+    }
+    
     @Inject
     public void injectSVGRenderer(Renderer renderer) {
         this.renderer = renderer;
@@ -108,6 +122,11 @@ public class MainController {
 
     public void startApplication() {
         log.info(getClass(), "Starting Application !");
+        // HACK HACK HACK
+        // TODO: remove hack
+        i18n.setCurrentLocale(new Locale("fr")); 
+        i18n.loadBundle("locales/Music");
+        frame.setLabels();
         frame.setVisible(true);
     }
 
@@ -129,9 +148,9 @@ public class MainController {
 
     public void displaySongInformation() {
         log.info(getClass(), "Display song Information");
-        SongInformation gui = new SongInformation();
-        gui.setSong(currentSong);
-        gui.setVisible(true);
+        songInformationFrame.setSong(currentSong);
+        songInformationFrame.setLabels();
+        songInformationFrame.setVisible(true);
     }
     
     

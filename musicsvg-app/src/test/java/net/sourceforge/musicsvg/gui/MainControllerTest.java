@@ -12,6 +12,7 @@ import net.sourceforge.musicsvg.gui.mainframe.MainFrame;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
 import net.sourceforge.musicsvg.model.dao.SongDAO;
 import net.sourceforge.musicsvg.render.Renderer;
+import net.sourceforge.musicsvg.utils.I18n;
 import net.sourceforge.musicsvg.utils.MusicSVGLogger;
 import org.easymock.classextension.EasyMock;
 // import org.testng.internal.annotations.
@@ -28,12 +29,14 @@ public class MainControllerTest {
         MusicSVGLogger logger = EasyMock.createMock(MusicSVGLogger.class);
         
         MainFrame frame = EasyMock.createMock(MainFrame.class);
+        frame.setLabels();
         frame.setVisible(true);
         EasyMock.replay(frame);
         
         MainController controller = new MainController();
         controller.injectMainFrame(frame);
         controller.injectLog(logger);
+        controller.injectI18n(EasyMock.createMock(I18n.class));
         
         controller.startApplication();
         
