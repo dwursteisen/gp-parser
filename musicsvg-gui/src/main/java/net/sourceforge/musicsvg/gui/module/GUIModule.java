@@ -9,6 +9,7 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import javax.swing.JFileChooser;
 import net.sourceforge.musicsvg.gui.FileChooser;
+import net.sourceforge.musicsvg.gui.SongInformation;
 import net.sourceforge.musicsvg.gui.mainframe.MainFrame;
 
 /**
@@ -21,13 +22,15 @@ public class GUIModule implements Module {
     public void configure(Binder binder) {
         // GUI
         MainFrame frame = new MainFrame();
-
+        SongInformation songFrame = new SongInformation();
+        
         FileChooser fileChooser = new FileChooser();
         JFileChooser jfileChooser = new JFileChooser();
         binder.bind(JFileChooser.class).toInstance(jfileChooser);
         binder.bind(FileChooser.class).toInstance(fileChooser);
 
         binder.bind(MainFrame.class).toInstance(frame);
+        binder.bind(SongInformation.class).toInstance(songFrame);
     }
 
 }
