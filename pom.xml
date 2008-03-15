@@ -6,8 +6,6 @@
     <name>Music SVG</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    
-    
     <url>http://musicsvg.sourceforge.net/</url>
     <modules>
         <module>musicsvg-utils</module>
@@ -50,4 +48,24 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>RELEASE</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>RELEASE</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
