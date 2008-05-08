@@ -7,6 +7,7 @@ package net.sourceforge.musicsvg.render.abc4j;
 import abc.notation.AccidentalType;
 import net.sourceforge.musicsvg.model.Note;
 import net.sourceforge.musicsvg.model.NoteAccident;
+import net.sourceforge.musicsvg.model.NoteDuration;
 import net.sourceforge.musicsvg.model.NoteHeight;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -32,10 +33,13 @@ public class Abc4jTranslaterTest {
         
         note = new Note();
         note.setNoteHeight(NoteHeight.D);
+        note.setNoteDuration(NoteDuration.wholeNote);
         expResult = new abc.notation.Note(abc.notation.Note.D);
+        expResult.setDuration(abc.notation.Note.WHOLE);
         result = instance.translater(note);
         Assert.assertEquals(expResult.getHeight(), result.getHeight());
         Assert.assertEquals(expResult.getAccidental(), result.getAccidental());
+        Assert.assertEquals(expResult.getDuration(), result.getDuration());
         
         note.setNoteHeight(NoteHeight.D);
         note.setAccident(NoteAccident.Sharp);
