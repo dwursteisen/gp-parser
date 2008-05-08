@@ -21,9 +21,10 @@ public class I18nImpl implements I18n {
     
     @Override
     public String getString(String key) {
-        if (myResources.containsKey(key)) {
+        // JAVA 6 stuff
+        /*if (myResources.containsKey(key)) {
             return myResources.getString(key);
-        }
+        }*/
         return "???"+key+"???";
     }
 
