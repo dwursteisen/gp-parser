@@ -9,7 +9,9 @@
 package net.sourceforge.musicsvg.io.impl;
 
 import com.google.inject.Inject;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import net.sourceforge.musicsvg.io.*;
 import net.sourceforge.musicsvg.model.NoteAccident;
@@ -27,13 +29,44 @@ import net.sourceforge.musicsvg.model.factory.TrackFactory;
  * @author Dav
  */
 public class GP4ParserListenerImpl implements GP4ParserListener {
+
     private SongDAO songDAO;
     private TrackFactory trackFactory;
     private SongFactory songFactory;
     private NoteDAO noteDAO;
     private NoteTablatureFactory noteFactory;
     private net.sourceforge.musicsvg.model.Song currentModelSong;
-
+    private final static Map<Integer, NoteHeight> MATRIX_TUNNING = new HashMap<Integer, NoteHeight>();
+    private final static Map<Integer, NoteAccident> MATRIX_ACCIDENT = new HashMap<Integer, NoteAccident>();
+    
+    static {
+        MATRIX_TUNNING.put(0, NoteHeight.C);
+        MATRIX_TUNNING.put(1, NoteHeight.C);
+        MATRIX_TUNNING.put(2, NoteHeight.D);
+        MATRIX_TUNNING.put(3, NoteHeight.D);
+        MATRIX_TUNNING.put(4, NoteHeight.E);
+        MATRIX_TUNNING.put(5, NoteHeight.F);
+        MATRIX_TUNNING.put(6, NoteHeight.F);
+        MATRIX_TUNNING.put(7, NoteHeight.G);
+        MATRIX_TUNNING.put(8, NoteHeight.G);
+        MATRIX_TUNNING.put(9, NoteHeight.A);
+        MATRIX_TUNNING.put(10, NoteHeight.B);
+        MATRIX_TUNNING.put(11, NoteHeight.B);
+        
+        MATRIX_ACCIDENT.put(0, NoteAccident.None);
+        MATRIX_ACCIDENT.put(1, NoteAccident.Sharp);
+        MATRIX_ACCIDENT.put(2, NoteAccident.None);
+        MATRIX_ACCIDENT.put(3, NoteAccident.Sharp);
+        MATRIX_ACCIDENT.put(4, NoteAccident.None);
+        MATRIX_ACCIDENT.put(5, NoteAccident.None);
+        MATRIX_ACCIDENT.put(6, NoteAccident.Sharp);
+        MATRIX_ACCIDENT.put(7, NoteAccident.None);
+        MATRIX_ACCIDENT.put(8, NoteAccident.Sharp);
+        MATRIX_ACCIDENT.put(9,  NoteAccident.None);
+        MATRIX_ACCIDENT.put(10, NoteAccident.None);
+        MATRIX_ACCIDENT.put(11, NoteAccident.Sharp);
+    }
+    
     @Inject
     public void injectNoteDAO(NoteDAO noteDAO) {
         this.noteDAO = noteDAO;
@@ -48,7 +81,7 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
     public void injectTrackFractory(TrackFactory trackFactory) {
         this.trackFactory = trackFactory;
     }
-    
+
     @Inject
     public void injectSongFactory(SongFactory songFactory) {
         this.songFactory = songFactory;
@@ -58,7 +91,7 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
     public void injectSongDAO(SongDAO songDAO) {
         this.songDAO = songDAO;
     }
-    
+
     @Override
     public void readVersion(String version) {
     }
@@ -67,7 +100,7 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
     public void readTitle(String title) {
         currentModelSong = songFactory.createSong();
         songDAO.saveOrUpdate(currentModelSong);
-        
+
         currentModelSong.setTitle(title);
     }
 
@@ -153,41 +186,12 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
     public void readStringTunning(int track, int string, int stringTunning) {
         // @see http://www.harmony-central.com/MIDI/Doc/table2.html
         int noteIndex = stringTunning % 12;
-        final NoteHeight[] tunnings = {
-            NoteHeight.C,
-            NoteHeight.C,
-            NoteHeight.D,
-            NoteHeight.D,
-            NoteHeight.E,
-            NoteHeight.F,
-            NoteHeight.F,
-            NoteHeight.G,
-            NoteHeight.G,
-            NoteHeight.A,
-            NoteHeight.B,
-            NoteHeight.B
-        };
-
-        final NoteAccident[] accidents = {
-            NoteAccident.None,
-            NoteAccident.Sharp,
-            NoteAccident.None,
-            NoteAccident.Sharp,
-            NoteAccident.None,
-            NoteAccident.None,
-            NoteAccident.Sharp,
-            NoteAccident.None,
-            NoteAccident.Sharp,
-            NoteAccident.None,
-            NoteAccident.None,
-            NoteAccident.Sharp
-        };
-
+       
         NoteHeight tunning = null;
         NoteAccident accident = null;
         if (noteIndex != -1) {
-            tunning = tunnings[noteIndex];
-            accident = accidents[noteIndex];
+            tunning = MATRIX_TUNNING.get(noteIndex);
+            accident = MATRIX_ACCIDENT.get(noteIndex);
         }
         currentSong.get(track).setTunning(string, tunning);
         currentSong.get(track).setAccident(string, accident);
@@ -227,6 +231,7 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         NoteHeight stringHeight = t.getTunning(stringPlayer);
         NoteAccident stringAccident = t.getAccident(stringPlayer);
         if (stringHeight == null) { // dirty fix for a NPE. TODO: fix it corretly
+
             return;
         }
 
@@ -246,17 +251,14 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
 
     @Override
     public void readMidiChannel(int port, int channel, int instrument, byte volume, byte balance, byte chorus, byte reverb, byte phaser, byte tremolo) {
-
     }
 
     @Override
     public void readMeasureTonality(int tonality) {
-
     }
 
     @Override
     public void readNoteParameter(int track, int mesure, int beat, boolean accentuated, boolean ghostNote, boolean dotted) {
-
     }
     private Song currentSong = new Song();
 
