@@ -8,7 +8,9 @@ package net.sourceforge.musicsvg.utils.impl;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.MissingResourceException;
+import net.sourceforge.musicsvg.utils.MusicSVGLogger;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -16,11 +18,17 @@ import org.testng.annotations.Test;
  * @author Dav
  */
 public class I18nImplTest {
+    private I18nImpl i18n;
+    
+    MusicSVGLogger logger = new MusicSVGLoggerLog4jImpl();
+    @BeforeMethod
+    public void setUp() {
+        i18n = new I18nImpl();
+        i18n.injectMusicSVGLogger(logger);
+    }
     
     @Test
     public void testGetCurrentLocale() {
-        I18nImpl i18n = new I18nImpl();
-        
         Locale currentLocale = i18n.getCurrentLocale();
         Assert.assertNotNull(currentLocale);
         
@@ -34,19 +42,16 @@ public class I18nImplTest {
     
     @Test(expectedExceptions=MissingResourceException.class)
     public void testLoadBundle_IOException() throws MissingResourceException {
-        I18nImpl i18n = new I18nImpl();
         i18n.loadBundle("fakeResource");
     }
     
     @Test
     public void testLoadBundle() throws IOException {
-        I18nImpl i18n = new I18nImpl();
         i18n.loadBundle("testI18n");
     }
     
     @Test
     public void testGetString() {
-        I18nImpl i18n = new I18nImpl();
         Locale en = new Locale("en");
         i18n.setCurrentLocale(en);
         i18n.loadBundle("testI18n");
@@ -62,7 +67,6 @@ public class I18nImplTest {
         i18n.setCurrentLocale(fr);
         result = i18n.getString("message.test");
         Assert.assertEquals(result, "message par défaut");
-        
         
     }
 }
