@@ -34,19 +34,23 @@ public class Abc4jTranslaterTest {
         note = new Note();
         note.setNoteHeight(NoteHeight.D);
         note.setNoteDuration(NoteDuration.wholeNote);
+        
         expResult = new abc.notation.Note(abc.notation.Note.D);
-        expResult.setDuration(abc.notation.Note.WHOLE);
+        expResult.setStrictDuration(abc.notation.Note.WHOLE);
         result = instance.translater(note);
+        
         Assert.assertEquals(expResult.getHeight(), result.getHeight());
         Assert.assertEquals(expResult.getAccidental(), result.getAccidental());
-        Assert.assertEquals(expResult.getDuration(), result.getDuration());
+        Assert.assertEquals(expResult.getStrictDuration(), result.getStrictDuration());
         
         note.setNoteHeight(NoteHeight.D);
         note.setAccident(NoteAccident.Sharp);
         
         expResult = new abc.notation.Note(abc.notation.Note.D);
         expResult.setAccidental(AccidentalType.SHARP);
+        
         result = instance.translater(note);
+        
         Assert.assertEquals(expResult.getHeight(), result.getHeight());
         Assert.assertEquals(expResult.getAccidental(), result.getAccidental());
 

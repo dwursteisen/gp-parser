@@ -55,7 +55,7 @@ public class Abc4jTranslater implements NoteTranslater<Note> {
         
         Note abcNote = new Note(height);
         abcNote.setAccidental(accident);
-        abcNote.setDuration(duration);
+        abcNote.setStrictDuration(duration);
         return abcNote;
     }
 }
