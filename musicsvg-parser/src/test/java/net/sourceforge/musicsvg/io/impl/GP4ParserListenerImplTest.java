@@ -14,6 +14,7 @@ import net.sourceforge.musicsvg.model.factory.NoteTablatureFactory;
 import net.sourceforge.musicsvg.model.factory.SongFactory;
 import org.easymock.classextension.EasyMock;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -21,11 +22,14 @@ import org.testng.annotations.Test;
  * @author Dav
  */
 public class GP4ParserListenerImplTest {
+    private GP4ParserListenerImpl parser;
 
+    @BeforeMethod
+    public void setUp() {
+        parser = new GP4ParserListenerImpl();
+    }
     @Test
     public void testReadNote() {
-
-        GP4ParserListenerImpl parser = new GP4ParserListenerImpl();
         NoteTablature noteEString = new NoteTablature();
         NoteTablature noteAString = new NoteTablature();
 
@@ -71,7 +75,6 @@ public class GP4ParserListenerImplTest {
         EasyMock.expectLastCall().andStubReturn(s);
         EasyMock.replay(songFactory);
 
-        GP4ParserListenerImpl parser = new GP4ParserListenerImpl();
         parser.injectSongFactory(songFactory);
         parser.injectSongDAO(EasyMock.createMock(SongDAO.class));
 

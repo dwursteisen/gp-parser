@@ -15,8 +15,9 @@ import net.sourceforge.musicsvg.model.factory.impl.SongFactoryImpl;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 
 /**
  *
@@ -24,15 +25,30 @@ import org.testng.annotations.Test;
  */
 public class GP4ParserTest {
 
+    private GP4Parser instance;
     public static final String SIMPLE_FILE = "/gp4/test_gp4.gp4";
     public static final String SOLFEGE_FILE = "/gp4/solfege.gp4";
     public static final String BLUES_FILE = "/gp4/rythme_blues.gp4";
+    private File simpleFile;
+    private File solfegeFile;
+    private File bluesFile;
+    private File rythmeFile;
+
+    @BeforeMethod
+    public void setUp() throws Exception {
+        simpleFile = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
+        bluesFile = new File(this.getClass().getResource(BLUES_FILE).toURI());
+        solfegeFile = new File(this.getClass().getResource(SOLFEGE_FILE).toURI());
+        instance = new GP4Parser();
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        instance.close();
+    }
 
     @Test
     public void testReadFileHeaders() throws Exception {
-        File file = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
-
         IMocksControl control = EasyMock.createNiceControl();
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
         listener.readVersion("FICHIER GUITAR PRO v4.06");
@@ -53,7 +69,7 @@ public class GP4ParserTest {
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(simpleFile);
 
         control.verify();
 
@@ -61,8 +77,6 @@ public class GP4ParserTest {
 
     @Test
     public void testReadOtherInformations() throws Exception {
-        File file = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
 
         IMocksControl control = EasyMock.createNiceControl();
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
@@ -76,6 +90,7 @@ public class GP4ParserTest {
         listener.readKey(0);
         listener.readOctave(0); // not used by guitar pro
         // listener.readChannel(channel, effectChannel, instrument, volume, balance, chorus, reverb, phaser, tremolo, solo, mute)
+
         listener.readMidiChannel(0, 0, 25, (byte) 7, (byte) 3, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
         listener.readMidiChannel(0, 1, 25, (byte) 7, (byte) 3, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
         listener.readNumberOfMesures(3);
@@ -85,7 +100,7 @@ public class GP4ParserTest {
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(simpleFile);
 
         control.verify();
 
@@ -93,9 +108,6 @@ public class GP4ParserTest {
 
     @Test
     public void testReadMesureHeader() throws Exception {
-        File file = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
-
         IMocksControl control = EasyMock.createNiceControl();
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
         listener.readMesureMarker(0, "Section 1", 255, 0, 0);
@@ -108,7 +120,7 @@ public class GP4ParserTest {
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(simpleFile);
 
         control.verify();
 
@@ -116,9 +128,6 @@ public class GP4ParserTest {
 
     @Test
     public void testReadTrack() throws Exception {
-        File file = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
-
         IMocksControl control = EasyMock.createNiceControl();
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
         listener.readTrackParameter(0, "Track 1", 6, false, false, false);
@@ -127,17 +136,14 @@ public class GP4ParserTest {
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(simpleFile);
 
         control.verify();
 
     }
-    
+
     @Test
     public void testReadStringTunning() throws Exception {
-        File file = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
-
         IMocksControl control = EasyMock.createNiceControl();
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
         listener.readStringTunning(0, 0, 64);
@@ -151,7 +157,7 @@ public class GP4ParserTest {
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(simpleFile);
 
         control.verify();
 
@@ -159,9 +165,6 @@ public class GP4ParserTest {
 
     @Test
     public void testReadTrackMidiParameter() throws Exception {
-        File file = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
-
         IMocksControl control = EasyMock.createNiceControl();
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
         listener.readTrackMidiParameter(0, 1, 1, 2, 24, 0, 255, 0, 0);
@@ -170,7 +173,7 @@ public class GP4ParserTest {
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(simpleFile);
 
         control.verify();
 
@@ -178,20 +181,18 @@ public class GP4ParserTest {
 
     @Test
     public void testReadNumberOfBeats() throws Exception {
-        File file = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
-
         IMocksControl control = EasyMock.createNiceControl();
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
         listener.readNumberOfBeats(0, 0, 4);
         listener.readNumberOfBeats(0, 1, 1); // this beat can be empty
+
         listener.readNumberOfBeats(0, 2, 1);
 
         EasyMock.replay(listener);
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(simpleFile);
 
         control.verify();
 
@@ -199,9 +200,6 @@ public class GP4ParserTest {
 
     @Test
     public void testReadEmtpyBeat() throws Exception {
-        File file = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
-
         IMocksControl control = EasyMock.createNiceControl();
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
         listener.readEmptyBeat(0, 1, 0, true, false);
@@ -211,7 +209,7 @@ public class GP4ParserTest {
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(simpleFile);
 
         control.verify();
 
@@ -220,17 +218,14 @@ public class GP4ParserTest {
     @Test
     public void testReadStringsPlayed() throws Exception {
         /**
-             *  stringsPlayer : 
-             *  field of beat (on the base of 7 strings !)
-             *    0000000
-             *    eBGDAE     (the first 0 is the bit for the 7th string)
-             * if 2 strings is played in the same time, each byte of each strings
-             * are set to 1
-             *    0001100 for example
-             */
-        File file = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
-
+         *  stringsPlayer : 
+         *  field of beat (on the base of 7 strings !)
+         *    0000000
+         *    eBGDAE     (the first 0 is the bit for the 7th string)
+         * if 2 strings is played in the same time, each byte of each strings
+         * are set to 1
+         *    0001100 for example
+         */
         IMocksControl control = EasyMock.createNiceControl();
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
         listener.readStringPlayed(0, 0, 0, 0xC);
@@ -243,7 +238,7 @@ public class GP4ParserTest {
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(simpleFile);
 
         control.verify();
 
@@ -251,9 +246,6 @@ public class GP4ParserTest {
 
     @Test
     public void testReadNote() throws Exception {
-        File file = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
-
         IMocksControl control = EasyMock.createNiceControl();
         // control.checkOrder(true);
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
@@ -269,7 +261,7 @@ public class GP4ParserTest {
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(simpleFile);
 
         control.verify();
 
@@ -277,7 +269,6 @@ public class GP4ParserTest {
 
     @Test
     public void testNbStringPlayed() {
-        GP4Parser instance = new GP4Parser();
 
         int stringCode = 2;
         int result;
@@ -313,7 +304,6 @@ public class GP4ParserTest {
         int stringCode = 0;
         int index = 0;
         int stringIndex = 0;
-        GP4Parser instance = new GP4Parser();
 
         stringCode = 2;
         stringIndex = instance.getStringIndexFromStringCode(stringCode, index);
@@ -349,9 +339,6 @@ public class GP4ParserTest {
 
     @Test
     public void testReadNote_blues_file() throws Exception {
-        File file = new File(this.getClass().getResource(BLUES_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
-
         IMocksControl control = EasyMock.createNiceControl();
         // control.checkOrder(true);
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
@@ -361,7 +348,7 @@ public class GP4ParserTest {
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(bluesFile);
 
         EasyMock.verify(listener);
 
@@ -369,9 +356,6 @@ public class GP4ParserTest {
 
     @Test
     public void testReadNote_solfege_file() throws Exception {
-        File file = new File(this.getClass().getResource(SOLFEGE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
-
         IMocksControl control = EasyMock.createNiceControl();
         // control.checkOrder(true);
         GP4ParserListener listener = control.createMock(GP4ParserListener.class);
@@ -428,7 +412,7 @@ public class GP4ParserTest {
 
         instance.injectListener(listener);
 
-        instance.openFile(file);
+        instance.openFile(solfegeFile);
 
         control.verify();
 
@@ -436,16 +420,14 @@ public class GP4ParserTest {
 
     @Test
     public void testFunctionnal() throws Exception {
-        File file = new File(this.getClass().getResource(SOLFEGE_FILE).toURI());
-        GP4Parser instance = new GP4Parser();
         GP4ParserListenerImpl listener = new GP4ParserListenerImpl();
 
         listener.injectNoteDAO(EasyMock.createNiceMock(NoteDAO.class));
         listener.injectNoteFactory(new NoteTablatureFactoryImpl());
         listener.injectSongFactory(new SongFactoryImpl());
         listener.injectSongDAO(EasyMock.createMock(SongDAO.class));
-        
+
         instance.injectListener(listener);
-        instance.openFile(file);
+        instance.openFile(solfegeFile);
     }
 }
