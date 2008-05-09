@@ -100,7 +100,6 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
     public void readTitle(String title) {
         currentModelSong = songFactory.createSong();
         songDAO.saveOrUpdate(currentModelSong);
-
         currentModelSong.setTitle(title);
     }
 
@@ -235,17 +234,23 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
             return;
         }
 
+        // TODO: use a matrix instead of this ?
+        // TODO: move it into a method ?
         int newOrdinal = stringHeight.getHeight() + fretNumber + stringAccident.getAccident();
         int nbNoteValue = NoteHeight.SCALE.length;
         int ord = newOrdinal % nbNoteValue;
         NoteHeight height = NoteHeight.SCALE[ord];
 
+        // TODO: use a matrix instead of this ?
+        NoteDuration d = NoteDuration.values()[duration + 2];
+        
+        // TODO: move this into the noteFactory ?
         note.setFret(fretNumber);
         note.setNoteHeight(height);
         note.setString(t.getTunning(stringPlayer));
         note.setAccident(t.getAccident(stringPlayer));
-        NoteDuration d = NoteDuration.values()[duration + 2];
         note.setNoteDuration(d);
+        
         this.noteDAO.saveOrUpdate(note);
     }
 
