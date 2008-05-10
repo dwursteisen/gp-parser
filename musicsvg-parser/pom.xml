@@ -38,6 +38,11 @@
             <artifactId>guice</artifactId>
             <version>1.0</version>
         </dependency>
+         <dependency>
+            <groupId>jfugue</groupId>
+            <artifactId>jfugue</artifactId>
+            <version>4.0</version>
+        </dependency>
         <dependency>
             <groupId>musicsvg.sourceforge.org</groupId>
             <artifactId>musicsvg-core</artifactId>
