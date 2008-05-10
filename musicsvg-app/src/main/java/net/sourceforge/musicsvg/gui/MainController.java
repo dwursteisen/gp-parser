@@ -95,8 +95,11 @@ public class MainController {
         try {
             closeFile();
             parser.openFile(file);
+            
+            renderer.clear();
             renderer.init();
             renderer.render();
+            
             currentSong = songDAO.getLastSong();
             frame.setTitle(currentSong.getTitle());
             result = true;

@@ -17,4 +17,5 @@ public interface Renderer {
     public void exportFile(File file) throws IOException;
     public void init();
     public void render();
+    void clear();
 }

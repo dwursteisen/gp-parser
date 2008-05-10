@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.List;
 import net.sourceforge.musicsvg.model.Note;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
-import net.sourceforge.musicsvg.render.svg.SVGModelDAO;
 import net.sourceforge.musicsvg.svg.SVGDocument;
 import net.sourceforge.musicsvg.svg.SVGModelFactory;
 import net.sourceforge.musicsvg.render.Renderer;
@@ -109,5 +108,9 @@ public class SVGRendererImpl implements Renderer {
     @Override
     public void exportFile(File file) throws IOException {
         svgDocument.save(file);
+    }
+
+    public void clear() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

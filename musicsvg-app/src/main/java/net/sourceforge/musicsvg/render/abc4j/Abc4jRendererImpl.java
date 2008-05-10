@@ -32,6 +32,7 @@ public class Abc4jRendererImpl implements Renderer {
         this.jscore = jscore;
     }
 
+    // TODO: why inject the tune ? 
     @Inject
     public void injectTune(Tune tune) {
         this.tune = tune;
@@ -65,6 +66,12 @@ public class Abc4jRendererImpl implements Renderer {
             abc.notation.Note abcNote = translater.translater(note);
             music.add(abcNote);
         }
+        jscore.setTune(tune);
+        jscore.repaint();
+    }
+
+    public void clear() {
+        tune = new Tune();
         jscore.setTune(tune);
         jscore.repaint();
     }
