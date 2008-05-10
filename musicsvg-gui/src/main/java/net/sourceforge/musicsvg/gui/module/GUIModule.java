@@ -22,6 +22,8 @@ public class GUIModule implements Module {
     public void configure(Binder binder) {
         // GUI
         MainFrame frame = new MainFrame();
+        frame.setSize(500, 300);
+        
         SongInformation songFrame = new SongInformation();
         
         FileChooser fileChooser = new FileChooser();
