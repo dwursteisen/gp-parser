@@ -76,6 +76,8 @@ public class NoteDAOMapImplTest {
         
         List<Note> result = dao.findAll();
         Assert.assertEquals(result.size(), 2);
+        Assert.assertEquals(1, result.get(0).getId().intValue());
+        Assert.assertEquals(2, result.get(1).getId().intValue());
     }
 
 }
