@@ -395,7 +395,7 @@ public class GP4Parser {
         return -1;
     }
 
-    private void parseNote(int track, int mesure, int beat, int stringPlayer) throws IOException {
+    void parseNote(int track, int mesure, int beat, int stringPlayer) throws IOException {
         int header = readUnsignedByte();
         
         boolean accentuated = ((header & BITMASK_7) != 0);

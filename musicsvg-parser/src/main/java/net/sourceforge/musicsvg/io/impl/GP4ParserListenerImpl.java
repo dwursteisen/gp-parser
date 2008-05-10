@@ -260,7 +260,11 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         note.setFret(fretNumber);
         note.setNoteHeight(height);
         note.setString(t.getTunning(stringPlayer));
-        note.setAccident(t.getAccident(stringPlayer));
+        // note.setAccident(t.getAccident(stringPlayer));
+        // FIXME: the note accident depends of the key signature
+        // the string accident and the note player
+        // so for testing, it's set to none...
+        note.setAccident(NoteAccident.None);
         note.setNoteDuration(d);
 
         this.noteDAO.saveOrUpdate(note);
