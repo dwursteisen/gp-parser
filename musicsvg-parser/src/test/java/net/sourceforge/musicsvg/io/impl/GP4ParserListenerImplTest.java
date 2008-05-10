@@ -49,11 +49,19 @@ public class GP4ParserListenerImplTest {
         int ANote = 57;
         parser.readNumberOfTracks(1);
         parser.readNumberOfMesures(2);
+        parser.readNumberOfBeats(0, 0, 2);
+        
         parser.readTrackParameter(0, "Test Track", 6, false, false, false);
+        
         parser.readStringTunning(0, 0, ANote);
         parser.readStringTunning(0, 1, ENote);
-        parser.readNote(0, 0, 0, 0, 9, -2);
-        parser.readNote(0, 0, 0, 1, 5, 0);
+        
+        parser.readBeat(0, 0, 0, -2, false);
+        parser.readBeat(0, 0, 1, 0, false);
+        
+        parser.readNote(0, 0, 0, 0, 9, -1);
+        parser.readNote(0, 0, 1, 1, 5, -1);
+        
         EasyMock.verify(dao);
         EasyMock.verify(factory);
 

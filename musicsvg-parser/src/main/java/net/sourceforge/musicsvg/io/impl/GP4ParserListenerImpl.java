@@ -204,6 +204,7 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
 
     @Override
     public void readBeat(int track, int mesure, int beat, int duration, boolean dottedNotes) {
+        currentSong.get(track).get(mesure).get(beat).setDuration(duration);
     }
 
     @Override
@@ -216,6 +217,7 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
 
     @Override
     public void readNumberOfBeats(int track, int mesure, int numberOfBeats) {
+        currentSong.get(track).get(mesure).createBets(numberOfBeats);
     }
 
     @Override
@@ -242,7 +244,8 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         NoteHeight height = NoteHeight.SCALE[ord];
 
         // TODO: use a matrix instead of this ?
-        NoteDuration d = NoteDuration.values()[duration + 2];
+        int beatDuration = t.get(mesure).get(beat).getDuration();
+        NoteDuration d = NoteDuration.values()[beatDuration + 2];
         
         // TODO: move this into the noteFactory ?
         note.setFret(fretNumber);
@@ -335,9 +338,26 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         public Beat get(int beatIndex) {
             return beats.get(beatIndex);
         }
+        
+        void createBets(int numberOfBeats) {
+            beats = new Vector<Beat>(numberOfBeats);
+            for(int i = 0 ; i < numberOfBeats; i++) {
+                beats.add(new Beat());
+            }
+        }
     }
 
     private class Beat {
+        int duration;
+
+        public int getDuration() {
+            return duration;
+        }
+
+        public void setDuration(int duration) {
+            this.duration = duration;
+        }
+        
     }
 
     @Override

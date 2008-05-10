@@ -173,10 +173,10 @@ public class GP4Parser {
         }
 
         numberOfMeasures = readInt();
-        this.listener.readNumberOfMesures(numberOfMeasures);
-
         numberOfTracks = readInt();
+        
         this.listener.readNumberOfTracks(numberOfTracks);
+        this.listener.readNumberOfMesures(numberOfMeasures);
     }
 
     private void readMeasures() throws IOException {
