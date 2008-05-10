@@ -8,6 +8,7 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import net.sourceforge.musicsvg.io.GP4Parser;
 import net.sourceforge.musicsvg.io.GP4ParserListener;
+import net.sourceforge.musicsvg.io.JFugueParser;
 import net.sourceforge.musicsvg.io.impl.GP4ParserListenerImpl;
 
 /**
@@ -21,7 +22,10 @@ public class ParserModule implements Module {
         // PARSER
         binder.bind(GP4ParserListener.class).to(GP4ParserListenerImpl.class);
 
-        GP4Parser parser = new GP4Parser();
-        binder.bind(GP4Parser.class).toInstance(parser);
+        GP4Parser gp4Parser = new GP4Parser();
+        binder.bind(GP4Parser.class).toInstance(gp4Parser);
+        
+        JFugueParser jfugueParser = new JFugueParser();
+        binder.bind(JFugueParser.class).toInstance(jfugueParser);
     }
 }
