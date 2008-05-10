@@ -38,7 +38,9 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
     private net.sourceforge.musicsvg.model.Song currentModelSong;
     private final static Map<Integer, NoteHeight> MATRIX_TUNNING = new HashMap<Integer, NoteHeight>();
     private final static Map<Integer, NoteAccident> MATRIX_ACCIDENT = new HashMap<Integer, NoteAccident>();
+    private final static Map<Integer, NoteDuration> MATRIX_DURATION = new HashMap<Integer, NoteDuration>();
     
+
     static {
         MATRIX_TUNNING.put(0, NoteHeight.C);
         MATRIX_TUNNING.put(1, NoteHeight.C);
@@ -52,7 +54,7 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         MATRIX_TUNNING.put(9, NoteHeight.A);
         MATRIX_TUNNING.put(10, NoteHeight.B);
         MATRIX_TUNNING.put(11, NoteHeight.B);
-        
+
         MATRIX_ACCIDENT.put(0, NoteAccident.None);
         MATRIX_ACCIDENT.put(1, NoteAccident.Sharp);
         MATRIX_ACCIDENT.put(2, NoteAccident.None);
@@ -62,11 +64,19 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         MATRIX_ACCIDENT.put(6, NoteAccident.Sharp);
         MATRIX_ACCIDENT.put(7, NoteAccident.None);
         MATRIX_ACCIDENT.put(8, NoteAccident.Sharp);
-        MATRIX_ACCIDENT.put(9,  NoteAccident.None);
+        MATRIX_ACCIDENT.put(9, NoteAccident.None);
         MATRIX_ACCIDENT.put(10, NoteAccident.None);
         MATRIX_ACCIDENT.put(11, NoteAccident.Sharp);
+
+        MATRIX_DURATION.put(-2, NoteDuration.wholeNote);
+        MATRIX_DURATION.put(-1, NoteDuration.halfNote);
+        MATRIX_DURATION.put(0, NoteDuration.quarterNote);
+        MATRIX_DURATION.put(1, NoteDuration.eighthNote);
+        MATRIX_DURATION.put(2, NoteDuration.sixteenthNote);
+        MATRIX_DURATION.put(3, NoteDuration.thirtySecondNote);
+        MATRIX_DURATION.put(4, NoteDuration.sixtyFourthNote);
     }
-    
+
     @Inject
     public void injectNoteDAO(NoteDAO noteDAO) {
         this.noteDAO = noteDAO;
@@ -185,7 +195,7 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
     public void readStringTunning(int track, int string, int stringTunning) {
         // @see http://www.harmony-central.com/MIDI/Doc/table2.html
         int noteIndex = stringTunning % 12;
-       
+
         NoteHeight tunning = null;
         NoteAccident accident = null;
         if (noteIndex != -1) {
@@ -243,17 +253,16 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         int ord = newOrdinal % nbNoteValue;
         NoteHeight height = NoteHeight.SCALE[ord];
 
-        // TODO: use a matrix instead of this ?
         int beatDuration = t.get(mesure).get(beat).getDuration();
-        NoteDuration d = NoteDuration.values()[beatDuration + 2];
-        
+        NoteDuration d = MATRIX_DURATION.get(beatDuration);
+
         // TODO: move this into the noteFactory ?
         note.setFret(fretNumber);
         note.setNoteHeight(height);
         note.setString(t.getTunning(stringPlayer));
         note.setAccident(t.getAccident(stringPlayer));
         note.setNoteDuration(d);
-        
+
         this.noteDAO.saveOrUpdate(note);
     }
 
@@ -338,16 +347,17 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         public Beat get(int beatIndex) {
             return beats.get(beatIndex);
         }
-        
+
         void createBets(int numberOfBeats) {
             beats = new Vector<Beat>(numberOfBeats);
-            for(int i = 0 ; i < numberOfBeats; i++) {
+            for (int i = 0; i < numberOfBeats; i++) {
                 beats.add(new Beat());
             }
         }
     }
 
     private class Beat {
+
         int duration;
 
         public int getDuration() {
@@ -357,7 +367,6 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         public void setDuration(int duration) {
             this.duration = duration;
         }
-        
     }
 
     @Override
