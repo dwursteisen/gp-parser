@@ -38,7 +38,9 @@ public class GP4Parser {
     private int numberOfMeasures;
 
     public void close() {
-        listener.close();
+        if(listener != null) {
+            listener.close();
+        }
     }
 
     @Inject
@@ -329,15 +331,13 @@ public class GP4Parser {
             this.listener.readEmptyBeat(track, mesure, beat, emptyBeat, restBeat);
         }
 
-        int duration = readByte();
-        
+        int beatDuration = readByte();
         if ((header & BITMASK_6) != 0) {
             int tuplet = readInt();
             this.listener.readTuplet(track, mesure, beat, tuplet);
         }
-
-
-        this.listener.readBeat(track, mesure, beat, duration, dottedNotes);
+        
+        this.listener.readBeat(track, mesure, beat, beatDuration, dottedNotes);
 
         if ((header & BITMASK_2) != 0) {
             readChordDiagram(track, mesure, beat);
@@ -397,7 +397,7 @@ public class GP4Parser {
 
     private void parseNote(int track, int mesure, int beat, int stringPlayer) throws IOException {
         int header = readUnsignedByte();
-
+        
         boolean accentuated = ((header & BITMASK_7) != 0);
         boolean ghostNote = ((header & BITMASK_3) != 0);
         boolean dotted = ((header & BITMASK_2) != 0);
@@ -424,7 +424,7 @@ public class GP4Parser {
             duration = readByte();
             byte tuplet = readByte();
         }
-
+        
         // int velocity = VelocityValues.DEFAULT;
         if ((header & BITMASK_5) != 0) {
             readByte();

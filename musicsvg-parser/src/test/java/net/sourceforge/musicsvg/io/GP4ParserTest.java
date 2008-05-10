@@ -29,6 +29,8 @@ public class GP4ParserTest {
     public static final String SIMPLE_FILE = "/gp4/test_gp4.gp4";
     public static final String SOLFEGE_FILE = "/gp4/solfege.gp4";
     public static final String BLUES_FILE = "/gp4/rythme_blues.gp4";
+    public static final String RYTHME_FILE = "/gp4/rythme.gp4";
+    
     private File simpleFile;
     private File solfegeFile;
     private File bluesFile;
@@ -39,6 +41,7 @@ public class GP4ParserTest {
         simpleFile = new File(this.getClass().getResource(SIMPLE_FILE).toURI());
         bluesFile = new File(this.getClass().getResource(BLUES_FILE).toURI());
         solfegeFile = new File(this.getClass().getResource(SOLFEGE_FILE).toURI());
+        rythmeFile = new File(this.getClass().getResource(RYTHME_FILE).toURI());
         instance = new GP4Parser();
     }
 
@@ -266,6 +269,31 @@ public class GP4ParserTest {
         control.verify();
 
     }
+    
+    @Test
+    public void testReadBeat() throws Exception {
+        System.out.println("readBeat");
+        IMocksControl control = EasyMock.createNiceControl();
+        // control.checkOrder(true);
+        GP4ParserListener listener = control.createMock(GP4ParserListener.class);
+
+        // First mesure ( 0  on each string)
+        listener.readBeat(0, 0, 0, -1, false);
+        listener.readBeat(0, 0, 1, 0, false);
+        listener.readBeat(0, 0, 2, 1, false);
+        listener.readBeat(0, 0, 3, 2, false);
+        listener.readBeat(0, 0, 4, 2, false);
+        
+        EasyMock.replay(listener);
+
+        instance.injectListener(listener);
+
+        instance.openFile(rythmeFile);
+
+        control.verify();
+
+    }
+    
 
     @Test
     public void testNbStringPlayed() {
