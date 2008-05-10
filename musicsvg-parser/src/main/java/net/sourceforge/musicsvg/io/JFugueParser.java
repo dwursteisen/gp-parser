@@ -12,12 +12,15 @@ import java.io.IOException;
  *
  * @author Dav
  */
-public class GP5Parser implements Parser{
+public class JFugueParser implements Parser{
 
     public void openFile(File file) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public void readMusicString(String jfugueMusic) {
+        
+    }
     public void close() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

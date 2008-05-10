@@ -21,7 +21,7 @@ import java.io.InputStream;
  * 
  * @see http://dguitar.sourceforge.net/GP4format.html
  */
-public class GP4Parser {
+public class GP4Parser implements Parser {
     private static final int BITMASK_1 = 0x01;
     private static final int BITMASK_2 = 0x02;
     private static final int BITMASK_3 = 0x04;
