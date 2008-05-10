@@ -27,8 +27,6 @@ public class ABC4jModule implements Module{
         Abc4jTranslater translater = new Abc4jTranslater();
         binder.bind(NoteTranslater.class).toInstance(translater);
         
-        Tune tune = new Tune();
-        binder.bind(Tune.class).toInstance(tune);
         JScoreComponent jscore = new JScoreComponent();
         binder.bind(JScoreComponent.class).toInstance(jscore);
         binder.bind(JComponent.class).annotatedWith(MainCanvas.class).toInstance(jscore);

@@ -96,7 +96,6 @@ public class MainController {
             closeFile();
             parser.openFile(file);
             
-            renderer.clear();
             renderer.init();
             renderer.render();
             

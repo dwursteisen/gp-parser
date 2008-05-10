@@ -4,6 +4,7 @@
  */
 package net.sourceforge.musicsvg.render.abc4j;
 
+import abc.notation.KeySignature;
 import abc.notation.Tune;
 import abc.notation.Tune.Music;
 import abc.ui.swing.JScoreComponent;
@@ -32,12 +33,6 @@ public class Abc4jRendererImpl implements Renderer {
         this.jscore = jscore;
     }
 
-    // TODO: why inject the tune ? 
-    @Inject
-    public void injectTune(Tune tune) {
-        this.tune = tune;
-    }
-
     @Inject
     public void injectNoteDAO(NoteDAO noteDAO) {
         this.noteDAO = noteDAO;
@@ -55,16 +50,21 @@ public class Abc4jRendererImpl implements Renderer {
 
     @Override
     public void init() {
-
+        clear();
     }
 
     @Override
     public void render() {
+        // TODO: tmp fix, for testing
+        KeySignature key = new KeySignature(abc.notation.Note.C, KeySignature.MAJOR);
+
         Music music = tune.getMusic();
+        music.addElement(key);
+        
         List<Note> notes = noteDAO.findAll();
-        for ( Note note : notes) {
+        for (Note note : notes) {
             abc.notation.Note abcNote = translater.translater(note);
-            music.add(abcNote);
+            music.addElement(abcNote);
         }
         jscore.setTune(tune);
         jscore.repaint();
