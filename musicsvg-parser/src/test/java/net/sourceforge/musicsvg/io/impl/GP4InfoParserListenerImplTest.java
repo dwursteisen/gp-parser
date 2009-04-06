@@ -26,8 +26,8 @@ public class GP4InfoParserListenerImplTest {
     public void setUp() {
         parser = new GP4InfoParserListenerImpl();
         dao = new SongDAOMapImpl();
-        parser.injectSongDAO(dao);
-        parser.injectSongFactory(new SongFactoryImpl());
+        parser.setSongDAO(dao);
+        parser.setSongFactory(new SongFactoryImpl());
 
     }
     

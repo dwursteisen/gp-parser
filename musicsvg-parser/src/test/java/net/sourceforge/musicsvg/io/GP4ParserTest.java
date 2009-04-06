@@ -70,7 +70,7 @@ public class GP4ParserTest {
 
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(simpleFile);
 
@@ -101,7 +101,7 @@ public class GP4ParserTest {
 
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(simpleFile);
 
@@ -121,7 +121,7 @@ public class GP4ParserTest {
 
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(simpleFile);
 
@@ -137,7 +137,7 @@ public class GP4ParserTest {
 
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(simpleFile);
 
@@ -158,7 +158,7 @@ public class GP4ParserTest {
 
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(simpleFile);
 
@@ -174,7 +174,7 @@ public class GP4ParserTest {
 
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(simpleFile);
 
@@ -193,7 +193,7 @@ public class GP4ParserTest {
 
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(simpleFile);
 
@@ -210,7 +210,7 @@ public class GP4ParserTest {
 
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(simpleFile);
 
@@ -239,7 +239,7 @@ public class GP4ParserTest {
 
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(simpleFile);
 
@@ -262,7 +262,7 @@ public class GP4ParserTest {
 
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(simpleFile);
 
@@ -286,7 +286,7 @@ public class GP4ParserTest {
         
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(rythmeFile);
 
@@ -374,7 +374,7 @@ public class GP4ParserTest {
         listener.readNumberOfMesures(20);
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(bluesFile);
 
@@ -438,7 +438,7 @@ public class GP4ParserTest {
 
         EasyMock.replay(listener);
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
 
         instance.openFile(solfegeFile);
 
@@ -455,7 +455,7 @@ public class GP4ParserTest {
         listener.injectSongFactory(new SongFactoryImpl());
         listener.injectSongDAO(EasyMock.createMock(SongDAO.class));
 
-        instance.injectListener(listener);
+        instance.setListener(listener);
         instance.openFile(solfegeFile);
     }
 }

@@ -44,7 +44,7 @@ public class GP4Parser implements Parser {
     }
 
     @Inject
-    public void injectListener(GP4ParserListener listener) {
+    public void setListener(GP4ParserListener listener) {
         this.listener = listener;
     }
 
@@ -54,6 +54,7 @@ public class GP4Parser implements Parser {
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
+        listener.open();
         readFileHeaders();
         readLyrics();
         readOtherInformations();

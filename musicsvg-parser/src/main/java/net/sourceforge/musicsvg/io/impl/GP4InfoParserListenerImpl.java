@@ -20,12 +20,12 @@ public class GP4InfoParserListenerImpl implements GP4ParserListener {
     private Song currentSong = null;
     
     @Inject
-    public void injectSongDAO(SongDAO songDAO) {
+    public void setSongDAO(SongDAO songDAO) {
         this.songDAO = songDAO;
     }
 
     @Inject
-    public void injectSongFactory(SongFactory factory) {
+    public void setSongFactory(SongFactory factory) {
         songFactory = factory;
     }
 
