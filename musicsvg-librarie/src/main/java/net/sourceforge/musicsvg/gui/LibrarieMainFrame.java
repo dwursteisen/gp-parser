@@ -24,6 +24,7 @@ public class LibrarieMainFrame extends JFrame {
 
     public void setMainPanel(JPanel mainPanel) {
         this.mainPanel = mainPanel;
+        this.add(mainPanel);
     }
 
     public JMenuBar getMenu() {

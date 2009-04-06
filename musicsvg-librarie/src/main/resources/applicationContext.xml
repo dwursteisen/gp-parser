@@ -18,7 +18,9 @@
         <property name="parser" ref="gp4InfoParser"/>
     </bean>
 
-    <bean id="controller" class="net.sourceforge.musicsvg.main.LibrarieController"/>
+    <bean id="controller" class="net.sourceforge.musicsvg.main.LibrarieController">
+        <property name="songDao" ref="songDao"/>
+    </bean>
     
     <bean id="gp4InfoParserListener" class="net.sourceforge.musicsvg.io.impl.GP4InfoParserListenerImpl">
         <property name="songDAO" ref="songDao"/>
