@@ -102,6 +102,10 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         this.songDAO = songDAO;
     }
 
+    public void open() {
+        
+    }
+    
     @Override
     public void readVersion(String version) {
     }
@@ -282,6 +286,7 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
     public void readNoteParameter(int track, int mesure, int beat, boolean accentuated, boolean ghostNote, boolean dotted) {
     }
     private Song currentSong = new Song();
+
 
     private class Song {
 
