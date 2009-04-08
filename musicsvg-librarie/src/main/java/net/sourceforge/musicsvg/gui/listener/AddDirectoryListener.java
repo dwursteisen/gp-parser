@@ -13,13 +13,15 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import net.sourceforge.musicsvg.io.Parser;
 import net.sourceforge.musicsvg.main.LibrarieController;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Dav
  */
 public class AddDirectoryListener implements ActionListener {
-
+    private static final Logger LOG = Logger.getLogger(AddDirectoryListener.class);
+    
     private Component parent;
     private Parser parser;
     private LibrarieController controller;
@@ -51,10 +53,11 @@ public class AddDirectoryListener implements ActionListener {
             }
         };
         for (File file : files.listFiles(filter)) {
+            LOG.debug("parsing du fichier "+file.getName());
             try {
                 parser.openFile(file);
             } catch (IOException ex) {
-                ex.printStackTrace();
+                LOG.error("Erreur lors de la lecture du fichier "+file.getName(), ex);
             } finally {
                 parser.close();
             }

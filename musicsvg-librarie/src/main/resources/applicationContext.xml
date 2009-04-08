@@ -3,8 +3,14 @@
     "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 
 <beans>
+    <bean id="frame" class="net.sourceforge.musicsvg.gui.spike.MainFrame">
+        <property name="addDirectoryListener" ref="addDirectoryListener"/>
+    </bean>
+
+
+
     <!-- swing -->
-    <bean id="frame" class="net.sourceforge.musicsvg.gui.LibrarieMainFrame">
+    <bean id="frame_tmp" class="net.sourceforge.musicsvg.gui.LibrarieMainFrame">
         <property name="mainPanel" ref="mainPanel"/>
         <property name="menu" ref="menu"/>
         
@@ -21,7 +27,7 @@
         
     <!-- listeners -->
     <bean id="addDirectoryListener" class="net.sourceforge.musicsvg.gui.listener.AddDirectoryListener">
-        <property name="parent" ref="menu"/>
+        <property name="parent" ref="frame"/>
         <property name="controller" ref="controller"/>
         <property name="parser" ref="gp4InfoParser"/>
     </bean>
@@ -30,7 +36,7 @@
         <property name="songDao" ref="songDao"/>
         <property name="addLibrarieListeners">
             <list>
-                <ref bean="tablatureTables"/>
+                <ref bean="frame"/>
             </list>
         </property>
     </bean>
