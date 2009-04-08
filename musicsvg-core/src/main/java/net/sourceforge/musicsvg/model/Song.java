@@ -5,6 +5,7 @@
 
 package net.sourceforge.musicsvg.model;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ public class Song implements PersistantObject {
     private String artist;
     private String album;
     private List<Track> tracks;
+    private File file;
 
     @Override
     public Integer getId() {
@@ -28,6 +30,15 @@ public class Song implements PersistantObject {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public File getFile() {
+       return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
     public String getAlbum() {
         return album;
     }
