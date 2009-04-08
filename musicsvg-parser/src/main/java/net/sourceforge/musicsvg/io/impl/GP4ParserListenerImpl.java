@@ -9,6 +9,7 @@
 package net.sourceforge.musicsvg.io.impl;
 
 import com.google.inject.Inject;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,7 +103,7 @@ public class GP4ParserListenerImpl implements GP4ParserListener {
         this.songDAO = songDAO;
     }
 
-    public void open() {
+    public void open(File file) {
         
     }
     

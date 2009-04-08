@@ -9,13 +9,15 @@
  */
 package net.sourceforge.musicsvg.io;
 
+import java.io.File;
+
 /**
  *
  * @author Dav
  */
 public interface GP4ParserListener {
 
-    void open();
+    void open(File file);
     
     void close();
 

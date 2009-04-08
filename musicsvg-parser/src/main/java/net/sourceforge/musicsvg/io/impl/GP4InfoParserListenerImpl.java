@@ -5,6 +5,7 @@
 package net.sourceforge.musicsvg.io.impl;
 
 import com.google.inject.Inject;
+import java.io.File;
 import net.sourceforge.musicsvg.io.GP4ParserListener;
 import net.sourceforge.musicsvg.model.Song;
 import net.sourceforge.musicsvg.model.dao.SongDAO;
@@ -29,8 +30,9 @@ public class GP4InfoParserListenerImpl implements GP4ParserListener {
         songFactory = factory;
     }
 
-    public void open() {
+    public void open(File file) {
         currentSong = songFactory.createSong();
+        currentSong.setFile(file);
     }
     
     public void close() {

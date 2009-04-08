@@ -54,7 +54,7 @@ public class GP4Parser implements Parser {
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
-        listener.open();
+        listener.open(file);
         readFileHeaders();
         readLyrics();
         readOtherInformations();
