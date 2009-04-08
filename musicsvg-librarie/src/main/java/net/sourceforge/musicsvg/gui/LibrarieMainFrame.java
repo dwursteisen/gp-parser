@@ -5,9 +5,9 @@
 
 package net.sourceforge.musicsvg.gui;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 
 /**
  *
@@ -16,13 +16,13 @@ import javax.swing.JPanel;
 public class LibrarieMainFrame extends JFrame {
 
     JMenuBar menu;
-    JPanel mainPanel;
+    JComponent mainPanel;
 
-    public JPanel getMainPanel() {
+    public JComponent getMainPanel() {
         return mainPanel;
     }
 
-    public void setMainPanel(JPanel mainPanel) {
+    public void setMainPanel(JComponent mainPanel) {
         this.mainPanel = mainPanel;
         this.add(mainPanel);
     }
@@ -33,7 +33,7 @@ public class LibrarieMainFrame extends JFrame {
 
     public void setMenu(JMenuBar menu) {
         this.menu = menu;
-        this.add(menu);
+        setJMenuBar(menu);
     }
 
     

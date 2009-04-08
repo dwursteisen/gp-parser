@@ -3,15 +3,23 @@
     "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 
 <beans>
-
+    <!-- swing -->
     <bean id="frame" class="net.sourceforge.musicsvg.gui.LibrarieMainFrame">
+        <property name="mainPanel" ref="mainPanel"/>
         <property name="menu" ref="menu"/>
+        
     </bean>
     
     <bean id="menu" class="net.sourceforge.musicsvg.gui.LibrarieMenu">
         <property name="addDirectoryListener" ref="addDirectoryListener"/>
     </bean>
+    <bean id="mainPanel" class="net.sourceforge.musicsvg.gui.LibrarieMainPanel">
+        <property name="rightPanel" ref="tablatureTables"/>
+    </bean>
 
+    <bean id="tablatureTables" class="net.sourceforge.musicsvg.gui.LibrarieTable"/>
+        
+    <!-- listeners -->
     <bean id="addDirectoryListener" class="net.sourceforge.musicsvg.gui.listener.AddDirectoryListener">
         <property name="parent" ref="menu"/>
         <property name="controller" ref="controller"/>
@@ -20,6 +28,11 @@
 
     <bean id="controller" class="net.sourceforge.musicsvg.main.LibrarieController">
         <property name="songDao" ref="songDao"/>
+        <property name="addLibrarieListeners">
+            <list>
+                <ref bean="tablatureTables"/>
+            </list>
+        </property>
     </bean>
     
     <bean id="gp4InfoParserListener" class="net.sourceforge.musicsvg.io.impl.GP4InfoParserListenerImpl">

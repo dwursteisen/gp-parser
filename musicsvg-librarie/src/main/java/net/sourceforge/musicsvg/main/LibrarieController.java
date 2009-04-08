@@ -6,6 +6,7 @@
 package net.sourceforge.musicsvg.main;
 
 import java.util.List;
+import net.sourceforge.musicsvg.gui.listener.PerformAddDirectoryListener;
 import net.sourceforge.musicsvg.model.Song;
 import net.sourceforge.musicsvg.model.dao.SongDAO;
 
@@ -16,7 +17,13 @@ import net.sourceforge.musicsvg.model.dao.SongDAO;
 public class LibrarieController {
 
     SongDAO songDao;
+    List<PerformAddDirectoryListener> addLibrarieListeners;
 
+    public void setAddLibrarieListeners(List<PerformAddDirectoryListener> addLibrarieListeners) {
+        this.addLibrarieListeners = addLibrarieListeners;
+    }
+
+    
     public void setSongDao(SongDAO songDao) {
         this.songDao = songDao;
     }
@@ -27,9 +34,10 @@ public class LibrarieController {
 
     public void endAddDirectory() {
         List<Song> songs = songDao.findAll();
-        for(Song s : songs) {
-            System.err.println(s.getTitle());
-            System.err.println(s.getArtist());
+        if(addLibrarieListeners != null) {
+            for(PerformAddDirectoryListener listener : addLibrarieListeners) {
+                listener.publish(songs);
+            }
         }
     }
 
