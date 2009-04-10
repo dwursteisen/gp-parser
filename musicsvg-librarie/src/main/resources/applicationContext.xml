@@ -33,8 +33,12 @@
         <constructor-arg>
             <ref bean="statusBar"/>
         </constructor-arg>
+        <constructor-arg>
+            <ref bean="songTableModel"/>
+        </constructor-arg>
     </bean>
-
+    <bean id="songTableModel" class="net.sourceforge.musicsvg.gui.SongTableModel"/>
+    
     <bean id="tablatureTables" class="net.sourceforge.musicsvg.gui.LibrarieTable"/>
         
     <!-- listeners -->
@@ -48,7 +52,7 @@
         <property name="songDao" ref="songDao"/>
         <property name="addLibrarieListeners">
             <list>
-                <ref bean="mainPanel"/>
+                <ref bean="songTableModel"/>
                 <ref bean="statusBar"/>
             </list>
         </property>
