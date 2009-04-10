@@ -22,4 +22,8 @@ public class SongDAOMapImpl extends PersistantDAOMapImpl<Song> implements SongDA
         }
         return null;
     }
+
+    public Song findByDigest(byte[] digest) {
+        return null;
+    }
 }

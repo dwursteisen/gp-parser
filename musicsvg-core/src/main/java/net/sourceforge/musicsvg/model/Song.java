@@ -26,6 +26,7 @@ public class Song implements PersistantObject, Serializable {
     private String subTitle;
     private String artist;
     private String album;
+    private byte[] digest;
 
     @Transient
     private List<Track> tracks;
@@ -88,6 +89,14 @@ public class Song implements PersistantObject, Serializable {
 
     public void setTracks(List<Track> tracks) {
         this.tracks = tracks;
+    }
+
+    public byte[] getDigest() {
+        return digest;
+    }
+
+    public void setDigest(byte[] digest) {
+        this.digest = digest;
     }
 
 }

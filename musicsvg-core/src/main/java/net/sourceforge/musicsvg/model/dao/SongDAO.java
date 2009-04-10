@@ -13,4 +13,5 @@ import net.sourceforge.musicsvg.model.Song;
  */
 public interface SongDAO extends PersistantDAO<Song>{
     Song getLastSong();
+    Song findByDigest(byte[] digest);
 }
