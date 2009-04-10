@@ -31,13 +31,15 @@
     
     <bean id="mainPanel" class="net.sourceforge.musicsvg.gui.LibrarieMainPanel">
         <constructor-arg>
-            <ref bean="statusBar"/>
+            <ref bean="searchPanel"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="songTableModel"/>
+            <ref bean="statusBar"/>
         </constructor-arg>
+        <property name="tableModel" ref="songTableModel"/>
     </bean>
     <bean id="songTableModel" class="net.sourceforge.musicsvg.gui.SongTableModel"/>
+    <bean id="searchPanel" class="net.sourceforge.musicsvg.gui.SearchPanel"/>
     
     <bean id="tablatureTables" class="net.sourceforge.musicsvg.gui.LibrarieTable"/>
         
