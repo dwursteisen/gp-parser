@@ -63,7 +63,6 @@
         <property name="listener" ref="gp4InfoParserListener"/>
     </bean>
 
-    <bean id="songDao" class="net.sourceforge.musicsvg.model.dao.impl.SongDAOMapImpl"/>
     <bean id="songFactory" class="net.sourceforge.musicsvg.model.factory.impl.SongFactoryImpl"/>
     
 </beans>
