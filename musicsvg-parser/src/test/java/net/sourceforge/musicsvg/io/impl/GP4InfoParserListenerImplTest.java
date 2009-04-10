@@ -5,6 +5,7 @@
 
 package net.sourceforge.musicsvg.io.impl;
 
+import net.sourceforge.musicsvg.io.Hasher;
 import net.sourceforge.musicsvg.model.Song;
 import net.sourceforge.musicsvg.model.dao.SongDAO;
 import net.sourceforge.musicsvg.model.dao.impl.SongDAOMapImpl;
@@ -28,6 +29,7 @@ public class GP4InfoParserListenerImplTest {
         dao = new SongDAOMapImpl();
         parser.setSongDAO(dao);
         parser.setSongFactory(new SongFactoryImpl());
+        parser.setHash(new Hasher());
 
     }
     
@@ -37,7 +39,7 @@ public class GP4InfoParserListenerImplTest {
         String album = "album";
         String title = "title";
 
-        parser.open();
+        parser.open(null);
         parser.readAlbum(album);
         parser.readArtist(artist);
         parser.readTitle(title);

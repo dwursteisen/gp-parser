@@ -29,7 +29,7 @@ public class MidiParser implements Parser {
 
         try {
             Pattern pattern = player.loadMidi(file);
-            jfugueParser.readMusicString(pattern.getMusicString());
+//            jfugueParser.readMusicString(pattern.getMusicString());
         } catch (InvalidMidiDataException ex) {
             throw new IOException("Error during the opening of " + file.getName(), ex);
         }
