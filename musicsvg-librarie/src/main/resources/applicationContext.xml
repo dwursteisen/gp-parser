@@ -57,7 +57,10 @@
     <bean id="gp4InfoParserListener" class="net.sourceforge.musicsvg.io.impl.GP4InfoParserListenerImpl">
         <property name="songDAO" ref="songDao"/>
         <property name="songFactory" ref="songFactory"/>
+        <property name="hash" ref="hasher"/>
     </bean>
+
+    <bean id="hasher" class="net.sourceforge.musicsvg.io.Hasher"/>
 
     <bean id="gp4InfoParser" class="net.sourceforge.musicsvg.io.GP4Parser">
         <property name="listener" ref="gp4InfoParserListener"/>
