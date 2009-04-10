@@ -39,7 +39,13 @@
         <property name="tableModel" ref="songTableModel"/>
     </bean>
     <bean id="songTableModel" class="net.sourceforge.musicsvg.gui.SongTableModel"/>
-    <bean id="searchPanel" class="net.sourceforge.musicsvg.gui.SearchPanel"/>
+    <bean id="searchPanel" class="net.sourceforge.musicsvg.gui.SearchPanel">
+        <property name="actionListeners">
+            <list>
+                <ref bean="controller"/>
+            </list>
+        </property>
+    </bean>
     
     <bean id="tablatureTables" class="net.sourceforge.musicsvg.gui.LibrarieTable"/>
         

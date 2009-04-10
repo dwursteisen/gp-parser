@@ -5,10 +5,14 @@
 
 package net.sourceforge.musicsvg.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import net.sourceforge.musicsvg.gui.listener.FilterListener;
 
 /**
  *
@@ -29,5 +33,16 @@ public class SearchPanel extends JPanel {
         add(searchButton);
     }
 
+    public void setActionListeners(final List<FilterListener> listeners) {
+        searchButton.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                for(FilterListener l : listeners) {
+                    l.filter(searchField.getText());
+                }
+            }
+        });
+        
+    }
 
 }
