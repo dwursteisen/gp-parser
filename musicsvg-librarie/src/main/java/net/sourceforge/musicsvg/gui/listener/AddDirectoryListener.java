@@ -41,6 +41,7 @@ public class AddDirectoryListener implements ActionListener {
     
 
     public void actionPerformed(ActionEvent e) {
+        LOG.debug("addDirectoryListener --> Action Performed ! ");
         controller.beginAddDirectory();
         JDirectoryChooser chooser = new JDirectoryChooser();
 

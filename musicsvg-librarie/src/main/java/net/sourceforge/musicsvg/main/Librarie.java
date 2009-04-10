@@ -34,12 +34,17 @@ public class Librarie {
 
     public static void main(String args[]) {
         // Librarie l = new Librarie();
+        try {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
         JFrame frame = (JFrame) context.getBean("frame");
         frame.setVisible(true);
         frame.setSize(800, 800);
         frame.setTitle("Librarie...");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        } catch(Throwable e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
         
 
     }

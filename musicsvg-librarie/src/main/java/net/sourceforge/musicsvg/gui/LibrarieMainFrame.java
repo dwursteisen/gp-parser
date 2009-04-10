@@ -18,22 +18,11 @@ public class LibrarieMainFrame extends JFrame {
     JMenuBar menu;
     JComponent mainPanel;
 
-    public JComponent getMainPanel() {
-        return mainPanel;
-    }
-
-    public void setMainPanel(JComponent mainPanel) {
-        this.mainPanel = mainPanel;
-        this.add(mainPanel);
-    }
-
-    public JMenuBar getMenu() {
-        return menu;
-    }
-
-    public void setMenu(JMenuBar menu) {
+    public LibrarieMainFrame(JMenuBar menu, JComponent panel) {
         this.menu = menu;
+        mainPanel = panel;
         setJMenuBar(menu);
+        add(mainPanel);
     }
 
     
