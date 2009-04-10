@@ -20,11 +20,16 @@ public class Librarie {
                         "classpath:dao-context.xml",
                         "classpath:persistant-context.xml",
                         "classpath:applicationContext.xml"});
+
+            LibrarieController controller = (LibrarieController) context.getBean("controller");
+            controller.endAddDirectory();
+            
             JFrame frame = (JFrame) context.getBean("frame");
             frame.setVisible(true);
             frame.setSize(800, 800);
             frame.setTitle("Librarie...");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         } catch (Throwable e) {
             e.printStackTrace();
             System.exit(1);
