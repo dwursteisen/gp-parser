@@ -6,19 +6,30 @@
 package net.sourceforge.musicsvg.model;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /**
  *
  * @author Dav
  */
-public class Song implements PersistantObject {
+@Entity
+public class Song implements PersistantObject, Serializable {
+
+    @Id @GeneratedValue
     private Integer id;
     private String title;
     private String subTitle;
     private String artist;
     private String album;
+
+    @Transient
     private List<Track> tracks;
+    
     private File file;
 
     @Override
