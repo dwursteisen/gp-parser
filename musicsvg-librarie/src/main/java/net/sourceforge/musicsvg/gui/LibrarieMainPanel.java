@@ -5,8 +5,12 @@
 package net.sourceforge.musicsvg.gui;
 
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import net.sourceforge.musicsvg.gui.listener.PerformAddDirectoryListener;
@@ -22,15 +26,22 @@ public class LibrarieMainPanel extends JPanel implements PerformAddDirectoryList
     private JTable jTable;
     private JComponent statusBar;
     private static final Logger LOG = Logger.getLogger(LibrarieMainPanel.class);
+    private JScrollPane jScrollPane2;
 
     public LibrarieMainPanel(JComponent statusBar) {
         this.statusBar = statusBar;
+        jScrollPane2 = new javax.swing.JScrollPane();
         jTable = new javax.swing.JTable();
         jTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{{null, null, null, null}},
                 new String[]{"Nom du fichier", "Titre", "Artiste", "Chemin complet"}));
 
-        add(jTable);
+        jScrollPane2.setViewportView(jTable);
+
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        add(Box.createHorizontalGlue());
+        add(jScrollPane2);
         add(statusBar);
     }
 
