@@ -33,7 +33,7 @@ public class SearchPanel extends JPanel {
         add(searchButton);
     }
 
-    public void setActionListeners(final List<FilterListener> listeners) {
+    public void setOnFilterListeners(final List<FilterListener> listeners) {
         searchButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {

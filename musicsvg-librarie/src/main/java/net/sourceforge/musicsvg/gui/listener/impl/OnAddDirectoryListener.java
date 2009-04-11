@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.sourceforge.musicsvg.gui.listener;
+package net.sourceforge.musicsvg.gui.listener.impl;
 
 import com.l2fprod.common.swing.JDirectoryChooser;
 import java.awt.Component;
@@ -19,16 +19,11 @@ import org.apache.log4j.Logger;
  *
  * @author Dav
  */
-public class AddDirectoryListener implements ActionListener {
-    private static final Logger LOG = Logger.getLogger(AddDirectoryListener.class);
+public class OnAddDirectoryListener implements ActionListener {
+    private static final Logger LOG = Logger.getLogger(OnAddDirectoryListener.class);
     
-    private Component parent;
     private Parser parser;
     private LibrarieController controller;
-    
-    public void setParent(Component parent) {
-        this.parent = parent;
-    }
 
     public void setParser(Parser parser) {
         this.parser = parser;
@@ -45,7 +40,7 @@ public class AddDirectoryListener implements ActionListener {
         controller.beginAddDirectory();
         JDirectoryChooser chooser = new JDirectoryChooser();
 
-        chooser.showOpenDialog(parent);
+        chooser.showOpenDialog((Component) e.getSource());
         File files = chooser.getSelectedFile();
         FilenameFilter filter = new FilenameFilter() {
 

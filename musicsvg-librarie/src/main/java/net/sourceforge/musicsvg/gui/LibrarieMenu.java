@@ -22,10 +22,12 @@ public class LibrarieMenu extends JMenuBar {
     private static final Logger LOG = Logger.getLogger(LibrarieMenu.class);
     JMenu file;
     JMenuItem addDirectory;
+    JMenuItem configuration;
     JMenuItem quit;
     public LibrarieMenu() {
         super();
         addDirectory = new JMenuItem("Ajout d'un repertoire...");
+        configuration = new JMenuItem("Configuration...");
         quit = new JMenuItem("Quitter");
 
         quit.addActionListener(new ActionListener() {
@@ -38,14 +40,23 @@ public class LibrarieMenu extends JMenuBar {
         file = new JMenu("Fichier");
         file.add(addDirectory);
         file.add(new Separator());
+        file.add(configuration);
+        file.add(new Separator());
         file.add(quit);
         add(file);
 
     }
 
-    public void setAddDirectoryListeners(List<ActionListener> listeners) {
+    public void setOnAddDirectory(List<ActionListener> listeners) {
         for (ActionListener listener : listeners) {
             addDirectory.addActionListener(listener);
+        }
+    }
+
+
+    public void setOnConfiguration(List<ActionListener> listeners) {
+        for (ActionListener listener : listeners) {
+            configuration.addActionListener(listener);
         }
     }
 }

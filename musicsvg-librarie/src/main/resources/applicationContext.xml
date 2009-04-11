@@ -3,12 +3,7 @@
     "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 
 <beans>
-    <bean id="frame_tmp" class="net.sourceforge.musicsvg.gui.spike.MainFrame">
-        <property name="addDirectoryListener" ref="addDirectoryListener"/>
-    </bean>
-
-
-
+  
     <!-- swing -->
     <bean id="frame" class="net.sourceforge.musicsvg.gui.LibrarieMainFrame">
         <constructor-arg>
@@ -20,9 +15,14 @@
     </bean>
     
     <bean id="menu" class="net.sourceforge.musicsvg.gui.LibrarieMenu">
-        <property name="addDirectoryListeners">
+        <property name="onAddDirectory">
             <list>
-                <ref bean="addDirectoryListener"/>
+                <ref bean="onAddDirectoryListener"/>
+            </list>
+        </property>
+        <property name="onConfiguration">
+            <list>
+                <ref bean="onConfigurationListener"/>
             </list>
         </property>
     </bean>
@@ -40,7 +40,7 @@
     </bean>
     <bean id="songTableModel" class="net.sourceforge.musicsvg.gui.SongTableModel"/>
     <bean id="searchPanel" class="net.sourceforge.musicsvg.gui.SearchPanel">
-        <property name="actionListeners">
+        <property name="onFilterListeners">
             <list>
                 <ref bean="controller"/>
             </list>
@@ -50,12 +50,13 @@
     <bean id="tablatureTables" class="net.sourceforge.musicsvg.gui.LibrarieTable"/>
         
     <!-- listeners -->
-    <bean id="addDirectoryListener" class="net.sourceforge.musicsvg.gui.listener.AddDirectoryListener">
-        <property name="parent" ref="frame"/>
+    <bean id="onAddDirectoryListener" class="net.sourceforge.musicsvg.gui.listener.impl.OnAddDirectoryListener">
         <property name="controller" ref="controller"/>
         <property name="parser" ref="gp4InfoParser"/>
     </bean>
 
+    <bean id="onConfigurationListener" class="net.sourceforge.musicsvg.gui.listener.impl.OnConfigurationListener"/>
+    
     <bean id="controller" class="net.sourceforge.musicsvg.main.LibrarieController">
         <property name="songDao" ref="songDao"/>
         <property name="addLibrarieListeners">
