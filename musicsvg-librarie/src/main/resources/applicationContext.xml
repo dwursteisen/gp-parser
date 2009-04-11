@@ -13,6 +13,15 @@
             <ref bean="mainPanel"/>
         </constructor-arg>
     </bean>
+
+    <bean id="configurationFrame" class="net.sourceforge.musicsvg.gui.ConfigurationFrame">
+        <property name="onSaveConfigurationListeners">
+            <list>
+                <ref bean="controller"/>
+                <ref bean="statusBar"/>
+            </list>
+        </property>
+    </bean>
     
     <bean id="menu" class="net.sourceforge.musicsvg.gui.LibrarieMenu">
         <property name="onAddDirectory">
@@ -37,12 +46,19 @@
             <ref bean="statusBar"/>
         </constructor-arg>
         <property name="tableModel" ref="songTableModel"/>
+        <property name="onDoubleClickOnSongListeners">
+            <list>
+                <ref bean="controller"/>
+                <ref bean="statusBar"/>
+            </list>
+        </property>
     </bean>
     <bean id="songTableModel" class="net.sourceforge.musicsvg.gui.SongTableModel"/>
     <bean id="searchPanel" class="net.sourceforge.musicsvg.gui.SearchPanel">
         <property name="onFilterListeners">
             <list>
                 <ref bean="controller"/>
+                <ref bean="statusBar"/>
             </list>
         </property>
     </bean>
@@ -55,10 +71,13 @@
         <property name="parser" ref="gp4InfoParser"/>
     </bean>
 
-    <bean id="onConfigurationListener" class="net.sourceforge.musicsvg.gui.listener.impl.OnConfigurationListener"/>
+    <bean id="onConfigurationListener" class="net.sourceforge.musicsvg.gui.listener.impl.OnConfigurationListener">
+        <property name="frame" ref="configurationFrame"/>
+    </bean>
     
     <bean id="controller" class="net.sourceforge.musicsvg.main.LibrarieController">
         <property name="songDao" ref="songDao"/>
+        <property name="userConfigurationDao" ref="userConfigurationDao"/>
         <property name="addLibrarieListeners">
             <list>
                 <ref bean="songTableModel"/>

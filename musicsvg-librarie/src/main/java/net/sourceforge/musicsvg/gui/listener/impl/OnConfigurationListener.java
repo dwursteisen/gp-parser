@@ -7,6 +7,7 @@ package net.sourceforge.musicsvg.gui.listener.impl;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JFrame;
 
 /**
  *
@@ -14,8 +15,15 @@ import java.awt.event.ActionListener;
  */
 public class OnConfigurationListener implements ActionListener{
 
+    JFrame frame;
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
+    }
+
+
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        frame.setVisible(true);
     }
 
 }
