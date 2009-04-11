@@ -123,48 +123,14 @@
             <groupId>org.codehaus.mevenide</groupId>
             <artifactId>netbeans-run-plugin</artifactId>
             <version>1.1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>batik</groupId>
-            <artifactId>batik-svg-dom</artifactId>
-            <version>1.6</version>
+            <scope>runtime</scope>
         </dependency>
          <dependency>
             <groupId>com.l2fprod</groupId>
             <artifactId>directory-chooser</artifactId>
             <version>7.3</version>
         </dependency>
-        <dependency>
-            <groupId>batik</groupId>
-            <artifactId>batik-util</artifactId>
-            <version>1.6-1</version>
-        </dependency>
-        <dependency>
-            <groupId>batik</groupId>
-            <artifactId>batik-swing</artifactId>
-            <version>1.6-1</version>
-        </dependency>
-        <dependency>
-            <groupId>batik</groupId>
-            <artifactId>batik-dom</artifactId>
-            <version>1.6-1</version>
-        </dependency>
-        <dependency>
-            <groupId>batik</groupId>
-            <artifactId>batik-parser</artifactId>
-            <version>1.6-1</version>
-        </dependency>
-        <dependency>
-            <groupId>code.google.com</groupId>
-            <artifactId>abc4j</artifactId>
-            <version>0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>jfugue</groupId>
-            <artifactId>jfugue</artifactId>
-            <version>4.0</version>
-        </dependency>
-        <dependency>
+       <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>5.1</version>
@@ -186,11 +152,6 @@
         <dependency>
             <groupId>musicsvg.sourceforge.org</groupId>
             <artifactId>musicsvg-parser</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>musicsvg.sourceforge.org</groupId>
-            <artifactId>musicsvg-utils</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
