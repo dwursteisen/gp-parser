@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import net.sourceforge.musicsvg.gui.listener.LoadConfigurationListener;
 import net.sourceforge.musicsvg.gui.listener.SaveConfigurationListener;
 import net.sourceforge.musicsvg.model.UserConfiguration;
 
@@ -21,7 +22,7 @@ import net.sourceforge.musicsvg.model.UserConfiguration;
  *
  * @author Dav
  */
-public class ConfigurationFrame extends JFrame {
+public class ConfigurationFrame extends JFrame implements LoadConfigurationListener {
     private final JButton buttonCancel;
     private final JButton buttonOk;
     private InputFileBrowser path;
@@ -49,7 +50,7 @@ public class ConfigurationFrame extends JFrame {
         mainPanel.add(commandPanel);
 
         setTitle("Configuration");
-        setSize(450, 100);
+        setSize(450, 150);
         add(mainPanel);
 
         buttonCancel.addActionListener(new CloseActionListenerImpl(this));
@@ -65,6 +66,10 @@ public class ConfigurationFrame extends JFrame {
         config.setGuitarProFile(path.getFile());
         config.setPowerTabFile(null);
         return config;
+    }
+
+    public void loadConfiguration(UserConfiguration userConfig) {
+        path.setFile(userConfig.getGuitarProFile());
     }
 
     private class CloseActionListenerImpl implements ActionListener {

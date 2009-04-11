@@ -23,10 +23,11 @@ public class Librarie {
 
             LibrarieController controller = (LibrarieController) context.getBean("controller");
             controller.endAddDirectory();
+            controller.loadConfiguration();
             
             JFrame frame = (JFrame) context.getBean("frame");
             frame.setVisible(true);
-            frame.setSize(800, 800);
+            frame.setSize(800, 600);
             frame.setTitle("Librarie...");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

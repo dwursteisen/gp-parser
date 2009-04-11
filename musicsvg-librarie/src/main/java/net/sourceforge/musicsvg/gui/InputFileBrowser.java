@@ -49,7 +49,7 @@ public class InputFileBrowser extends JPanel{
         return this.file;
     }
 
-    private void setFile(File file) {
+    public void setFile(File file) {
         this.file = file;
         if(file != null) {
             path.setText(file.getAbsolutePath());

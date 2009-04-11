@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sourceforge.musicsvg.gui.listener.FilterListener;
 import net.sourceforge.musicsvg.gui.listener.LaunchSongListener;
+import net.sourceforge.musicsvg.gui.listener.LoadConfigurationListener;
 import net.sourceforge.musicsvg.gui.listener.PerformAddDirectoryListener;
 import net.sourceforge.musicsvg.gui.listener.SaveConfigurationListener;
 import net.sourceforge.musicsvg.model.Song;
@@ -28,9 +29,14 @@ public class LibrarieController implements FilterListener, SaveConfigurationList
     SongDAO songDao;
     UserConfigurationDAO userConfigurationDao;
     List<PerformAddDirectoryListener> addLibrarieListeners;
+    List<LoadConfigurationListener> loadConfigurationListeners;
 
     public void setAddLibrarieListeners(List<PerformAddDirectoryListener> addLibrarieListeners) {
         this.addLibrarieListeners = addLibrarieListeners;
+    }
+
+    public void setLoadConfigurationListeners(List<LoadConfigurationListener> loadConfigurationListeners) {
+        this.loadConfigurationListeners = loadConfigurationListeners;
     }
 
     public void setSongDao(SongDAO songDao) {
@@ -48,6 +54,17 @@ public class LibrarieController implements FilterListener, SaveConfigurationList
     public void endAddDirectory() {
         List<Song> songs = songDao.findAll();
         firePublishSong(songs);
+    }
+
+    public void loadConfiguration() {
+        LOG.info("Chargement configuration...");
+        UserConfiguration config = userConfigurationDao.findById(0);
+        if(config == null) {
+            config = new UserConfiguration();
+        }
+        for(LoadConfigurationListener l : loadConfigurationListeners) {
+            l.loadConfiguration(config);
+        }
     }
 
     public void filter(String filterText) {

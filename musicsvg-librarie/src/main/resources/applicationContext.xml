@@ -3,7 +3,16 @@
     "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 
 <beans>
-  
+
+
+    <bean name="propertyPlaceholder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <value>classpath:datasource.properties</value>
+        </property>
+    </bean>
+
+
+
     <!-- swing -->
     <bean id="frame" class="net.sourceforge.musicsvg.gui.LibrarieMainFrame">
         <constructor-arg>
@@ -82,6 +91,12 @@
             <list>
                 <ref bean="songTableModel"/>
                 <ref bean="statusBar"/>
+            </list>
+        </property>
+
+        <property name="loadConfigurationListeners">
+            <list>
+                <ref bean="configurationFrame"/>
             </list>
         </property>
     </bean>
