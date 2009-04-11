@@ -7,14 +7,13 @@ package net.sourceforge.musicsvg.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import net.sourceforge.musicsvg.gui.listener.SaveConfigurationListener;
 import net.sourceforge.musicsvg.model.UserConfiguration;
 
@@ -25,20 +24,14 @@ import net.sourceforge.musicsvg.model.UserConfiguration;
 public class ConfigurationFrame extends JFrame {
     private final JButton buttonCancel;
     private final JButton buttonOk;
-    private JTextField path;
+    private InputFileBrowser path;
 
     public ConfigurationFrame() {
+        path = new InputFileBrowser("Guitar Pro : ");
         
-        JLabel label = new JLabel("Guitar Pro :");
-        path = new JTextField(40);
-        JButton browser = new JButton("Parcourir...");
-
         JPanel gpPanel = new JPanel();
-        gpPanel.setLayout(new BoxLayout(gpPanel, BoxLayout.X_AXIS));
-        gpPanel.add(label);
         gpPanel.add(path);
-        gpPanel.add(browser);
-
+        
         buttonOk = new JButton("OK");
         buttonCancel = new JButton("Annuler");
         
@@ -49,33 +42,58 @@ public class ConfigurationFrame extends JFrame {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        mainPanel.add(Box.createHorizontalGlue());
+        
         mainPanel.add(gpPanel);
         mainPanel.add(commandPanel);
 
         setTitle("Configuration");
-        setSize(200, 200);
+        setSize(450, 100);
         add(mainPanel);
 
+        buttonCancel.addActionListener(new CloseActionListenerImpl(this));
+        buttonOk.addActionListener(new CloseActionListenerImpl(this));
     }
 
     public void setOnSaveConfigurationListeners(final List<SaveConfigurationListener> listeners) {
-        buttonOk.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                for(SaveConfigurationListener l : listeners) {
-                    l.save(getUserConfigurationFromForm());
-                }
-            }
-
-
-        });
+        buttonOk.addActionListener(new ActionListenerImpl(listeners));
     }
 
     private UserConfiguration getUserConfigurationFromForm() {
         UserConfiguration config = new UserConfiguration();
-        config.setGuitarProFile(new File(path.getText()));
+        config.setGuitarProFile(path.getFile());
         config.setPowerTabFile(null);
         return config;
+    }
+
+    private class CloseActionListenerImpl implements ActionListener {
+        JFrame parent;
+
+        public CloseActionListenerImpl(JFrame parent) {
+            this.parent = parent;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            this.parent.setVisible(false);
+        }
+
+    }
+    private class ActionListenerImpl implements ActionListener {
+
+        private final List<SaveConfigurationListener> listeners;
+        
+
+        public ActionListenerImpl(List<SaveConfigurationListener> listeners) {
+        
+            this.listeners = listeners;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            for (SaveConfigurationListener l : listeners) {
+                l.save(getUserConfigurationFromForm());
+            }
+        }
     }
 
 }
