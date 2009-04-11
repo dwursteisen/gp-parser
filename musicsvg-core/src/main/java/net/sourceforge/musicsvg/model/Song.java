@@ -32,7 +32,8 @@ public class Song implements PersistantObject, Serializable {
     private List<Track> tracks;
     
     private File file;
-
+    private TablatureType tablatureType;
+    
     @Override
     public Integer getId() {
         return this.id;
@@ -99,4 +100,13 @@ public class Song implements PersistantObject, Serializable {
         this.digest = digest;
     }
 
+    public TablatureType getTablatureType() {
+        return tablatureType;
+    }
+
+    public void setTablatureType(TablatureType tablatureType) {
+        this.tablatureType = tablatureType;
+    }
+
+    
 }

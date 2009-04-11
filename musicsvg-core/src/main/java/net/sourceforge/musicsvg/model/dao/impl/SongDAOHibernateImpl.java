@@ -14,7 +14,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author Dav
  */
-public class SongDAOHibernateImpl  extends PersistantDAOHibernateImpl<Song> implements SongDAO{
+public class SongDAOHibernateImpl extends PersistantDAOHibernateImpl<Song> implements SongDAO{
 
     public Song getLastSong() {
         throw new UnsupportedOperationException("Not supported yet.");

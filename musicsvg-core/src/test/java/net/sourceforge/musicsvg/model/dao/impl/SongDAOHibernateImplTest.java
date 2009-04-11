@@ -4,8 +4,8 @@
  */
 package net.sourceforge.musicsvg.model.dao.impl;
 
-import java.util.List;
 import net.sourceforge.musicsvg.model.Song;
+import net.sourceforge.musicsvg.model.TablatureType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
@@ -31,10 +31,12 @@ public class SongDAOHibernateImplTest extends AbstractTransactionalTestNGSpringC
     @Test
     public void testFindByDigest() {
         Song s = new Song();
+        s.setTablatureType(TablatureType.POWERTAB);
         final String digest = "blablablabla";
         s.setDigest(digest.getBytes());
         songDao.saveOrUpdate(s);
         Song song = songDao.findByDigest(digest.getBytes());
         Assert.assertEquals(song.getDigest(), s.getDigest());
+        Assert.assertEquals(song.getTablatureType(), TablatureType.POWERTAB);
     }
 }

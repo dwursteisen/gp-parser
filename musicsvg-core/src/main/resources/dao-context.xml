@@ -5,5 +5,9 @@
 <beans>
   <bean class="net.sourceforge.musicsvg.model.dao.impl.SongDAOHibernateImpl" id="songDao">
       <property name="hibernateTemplate" ref="hibernateTemplate"/>
-      </bean>
+  </bean>
+
+  <bean class="net.sourceforge.musicsvg.model.dao.impl.UserConfigurationDAOHibernateImpl" id="userConfigurationDao">
+      <property name="hibernateTemplate" ref="hibernateTemplate"/>
+  </bean>
 </beans>
