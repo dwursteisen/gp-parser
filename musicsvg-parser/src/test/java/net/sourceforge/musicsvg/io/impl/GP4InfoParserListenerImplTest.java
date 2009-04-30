@@ -5,6 +5,7 @@
 
 package net.sourceforge.musicsvg.io.impl;
 
+import net.sourceforge.musicsvg.io.gp.listeners.GP4InfoParserListenerImpl;
 import net.sourceforge.musicsvg.io.Hasher;
 import net.sourceforge.musicsvg.model.Song;
 import net.sourceforge.musicsvg.model.dao.SongDAO;

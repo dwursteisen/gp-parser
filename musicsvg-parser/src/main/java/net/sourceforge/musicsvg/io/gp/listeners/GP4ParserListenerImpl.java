@@ -6,8 +6,9 @@
  * See the enclosed file COPYING for license information (LGPL). If you
  * did not receive this file, see http://www.fsf.org/copyleft/lgpl.html.
  */
-package net.sourceforge.musicsvg.io.impl;
+package net.sourceforge.musicsvg.io.gp.listeners;
 
+import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
 import com.google.inject.Inject;
 import java.io.File;
 import java.util.HashMap;

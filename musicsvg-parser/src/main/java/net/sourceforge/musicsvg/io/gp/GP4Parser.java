@@ -6,12 +6,11 @@
  * See the enclosed file COPYING for license information (LGPL). If you
  * did not receive this file, see http://www.fsf.org/copyleft/lgpl.html.
  */
-package net.sourceforge.musicsvg.io;
+package net.sourceforge.musicsvg.io.gp;
 
+import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
 import com.google.inject.Inject;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -21,39 +20,23 @@ import java.io.InputStream;
  * 
  * @see http://dguitar.sourceforge.net/GP4format.html
  */
-public class GP4Parser implements Parser {
-    private static final int BITMASK_1 = 0x01;
-    private static final int BITMASK_2 = 0x02;
-    private static final int BITMASK_3 = 0x04;
-    private static final int BITMASK_4 = 0x08;
-    private static final int BITMASK_5 = 0x10;
-    private static final int BITMASK_6 = 0x20;
-    private static final int BITMASK_7 = 0x40;
-    private static final int BITMASK_8 = 0x80;
-    private static final int GP4_NUMBER_OF_STRING = 7;
-
-    GP4ParserListener listener = null;
-    InputStream is = null;
+public class GP4Parser extends AbstractGPXParser {
+   
+    protected static final int GP4_NUMBER_OF_STRING = 7;
     private int numberOfTracks;
     private int numberOfMeasures;
 
+    @Override
     public void close() {
+        super.close();
         if(listener != null) {
             listener.close();
         }
     }
 
-    @Inject
-    public void setListener(GP4ParserListener listener) {
-        this.listener = listener;
-    }
-
+    @Override
     public void openFile(File file) throws IOException {
-        try {
-            this.is = new FileInputStream(file);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        }
+        super.openFile(file);
         listener.open(file);
         readFileHeaders();
         readLyrics();
@@ -741,70 +724,5 @@ public class GP4Parser implements Parser {
         return (String.valueOf(nameC, 0, max));
     }
 
-    private byte readByte() throws IOException {
-        return (byte) this.is.read();
-    }
-
-    private int readInt() throws IOException {
-        int integer = 0;
-        byte[] b = {0, 0, 0, 0};
-
-        this.is.read(b);
-        integer = ((b[3] & 0xff) << 24) | ((b[BITMASK_2] & 0xff) << BITMASK_5) | ((b[BITMASK_1] & 0xff) << BITMASK_4) | (b[0] & 0xff);
-
-        return integer;
-    }
-
-    private boolean readBoolean() throws IOException {
-        return (this.is.read() == BITMASK_1);
-    }
-
-    private String readStringByte(int expectedLength) throws IOException {
-        byte[] bytes;
-        int realLength = readUnsignedByte();
-
-        if (expectedLength != 0) {
-            bytes = new byte[expectedLength];
-        } else {
-            bytes = new byte[realLength];
-        }
-        this.is.read(bytes);
-
-        realLength = (realLength >= 0) ? realLength : expectedLength;
-        return new String(bytes, 0, realLength);
-    }
-
-    private String readStringInteger() throws IOException {
-        byte[] b;
-        String str;
-        int length = readInt();
-
-        b = new byte[length];
-        this.is.read(b);
-
-        str = new String(b);
-        return str;
-    }
-
-    private String readStringIntegerPlusOne() throws IOException {
-        byte[] b;
-        String str;
-        int lengthPlusOne = readInt();
-        int length = lengthPlusOne - 1;
-
-        if (length != this.is.read()) {
-            throw new IOException();
-        }
-
-        b = new byte[length];
-        this.is.read(b);
-
-        str = new String(b);
-        return str;
-    }
-
-    private int readUnsignedByte() throws IOException {
-        return this.is.read();
-    }
 
 }

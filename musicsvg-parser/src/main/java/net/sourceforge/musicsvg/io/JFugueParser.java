@@ -7,6 +7,7 @@ package net.sourceforge.musicsvg.io;
 
 import java.io.File;
 import java.io.IOException;
+import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
 
 /**
  *

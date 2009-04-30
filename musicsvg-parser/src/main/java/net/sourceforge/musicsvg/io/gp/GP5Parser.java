@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package net.sourceforge.musicsvg.io;
+package net.sourceforge.musicsvg.io.gp;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,14 +12,17 @@ import java.io.IOException;
  *
  * @author Dav
  */
-public class GP3Parser implements Parser{
+public class GP5Parser extends AbstractGPXParser {
 
+    @Override
     public void openFile(File file) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        super.openFile(file);
     }
 
+    @Override
     public void close() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        super.close();
     }
 
+    
 }

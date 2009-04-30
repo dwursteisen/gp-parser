@@ -6,10 +6,10 @@ package net.sourceforge.musicsvg.io.module;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
-import net.sourceforge.musicsvg.io.GP4Parser;
-import net.sourceforge.musicsvg.io.GP4ParserListener;
+import net.sourceforge.musicsvg.io.gp.GP4Parser;
+import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
 import net.sourceforge.musicsvg.io.JFugueParser;
-import net.sourceforge.musicsvg.io.impl.GP4InfoParserListenerImpl;
+import net.sourceforge.musicsvg.io.gp.listeners.GP4InfoParserListenerImpl;
 
 /**
  *

@@ -4,6 +4,7 @@
  */
 package net.sourceforge.musicsvg.io.impl;
 
+import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListenerImpl;
 import net.sourceforge.musicsvg.model.NoteDuration;
 import net.sourceforge.musicsvg.model.NoteHeight;
 import net.sourceforge.musicsvg.model.NoteTablature;

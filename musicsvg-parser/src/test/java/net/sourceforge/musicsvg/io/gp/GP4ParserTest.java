@@ -4,10 +4,12 @@
  *
  * Created on 11 ao�t 2007, 11:14
  */
-package net.sourceforge.musicsvg.io;
+package net.sourceforge.musicsvg.io.gp;
 
+import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
+import net.sourceforge.musicsvg.io.gp.GP4Parser;
 import java.io.File;
-import net.sourceforge.musicsvg.io.impl.GP4ParserListenerImpl;
+import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListenerImpl;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
 import net.sourceforge.musicsvg.model.dao.SongDAO;
 import net.sourceforge.musicsvg.model.factory.impl.NoteTablatureFactoryImpl;

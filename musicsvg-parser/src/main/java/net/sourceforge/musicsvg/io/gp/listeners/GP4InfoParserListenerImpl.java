@@ -2,13 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.sourceforge.musicsvg.io.impl;
+package net.sourceforge.musicsvg.io.gp.listeners;
 
 import com.google.inject.Inject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import net.sourceforge.musicsvg.io.GP4ParserListener;
+import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
 import net.sourceforge.musicsvg.io.Hasher;
 import net.sourceforge.musicsvg.model.Song;
 import net.sourceforge.musicsvg.model.dao.SongDAO;
