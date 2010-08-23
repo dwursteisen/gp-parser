@@ -45,11 +45,11 @@
             <version>5.1</version>
             <classifier>jdk15</classifier>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>fest</groupId>
+         </dependency>
+         <dependency>
+            <groupId>org.easytesting</groupId>
             <artifactId>fest-swing-testng</artifactId>
-            <version>0.6.1</version>
+            <version>1.2.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
