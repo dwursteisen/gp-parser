@@ -15,7 +15,7 @@ import java.io.IOException;
 
 import java.util.Locale;
 import net.sourceforge.musicsvg.gui.mainframe.MainFrame;
-import net.sourceforge.musicsvg.io.GP4Parser;
+import net.sourceforge.musicsvg.io.gp.GP4Parser;
 import net.sourceforge.musicsvg.model.Song;
 import net.sourceforge.musicsvg.model.dao.NoteDAO;
 import net.sourceforge.musicsvg.model.dao.SongDAO;
