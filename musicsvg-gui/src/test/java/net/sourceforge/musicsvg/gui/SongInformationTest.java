@@ -5,7 +5,7 @@
 package net.sourceforge.musicsvg.gui;
 
 import net.sourceforge.musicsvg.model.Song;
-import org.fest.swing.GUITest;
+import org.fest.swing.annotation.GUITest;
 import org.fest.swing.fixture.FrameFixture;
 import org.testng.annotations.Test;
 
