@@ -10,7 +10,12 @@
         <artifactId>musicsvg</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    
+    <repositories>
+        <repository>
+            <id>personnal-repository</id>
+            <url>http://cyberkats.free.fr/maven/</url>
+        </repository>
+    </repositories>
     <url>http://musicsvg.sourceforge.net/</url>
     <build>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
