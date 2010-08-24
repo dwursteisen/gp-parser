@@ -10,12 +10,6 @@
         <artifactId>musicsvg</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <repositories>
-        <repository>
-            <id>personnal-repository</id>
-            <url>http://cyberkats.free.fr/maven/</url>
-        </repository>
-    </repositories>
     <url>http://musicsvg.sourceforge.net/</url>
     <build>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
@@ -38,21 +32,13 @@
         </plugins>
     </build>
     <dependencies>
+        <!-- still used ? -->
         <dependency>
             <groupId>com.google.code.guice</groupId>
             <artifactId>guice</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
-            <groupId>jfugue</groupId>
-            <artifactId>jfugue</artifactId>
-            <version>4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>musicsvg.sourceforge.org</groupId>
-            <artifactId>musicsvg-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+        <!-- TODO: use mockito instead -->
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymockclassextension</artifactId>
