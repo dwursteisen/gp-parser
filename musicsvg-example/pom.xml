@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>musicsvg.sourceforge.org</groupId>
+    <artifactId>musicsvg-example</artifactId>
+    <name>Music SVG Example</name>
+    <version>1.0-SNAPSHOT</version>
+<parent>
+        <groupId>musicsvg.sourceforge.org</groupId>
+        <artifactId>musicsvg</artifactId>
+        <version>1.0-SNAPSHOT</version>
+  </parent>
+    
+    <url>http://musicsvg.sourceforge.net/</url>
+    <build>
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <plugins>     
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.3</version>
+               </plugin>
+        
+
+        <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-classpath</argument>
+                        <!-- automatically creates the classpath using all project dependencies,
+                 also adding the project build directory -->
+                        <classpath></classpath>
+                        <argument>net.sourceforge.musicsvg.example.MainClass</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+</plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>musicsvg.sourceforge.org</groupId>
+            <artifactId>musicsvg-parser</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+</project>
