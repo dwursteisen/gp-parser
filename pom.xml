@@ -8,14 +8,8 @@
     <packaging>pom</packaging>
     <url>http://musicsvg.sourceforge.net/</url>
     <modules>
-        <module>musicsvg-utils</module>
         <module>musicsvg-core</module>
         <module>musicsvg-parser</module>
-        <module>musicsvg-gui</module>
-        <module>musicsvg-app</module>
-        <module>musicsvg-drums-gui</module>
-        <module>musicsvg-functionaltest</module>
-        <module>musicsvg-site</module>
     </modules>
     <reporting>
         <plugins>
