@@ -7,13 +7,7 @@
 package net.sourceforge.musicsvg.io.gp;
 
 import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
-import net.sourceforge.musicsvg.io.gp.GP4Parser;
 import java.io.File;
-import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListenerImpl;
-import net.sourceforge.musicsvg.model.dao.NoteDAO;
-import net.sourceforge.musicsvg.model.dao.SongDAO;
-import net.sourceforge.musicsvg.model.factory.impl.NoteTablatureFactoryImpl;
-import net.sourceforge.musicsvg.model.factory.impl.SongFactoryImpl;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.testng.Assert;
@@ -448,16 +442,4 @@ public class GP4ParserTest {
 
     }
 
-    @Test
-    public void testFunctionnal() throws Exception {
-        GP4ParserListenerImpl listener = new GP4ParserListenerImpl();
-
-        listener.injectNoteDAO(EasyMock.createNiceMock(NoteDAO.class));
-        listener.injectNoteFactory(new NoteTablatureFactoryImpl());
-        listener.injectSongFactory(new SongFactoryImpl());
-        listener.injectSongDAO(EasyMock.createMock(SongDAO.class));
-
-        instance.setListener(listener);
-        instance.openFile(solfegeFile);
-    }
 }
