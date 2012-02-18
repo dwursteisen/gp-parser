@@ -1,29 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>musicsvg.sourceforge.org</groupId>
-    <artifactId>musicsvg-parser</artifactId>
-    <name>Music SVG Parser</name>
+    <groupId>dwursteisen.github.com</groupId>
+    <artifactId>gp-parser-core</artifactId>
+    <name>Guitar Pro file Parser</name>
     <version>1.0-SNAPSHOT</version>
     <parent>
-        <groupId>musicsvg.sourceforge.org</groupId>
-        <artifactId>musicsvg</artifactId>
+        <groupId>dwursteisen.github.com</groupId>
+        <artifactId>gp-parser</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <url>http://musicsvg.sourceforge.net/</url>
     <build>
-        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-        <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
-        <resources>
-            <resource>
-                <directory>${basedir}/src/main/resources</directory>
-            </resource>
-        </resources>
-        <testResources>
-            <testResource>
-                <directory>${basedir}/src/test/resources</directory>
-            </testResource>
-        </testResources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -32,25 +21,6 @@
         </plugins>
     </build>
     <dependencies>
-        <!-- still used ? -->
-        <dependency>
-            <groupId>com.google.code.guice</groupId>
-            <artifactId>guice</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <!-- TODO: use mockito instead -->
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymockclassextension</artifactId>
-            <version>2.2.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <version>2.2</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
