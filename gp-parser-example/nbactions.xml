@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>run</actionName>
+        <goals>
+            <goal>compile</goal>
+            <goal>exec:exec</goal>
+        </goals>
+        <properties>
+            <truc>bidule</truc>
+            <exec.args>-classpath %classpath org.sourceforge.musicsvg.example.MainClass
+                ../musicsvg-parser/src/test/resources/gp4/test_gp4.gp4
+            </exec.args>
+        </properties>
+    </action>
+    <action>
+        <actionName>debug</actionName>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>org.codehaus.mojo:exec-maven-plugin:1.1.1:exec</goal>
+        </goals>
+        <properties>
+            <exec.classpathScope>runtime</exec.classpathScope>
+            <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath
+                org.sourceforge.musicsvg.example.MainClass ../musicsvg-parser/src/test/resources/gp4/test_gp4.gp4
+            </exec.args>
+            <jpda.listen>true</jpda.listen>
+            <exec.executable>java</exec.executable>
+        </properties>
+    </action>
+    <action>
+        <actionName>profile</actionName>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>org.codehaus.mojo:exec-maven-plugin:1.1.1:exec</goal>
+        </goals>
+        <properties>
+            <exec.args>${profiler.args} -classpath %classpath org.sourceforge.musicsvg.example.MainClass
+                ../musicsvg-parser/src/test/resources/gp4/test_gp4.gp4
+            </exec.args>
+            <profiler.action>profile</profiler.action>
+            <exec.executable>${profiler.java}</exec.executable>
+        </properties>
+    </action>
+
+
+</actions>

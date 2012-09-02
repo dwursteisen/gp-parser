@@ -8,8 +8,8 @@
     <packaging>pom</packaging>
     <url>https://github.com/dwursteisen/gp-parser</url>
     <modules>
-        <module>musicsvg-parser</module>
-        <module>musicsvg-example</module>
+        <module>gp-parser-core</module>
+        <module>gp-parser-example</module>
     </modules>
 
     <dependencies>
