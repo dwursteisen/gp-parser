@@ -19,7 +19,7 @@ import java.io.IOException;
 
 /**
  * @author Dav
- * @see http://dguitar.sourceforge.net/GP4format.html
+ * @see <a href='http://dguitar.sourceforge.net/GP4format.html'>GP4 Specification</a>
  */
 public class GP4Parser implements Parser {
 
@@ -57,7 +57,7 @@ public class GP4Parser implements Parser {
 
     /**
      * @throws java.io.IOException
-     * @see http://dguitar.sourceforge.net/GP4format.html#Information_About_the_Piece
+     * @see <a href='http://dguitar.sourceforge.net/GP4format.html#Information_About_the_Piece'>GP4 specification</a>
      */
     private void readFileHeaders() throws IOException {
 
@@ -103,7 +103,7 @@ public class GP4Parser implements Parser {
 
     /**
      * @throws java.io.IOException
-     * @see http://dguitar.sourceforge.net/GP4format.html#Lyrics
+     * @see <a href='http://dguitar.sourceforge.net/GP4format.html#Lyrics'>GP4 Specification</a>
      */
     private void readLyrics() throws IOException {
 
@@ -120,7 +120,7 @@ public class GP4Parser implements Parser {
 
     /**
      * @throws java.io.IOException
-     * @see http://dguitar.sourceforge.net/GP4format.html#Measures-Tracks_pairs
+     * @see <a href='http://dguitar.sourceforge.net/GP4format.html#Measures-Tracks_pairs'>GP4 Specification</a>
      */
     private void readMeasuresTracksPair() throws IOException {
         for (int mesure = 0; mesure < numberOfMeasures; mesure++) {
@@ -132,7 +132,7 @@ public class GP4Parser implements Parser {
 
     /**
      * @throws java.io.IOException
-     * @see http://dguitar.sourceforge.net/GP4format.html#Other_information_about_the_piece
+     * @see <a href='http://dguitar.sourceforge.net/GP4format.html#Other_information_about_the_piece'>GP4 Specification</a>
      */
     private void readOtherInformations() throws IOException {
 
@@ -186,7 +186,7 @@ public class GP4Parser implements Parser {
     /**
      * @param measureIndex
      * @throws java.io.IOException
-     * @see http://dguitar.sourceforge.net/GP4format.html#Measures
+     * @see <a href='http://dguitar.sourceforge.net/GP4format.html#Measures'>GP4 Specification</a>
      */
     private void readMeasureHeader(int measureIndex) throws IOException {
         int header = helper.readUnsignedByte(this.is);
@@ -240,7 +240,7 @@ public class GP4Parser implements Parser {
     /**
      * @param trackIndex
      * @throws java.io.IOException
-     * @see http://dguitar.sourceforge.net/GP4format.html#Tracks
+     * @see <a href='http://dguitar.sourceforge.net/GP4format.html#Tracks'>GP4 Specification</a>
      */
     private void readTrack(int trackIndex) throws IOException {
         int header = helper.readUnsignedByte(this.is);
@@ -309,7 +309,7 @@ public class GP4Parser implements Parser {
      * @param mesure
      * @param beat
      * @throws java.io.IOException
-     * @see http://dguitar.sourceforge.net/GP4format.html#A_beat
+     * @see <a href='http://dguitar.sourceforge.net/GP4format.html#A_beat'>GP4 Specification</a>
      */
     private void readNotes(int track, int mesure, int beat) throws IOException {
 
