@@ -8,35 +8,43 @@
  */
 package net.sourceforge.musicsvg.io.gp;
 
-import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
 import com.google.inject.Inject;
+import net.sourceforge.musicsvg.io.Parser;
+import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
- *
  * @author Dav
- * 
  * @see http://dguitar.sourceforge.net/GP4format.html
  */
-public class GP4Parser extends AbstractGPXParser {
-   
+public class GP4Parser implements Parser {
+
     protected static final int GP4_NUMBER_OF_STRING = 7;
     private int numberOfTracks;
     private int numberOfMeasures;
+    protected FileInputStream is;
+    protected GP4ParserListener listener;
 
-    @Override
+    private final ParserHelper helper = new ParserHelper();
+
     public void close() {
-        super.close();
-        if(listener != null) {
+        if (listener != null) {
             listener.close();
         }
     }
 
-    @Override
     public void openFile(File file) throws IOException {
-        super.openFile(file);
+
+        try {
+            this.is = new FileInputStream(file);
+        } catch (FileNotFoundException ex) {
+            throw new IOException("File " + file.getAbsolutePath() + "Not Found", ex);
+        }
+
         listener.open(file);
         readFileHeaders();
         readLyrics();
@@ -48,74 +56,74 @@ public class GP4Parser extends AbstractGPXParser {
     }
 
     /**
-     * @see http://dguitar.sourceforge.net/GP4format.html#Information_About_the_Piece
      * @throws java.io.IOException
+     * @see http://dguitar.sourceforge.net/GP4format.html#Information_About_the_Piece
      */
     private void readFileHeaders() throws IOException {
 
-        String version = readStringByte(30);
+        String version = helper.readStringByte(this.is, 30);
         this.listener.readVersion(version);
 
-        String title = readStringIntegerPlusOne();
+        String title = helper.readStringIntegerPlusOne(this.is);
         this.listener.readTitle(title);
 
-        String subtitle = readStringIntegerPlusOne();
+        String subtitle = helper.readStringIntegerPlusOne(this.is);
         this.listener.readSubTitle(subtitle);
 
-        String interpret = readStringIntegerPlusOne();
+        String interpret = helper.readStringIntegerPlusOne(this.is);
         this.listener.readArtist(interpret);
 
-        String album = readStringIntegerPlusOne();
+        String album = helper.readStringIntegerPlusOne(this.is);
         this.listener.readAlbum(album);
 
-        String songAuthor = readStringIntegerPlusOne();
+        String songAuthor = helper.readStringIntegerPlusOne(this.is);
         this.listener.readSongAuthor(songAuthor);
 
-        String copyright = readStringIntegerPlusOne();
+        String copyright = helper.readStringIntegerPlusOne(this.is);
         this.listener.readCopyright(copyright);
 
-        String pieceAuthor = readStringIntegerPlusOne();
+        String pieceAuthor = helper.readStringIntegerPlusOne(this.is);
         this.listener.readPieceAuthor(pieceAuthor);
 
-        String instructions = readStringIntegerPlusOne();
+        String instructions = helper.readStringIntegerPlusOne(this.is);
         this.listener.readInstruction(instructions);
 
-        int numberOfNotice = readInt();
+        int numberOfNotice = helper.readInt(this.is);
         this.listener.readNumberOfNotices(numberOfNotice);
 
         for (int i = 0; i < numberOfNotice; i++) {
-            String notice = readStringIntegerPlusOne();
+            String notice = helper.readStringIntegerPlusOne(this.is);
             this.listener.readNotice(notice);
         }
 
-        boolean tripletFeel = readBoolean();
+        boolean tripletFeel = helper.readBoolean(this.is);
         this.listener.readIsTripleFeel(tripletFeel);
 
     }
 
     /**
-     * @see http://dguitar.sourceforge.net/GP4format.html#Lyrics
      * @throws java.io.IOException
+     * @see http://dguitar.sourceforge.net/GP4format.html#Lyrics
      */
     private void readLyrics() throws IOException {
 
         //----lyrics----
-        int lyricTrack = readInt();
+        int lyricTrack = helper.readInt(this.is);
         //Lyric lyric = new Lyric(readInt(),readStringInteger());
-        readInt();
-        readStringInteger();
+        helper.readInt(this.is);
+        helper.readStringInteger(this.is);
         for (int i = 0; i < 4; i++) {
-            int measureNumber = readInt();
-            String lines = readStringInteger();
+            int measureNumber = helper.readInt(this.is);
+            String lines = helper.readStringInteger(this.is);
         }
     }
 
     /**
-     * @see http://dguitar.sourceforge.net/GP4format.html#Measures-Tracks_pairs
      * @throws java.io.IOException
+     * @see http://dguitar.sourceforge.net/GP4format.html#Measures-Tracks_pairs
      */
     private void readMeasuresTracksPair() throws IOException {
-    for (int mesure = 0; mesure < numberOfMeasures; mesure++) {
+        for (int mesure = 0; mesure < numberOfMeasures; mesure++) {
             for (int track = 0; track < numberOfTracks; track++) {
                 readMeasureComponents(track, mesure);
             }
@@ -123,18 +131,18 @@ public class GP4Parser extends AbstractGPXParser {
     }
 
     /**
-     * @see http://dguitar.sourceforge.net/GP4format.html#Other_information_about_the_piece
      * @throws java.io.IOException
+     * @see http://dguitar.sourceforge.net/GP4format.html#Other_information_about_the_piece
      */
     private void readOtherInformations() throws IOException {
 
-        int tempoValue = readInt();
+        int tempoValue = helper.readInt(this.is);
         this.listener.readTempoValue(tempoValue);
 
-        int key = readByte();
+        int key = helper.readByte(this.is);
         this.listener.readKey(key);
 
-        int octave = readInt();
+        int octave = helper.readInt(this.is);
         this.listener.readOctave(octave);
 
         // 4 ports
@@ -143,22 +151,22 @@ public class GP4Parser extends AbstractGPXParser {
         final int NUMBER_OF_CHANNELS = 16;
         for (int port = 0; port < NUMBER_OF_PORTS; port++) {
             for (int channel = 0; channel < NUMBER_OF_CHANNELS; channel++) {
-                int instrument = readInt();
-                byte volume = readByte();
-                byte balance = readByte();
-                byte chorus = readByte();
-                byte reverb = readByte();
-                byte phaser = readByte();
-                byte tremolo = readByte();
-                byte blank1 = readByte(); // Backward compatibility with version 3.0
-                byte blank2 = readByte(); // Backward compatibility with version 3.0
+                int instrument = helper.readInt(this.is);
+                byte volume = helper.readByte(this.is);
+                byte balance = helper.readByte(this.is);
+                byte chorus = helper.readByte(this.is);
+                byte reverb = helper.readByte(this.is);
+                byte phaser = helper.readByte(this.is);
+                byte tremolo = helper.readByte(this.is);
+                byte blank1 = helper.readByte(this.is); // Backward compatibility with version 3.0
+                byte blank2 = helper.readByte(this.is); // Backward compatibility with version 3.0
                 listener.readMidiChannel(port, channel, instrument, volume, balance, chorus, reverb, phaser, tremolo);
             }
         }
 
-        numberOfMeasures = readInt();
-        numberOfTracks = readInt();
-        
+        numberOfMeasures = helper.readInt(this.is);
+        numberOfTracks = helper.readInt(this.is);
+
         this.listener.readNumberOfTracks(numberOfTracks);
         this.listener.readNumberOfMesures(numberOfMeasures);
     }
@@ -176,98 +184,98 @@ public class GP4Parser extends AbstractGPXParser {
     }
 
     /**
-     * @see http://dguitar.sourceforge.net/GP4format.html#Measures
-     * @param number
+     * @param measureIndex
      * @throws java.io.IOException
+     * @see http://dguitar.sourceforge.net/GP4format.html#Measures
      */
     private void readMeasureHeader(int measureIndex) throws IOException {
-        int header = readUnsignedByte();
+        int header = helper.readUnsignedByte(this.is);
 
-        boolean repeatStart = ((header & BITMASK_3) != 0);
-        boolean doubleBar = ((header & BITMASK_8) != 0);
-        
+        boolean repeatStart = ((header & ParserHelper.BITMASK_3) != 0);
+        boolean doubleBar = ((header & ParserHelper.BITMASK_8) != 0);
+
         int numerator = 0;
-        if ((header & BITMASK_1) != 0) {
-            numerator = readByte();
+        if ((header & ParserHelper.BITMASK_1) != 0) {
+            numerator = helper.readByte(this.is);
         }
 
         int denominator = 0;
-        if ((header & BITMASK_2) != 0) {
-            denominator = readByte();
+        if ((header & ParserHelper.BITMASK_2) != 0) {
+            denominator = helper.readByte(this.is);
         }
 
 
         int numberOfRepeats = 0;
-        if ((header & BITMASK_4) != 0) {
-            numberOfRepeats = readByte();
+        if ((header & ParserHelper.BITMASK_4) != 0) {
+            numberOfRepeats = helper.readByte(this.is);
         }
 
         int numberOfAlternateEnding = 0;
-        if ((header & BITMASK_5) != 0) {
-            numberOfAlternateEnding = readByte();
+        if ((header & ParserHelper.BITMASK_5) != 0) {
+            numberOfAlternateEnding = helper.readByte(this.is);
         }
 
-        
-        if ((header & BITMASK_6) != 0) {
-            String name = readStringIntegerPlusOne();
 
-            int r = readUnsignedByte();
-            int g = readUnsignedByte();
-            int b = readUnsignedByte();
-            int white = readUnsignedByte(); // always 0x00
+        if ((header & ParserHelper.BITMASK_6) != 0) {
+            String name = helper.readStringIntegerPlusOne(this.is);
+
+            int r = helper.readUnsignedByte(this.is);
+            int g = helper.readUnsignedByte(this.is);
+            int b = helper.readUnsignedByte(this.is);
+            int white = helper.readUnsignedByte(this.is); // always 0x00
 
             this.listener.readMesureMarker(measureIndex, name, r, g, b);
 
         }
 
-        if ((header & BITMASK_7) != 0) {
-            int tonality = readByte();
-            readByte(); // WTF ?
+        if ((header & ParserHelper.BITMASK_7) != 0) {
+            int tonality = helper.readByte(this.is);
+            helper.readByte(this.is); // WTF ?
             this.listener.readMeasureTonality(tonality);
         }
-        
+
         this.listener.readMeasureHeader(measureIndex, numerator, denominator, repeatStart, doubleBar, numberOfAlternateEnding, numberOfRepeats);
     }
 
     /**
-     * @see http://dguitar.sourceforge.net/GP4format.html#Tracks
      * @param trackIndex
      * @throws java.io.IOException
+     * @see http://dguitar.sourceforge.net/GP4format.html#Tracks
      */
     private void readTrack(int trackIndex) throws IOException {
-        int header = readUnsignedByte();
+        int header = helper.readUnsignedByte(this.is);
 
-        boolean isDrumsTrack = ((header & BITMASK_1) != 0);
-        boolean is12StringedGuitarTrack = ((header & BITMASK_2) != 0);
-        boolean isBanjoTrack = ((header & BITMASK_3) != 0);
+        boolean isDrumsTrack = ((header & ParserHelper.BITMASK_1) != 0);
+        boolean is12StringedGuitarTrack = ((header & ParserHelper.BITMASK_2) != 0);
+        boolean isBanjoTrack = ((header & ParserHelper.BITMASK_3) != 0);
 
-        String name = readStringByte(40);
+        String name = helper.readStringByte(this.is, 40);
 
-        int numberOfStrings = readInt();
+        int numberOfStrings = helper.readInt(this.is);
         this.listener.readTrackParameter(trackIndex, name, numberOfStrings, isDrumsTrack, is12StringedGuitarTrack, isBanjoTrack);
 
         for (int stringIndex = 0; stringIndex < GP4_NUMBER_OF_STRING; stringIndex++) {
-            int tunning = readInt();
+            int tunning = helper.readInt(this.is);
             // WTF ?? 
             //if (numberOfStrings > stringIndex) {
-                this.listener.readStringTunning(trackIndex, stringIndex, tunning);
+            this.listener.readStringTunning(trackIndex, stringIndex, tunning);
             //}
         }
 
-        int midiPort = readInt();
+        int midiPort = helper.readInt(this.is);
 
-        int midiChannel = readInt();
+        int midiChannel = helper.readInt(this.is);
 
-        int midiChannelEffect = readInt();
+        int midiChannelEffect = helper.readInt(this.is);
 
-        int numberOfFrets = readInt();
+        int numberOfFrets = helper.readInt(this.is);
 
-        int capo = readInt();
+        int capo = helper.readInt(this.is);
 
-        int r = readUnsignedByte();
-        int g = readUnsignedByte();
-        int b = readUnsignedByte();
-        int white = readUnsignedByte();
+        int r = helper.readUnsignedByte(this.is);
+        int g = helper.readUnsignedByte(this.is);
+        int b = helper.readUnsignedByte(this.is);
+        int white = helper.readUnsignedByte(this.is);
 
         this.listener.readTrackMidiParameter(trackIndex, midiPort, midiChannel, midiChannelEffect, numberOfFrets, capo, r, g, b);
     }
@@ -288,7 +296,7 @@ public class GP4Parser extends AbstractGPXParser {
     }
      */
     private void readMeasureComponents(int track, int mesure) throws IOException {
-        int numberOfBeats = readInt();
+        int numberOfBeats = helper.readInt(this.is);
         this.listener.readNumberOfBeats(track, mesure, numberOfBeats);
         for (int beat = 0; beat < numberOfBeats; beat++) {
             readNotes(track, mesure, beat);
@@ -297,49 +305,49 @@ public class GP4Parser extends AbstractGPXParser {
     }
 
     /**
-     * @see http://dguitar.sourceforge.net/GP4format.html#A_beat
      * @param track
      * @param mesure
      * @param beat
      * @throws java.io.IOException
+     * @see http://dguitar.sourceforge.net/GP4format.html#A_beat
      */
     private void readNotes(int track, int mesure, int beat) throws IOException {
-    
-        int header = readUnsignedByte();
-        boolean dottedNotes = ((header & BITMASK_1) != 0);
 
-        if ((header & BITMASK_7) != 0) {
-            int beatStatus = readUnsignedByte();
+        int header = helper.readUnsignedByte(this.is);
+        boolean dottedNotes = ((header & ParserHelper.BITMASK_1) != 0);
+
+        if ((header & ParserHelper.BITMASK_7) != 0) {
+            int beatStatus = helper.readUnsignedByte(this.is);
             boolean emptyBeat = (beatStatus == 0x00);
-            boolean restBeat = (beatStatus == BITMASK_2);
+            boolean restBeat = (beatStatus == ParserHelper.BITMASK_2);
             this.listener.readEmptyBeat(track, mesure, beat, emptyBeat, restBeat);
         }
 
-        int beatDuration = readByte();
-        if ((header & BITMASK_6) != 0) {
-            int tuplet = readInt();
+        int beatDuration = helper.readByte(this.is);
+        if ((header & ParserHelper.BITMASK_6) != 0) {
+            int tuplet = helper.readInt(this.is);
             this.listener.readTuplet(track, mesure, beat, tuplet);
         }
-        
+
         this.listener.readBeat(track, mesure, beat, beatDuration, dottedNotes);
 
-        if ((header & BITMASK_2) != 0) {
+        if ((header & ParserHelper.BITMASK_2) != 0) {
             readChordDiagram(track, mesure, beat);
         }
 
-        if ((header & BITMASK_3) != 0) {
-            String text = readStringIntegerPlusOne();
+        if ((header & ParserHelper.BITMASK_3) != 0) {
+            String text = helper.readStringIntegerPlusOne(this.is);
         }
 
-        if ((header & BITMASK_4) != 0) {
+        if ((header & ParserHelper.BITMASK_4) != 0) {
             readBeatEffects();
         }
 
-        if ((header & BITMASK_5) != 0) {
+        if ((header & ParserHelper.BITMASK_5) != 0) {
             readMixChange();
         }
 
-        int stringsPlayed = readUnsignedByte();
+        int stringsPlayed = helper.readUnsignedByte(this.is);
 
         this.listener.readStringPlayed(track, mesure, beat, stringsPlayed);
         int numberOfStringPlayed = nbPlayerString(stringsPlayed);
@@ -364,11 +372,11 @@ public class GP4Parser extends AbstractGPXParser {
         }
         return res;
     }
-    
-     protected int getStringIndexFromStringCode(int stringCode, int index) {
+
+    protected int getStringIndexFromStringCode(int stringCode, int index) {
         int tmpIndex = index;
-        for ( int i = 0; i < GP4_NUMBER_OF_STRING ; i++) {
-            if ( (stringCode & (1 << i)) != 0) {
+        for (int i = 0; i < GP4_NUMBER_OF_STRING; i++) {
+            if ((stringCode & (1 << i)) != 0) {
                 if (tmpIndex == 0) {
                     return i;
                 } else {
@@ -380,65 +388,65 @@ public class GP4Parser extends AbstractGPXParser {
     }
 
     void parseNote(int track, int mesure, int beat, int stringPlayer) throws IOException {
-        int header = readUnsignedByte();
-        
-        boolean accentuated = ((header & BITMASK_7) != 0);
-        boolean ghostNote = ((header & BITMASK_3) != 0);
-        boolean dotted = ((header & BITMASK_2) != 0);
+        int header = helper.readUnsignedByte(this.is);
+
+        boolean accentuated = ((header & ParserHelper.BITMASK_7) != 0);
+        boolean ghostNote = ((header & ParserHelper.BITMASK_3) != 0);
+        boolean dotted = ((header & ParserHelper.BITMASK_2) != 0);
 
 
         boolean tiedNote = false;
         boolean deadNote = false;
-        if ((header & BITMASK_6) != 0) {
-            int noteType = readUnsignedByte();
-            tiedNote = (noteType == BITMASK_2);
-        //    effect.setDeadNote((noteType == 0x03));
+        if ((header & ParserHelper.BITMASK_6) != 0) {
+            int noteType = helper.readUnsignedByte(this.is);
+            tiedNote = (noteType == ParserHelper.BITMASK_2);
+            //    effect.setDeadNote((noteType == 0x03));
         }
 
         /**
-        * -2: Whole Note;
- 	* -1:	Half note;
- 	*  0:	Quarter note;
- 	*  1:	Eighth note;
- 	*  2:	Sixteenth note;
- 	*  3:	Thirty-second note;
-        */
+         * -2: Whole Note;
+         * -1:	Half note;
+         *  0:	Quarter note;
+         *  1:	Eighth note;
+         *  2:	Sixteenth note;
+         *  3:	Thirty-second note;
+         */
         byte duration = 0;
-        if ((header & BITMASK_1) != 0) {
-            duration = readByte();
-            byte tuplet = readByte();
+        if ((header & ParserHelper.BITMASK_1) != 0) {
+            duration = helper.readByte(this.is);
+            byte tuplet = helper.readByte(this.is);
         }
-        
+
         // int velocity = VelocityValues.DEFAULT;
-        if ((header & BITMASK_5) != 0) {
-            readByte();
-        //velocity = (VelocityValues.MIN_VELOCITY + (VelocityValues.VELOCITY_INCREMENT * readByte())) - VelocityValues.VELOCITY_INCREMENT;
+        if ((header & ParserHelper.BITMASK_5) != 0) {
+            helper.readByte(this.is);
+            //velocity = (VelocityValues.MIN_VELOCITY + (VelocityValues.VELOCITY_INCREMENT * readByte())) - VelocityValues.VELOCITY_INCREMENT;
         }
 
         int fretIndex = 0;
-        if ((header & BITMASK_6) != 0) {
-            fretIndex = readUnsignedByte();
+        if ((header & ParserHelper.BITMASK_6) != 0) {
+            fretIndex = helper.readUnsignedByte(this.is);
         }
 
-        if ((header & BITMASK_8) != 0) {
-            byte fingeringLeftHand = readByte();
-            byte fingeringRightHand = readByte();
+        if ((header & ParserHelper.BITMASK_8) != 0) {
+            byte fingeringLeftHand = helper.readByte(this.is);
+            byte fingeringRightHand = helper.readByte(this.is);
         }
 
-        if ((header & BITMASK_4) != 0) {
+        if ((header & ParserHelper.BITMASK_4) != 0) {
             readNoteEffects();
         }
 
         if (fretIndex >= 0 || tiedNote) {
             if (tiedNote) {
-            // value = getTiedNoteValue(string.getNumber(), currMeasureNotes, currTrackMeasures);
+                // value = getTiedNoteValue(string.getNumber(), currMeasureNotes, currTrackMeasures);
             }
 
-        // return new Note(value, start, (Duration) currDuration.clone(), velocity, string.getNumber(),tiedNote,effect);
+            // return new Note(value, start, (Duration) currDuration.clone(), velocity, string.getNumber(),tiedNote,effect);
         }
         this.listener.readNote(track, mesure, beat, stringPlayer, fretIndex, duration);
         this.listener.readNoteParameter(track, mesure, beat, accentuated, ghostNote, dotted);
-    // return null;
+        // return null;
     }
 
     private void readNoteEffects() throws IOException {
@@ -446,58 +454,58 @@ public class GP4Parser extends AbstractGPXParser {
         int header2;
         int b;
 
-        header1 = readUnsignedByte();
-        header2 = readUnsignedByte();
+        header1 = helper.readUnsignedByte(this.is);
+        header2 = helper.readUnsignedByte(this.is);
 
-        if ((header1 & BITMASK_1) != 0) {
+        if ((header1 & ParserHelper.BITMASK_1) != 0) {
             readBend();
         }
 
-        if ((header1 & BITMASK_5) != 0) {
+        if ((header1 & ParserHelper.BITMASK_5) != 0) {
             readGraceNote();
         }
 
-        if ((header2 & BITMASK_3) != 0) {
-            int duration = readUnsignedByte();
+        if ((header2 & ParserHelper.BITMASK_3) != 0) {
+            int duration = helper.readUnsignedByte(this.is);
         }
 
-        if ((header2 & BITMASK_4) != 0) {
+        if ((header2 & ParserHelper.BITMASK_4) != 0) {
             // noteEffect.setSlide(true);
-            readByte();
+            helper.readByte(this.is);
         }
 
-        if ((header2 & BITMASK_5) != 0) {
-            b = readByte();
+        if ((header2 & ParserHelper.BITMASK_5) != 0) {
+            b = helper.readByte(this.is);
         }
 
         //trill
-        if ((header2 & BITMASK_6) != 0) {
-            byte fret = readByte();
-            byte period = readByte();
+        if ((header2 & ParserHelper.BITMASK_6) != 0) {
+            byte fret = helper.readByte(this.is);
+            byte period = helper.readByte(this.is);
         }
 
-        if ((header1 & BITMASK_4) != 0) {
+        if ((header1 & ParserHelper.BITMASK_4) != 0) {
         }
 
-    //hammer
+        //hammer
         // noteEffect.setHammer(((header1 & 0x02) != 0));
 
-    //vibrato
+        //vibrato
         // noteEffect.setVibrato(((header2 & 0x40) != 0) || noteEffect.isVibrato());
 
-    //palm-mute
+        //palm-mute
         // noteEffect.setPalmMute(((header2 & 0x02) != 0));
 
-    //staccato
+        //staccato
         // noteEffect.setStaccato(((header2 & 0x01) != 0));
 
     }
 
     private void readGraceNote() throws IOException {
-        int fret = readUnsignedByte();
-        int velocity = readUnsignedByte();
-        int transition = readUnsignedByte();
-        int duration = readUnsignedByte();
+        int fret = helper.readUnsignedByte(this.is);
+        int velocity = helper.readUnsignedByte(this.is);
+        int transition = helper.readUnsignedByte(this.is);
+        int duration = helper.readUnsignedByte(this.is);
 
         //dead
         boolean dead = (fret == 255);
@@ -505,10 +513,10 @@ public class GP4Parser extends AbstractGPXParser {
         //fret
         fret = ((!dead) ? fret : 0);
 
-    //velocity
+        //velocity
         // velocity = (VelocityValues.MIN_VELOCITY + (VelocityValues.VELOCITY_INCREMENT * velocity)) - VelocityValues.VELOCITY_INCREMENT;
 
-    //transition
+        //transition
         /*
         if(transition == 0){
                 transition = GraceEffect.TRANSITION_NONE;
@@ -523,18 +531,18 @@ public class GP4Parser extends AbstractGPXParser {
                 transition = GraceEffect.TRANSITION_HAMMER;
         }
          */
-    // effect.setGrace(new GraceEffect(fret,duration,velocity,transition,false,dead));
+        // effect.setGrace(new GraceEffect(fret,duration,velocity,transition,false,dead));
     }
 
     private void readBend() throws IOException {
-        byte type = readByte();
-        int value = readInt();
+        byte type = helper.readByte(this.is);
+        int value = helper.readInt(this.is);
 
-        int numPoints = readInt();
+        int numPoints = helper.readInt(this.is);
         for (int i = 0; i < numPoints; i++) {
-            int bendPosition = readInt();
-            int bendValue = readInt();
-            byte bendVibrato = readByte();
+            int bendPosition = helper.readInt(this.is);
+            int bendValue = helper.readInt(this.is);
+            byte bendVibrato = helper.readByte(this.is);
 
         }
 
@@ -547,13 +555,13 @@ public class GP4Parser extends AbstractGPXParser {
         int aux;
         n = 0;
         for (i = 0; i < GP4_NUMBER_OF_STRING; i++) {
-            aux = readByte();
+            aux = helper.readByte(this.is);
             if ((i != 0) && (aux != -1)) {
                 pos[n] = i;
                 n++;
             }
         }
-        aux = readInt();
+        aux = helper.readInt(this.is);
         if (aux != -1) {
             // tempo.setValue(aux);
             pos[n] = i;
@@ -561,9 +569,9 @@ public class GP4Parser extends AbstractGPXParser {
         }
 
         for (i = 0; i < n; i++) {
-            aux = readByte();
+            aux = helper.readByte(this.is);
         }
-        int applyToAllTracks = readUnsignedByte();
+        int applyToAllTracks = helper.readUnsignedByte(this.is);
     }
 
     private void readTracks() throws IOException {
@@ -574,17 +582,17 @@ public class GP4Parser extends AbstractGPXParser {
     }
 
     private void readTremoloBar() throws IOException {
-        byte type = readByte();
-        int value = readInt();
+        byte type = helper.readByte(this.is);
+        int value = helper.readInt(this.is);
 
         // TremoloBarEffect tremoloBar = new TremoloBarEffect();
-        int numPoints = readInt();
+        int numPoints = helper.readInt(this.is);
         for (int i = 0; i < numPoints; i++) {
-            int bendPosition = readInt();
-            int bendValue = readInt();
-            byte bendVibrato = readByte();
+            int bendPosition = helper.readInt(this.is);
+            int bendValue = helper.readInt(this.is);
+            byte bendVibrato = helper.readByte(this.is);
 
-        // tremoloBar.addPoint((int)(bendPosition * TremoloBarEffect.MAX_POSITION_LENGTH / GP_BEND_POSITION),(bendValue * TremoloBarEffect.SEMITONE_LENGTH / GP_BEND_SEMITONE));
+            // tremoloBar.addPoint((int)(bendPosition * TremoloBarEffect.MAX_POSITION_LENGTH / GP_BEND_POSITION),(bendValue * TremoloBarEffect.SEMITONE_LENGTH / GP_BEND_SEMITONE));
         }
 
     }
@@ -592,115 +600,115 @@ public class GP4Parser extends AbstractGPXParser {
     private void readBeatEffects() throws IOException {
         int header[] = {0, 0};
 
-        header[0] = readUnsignedByte();
-        header[1] = readUnsignedByte();
+        header[0] = helper.readUnsignedByte(this.is);
+        header[1] = helper.readUnsignedByte(this.is);
 
         // noteEffect.setFadeIn(((header[0] & 0x10) != 0));
         //vnoteEffect.setVibrato(((header[0]  & 0x02) != 0));
 
-        if ((header[0] & BITMASK_6) != 0) {
-            int effect = readUnsignedByte();
-        // noteEffect.setTapping(effect == 1);
+        if ((header[0] & ParserHelper.BITMASK_6) != 0) {
+            int effect = helper.readUnsignedByte(this.is);
+            // noteEffect.setTapping(effect == 1);
             // noteEffect.setSlapping(effect == 2);
             // noteEffect.setPopping(effect == 3);
         }
 
-        if ((header[1] & BITMASK_3) != 0) {
+        if ((header[1] & ParserHelper.BITMASK_3) != 0) {
             readTremoloBar();
         }
 
-        if ((header[0] & BITMASK_7) != 0) {
+        if ((header[0] & ParserHelper.BITMASK_7) != 0) {
             //Upstroke - Downstroke
-            readByte();
-            readByte();
+            helper.readByte(this.is);
+            helper.readByte(this.is);
         }
 
-        if ((header[1] & BITMASK_1) != 0) {
-        //Rasgueado
+        if ((header[1] & ParserHelper.BITMASK_1) != 0) {
+            //Rasgueado
         }
 
-        if ((header[1] & BITMASK_2) != 0) {
+        if ((header[1] & ParserHelper.BITMASK_2) != 0) {
             //Pickstroke
-            readByte();
+            helper.readByte(this.is);
         }
 
 
     }
 
     private void readChordDiagram(int track, int measure, int beat) throws IOException {
-        int header = readUnsignedByte();
+        int header = helper.readUnsignedByte(this.is);
 
-        if ((header & BITMASK_1) == 0) {
+        if ((header & ParserHelper.BITMASK_1) == 0) {
             // old chord diagram (deprecated)
-            String name = readStringIntegerPlusOne();
-            int base = readInt();
+            String name = helper.readStringIntegerPlusOne(this.is);
+            int base = helper.readInt(this.is);
 
             if (base != 0) {
-                int fret0 = readInt();
-                int fret1 = readInt();
-                int fret2 = readInt();
-                int fret3 = readInt();
-                int fret4 = readInt();
-                int fret5 = readInt();
-            //    this.listener.readChordDiagram(track, mesure, beat, name, base, fret1, fret2, fret3, fret4, fret5);
+                int fret0 = helper.readInt(this.is);
+                int fret1 = helper.readInt(this.is);
+                int fret2 = helper.readInt(this.is);
+                int fret3 = helper.readInt(this.is);
+                int fret4 = helper.readInt(this.is);
+                int fret5 = helper.readInt(this.is);
+                //    this.listener.readChordDiagram(track, mesure, beat, name, base, fret1, fret2, fret3, fret4, fret5);
             }
         } else {
 
-            boolean sharp = readBoolean();
+            boolean sharp = helper.readBoolean(this.is);
 
             this.is.skip(3);
 
-            readByte(); // readRoot();
+            helper.readByte(this.is); // readRoot();
 
-            readUnsignedByte(); // chord type
+            helper.readUnsignedByte(this.is); // chord type
 
-            int nineElevenThirteen = readUnsignedByte();
+            int nineElevenThirteen = helper.readUnsignedByte(this.is);
 
-            int bass = readInt();
+            int bass = helper.readInt(this.is);
 
-            readInt(); // readTonalityType(4);
+            helper.readInt(this.is); // readTonalityType(4);
 
-            int addedNote = readUnsignedByte();
+            int addedNote = helper.readUnsignedByte(this.is);
 
-            String name = readStringByte(20);
+            String name = helper.readStringByte(this.is, 20);
 
             this.is.skip(2);
 
-            readUnsignedByte(); //readTonalityType(1);
+            helper.readUnsignedByte(this.is); //readTonalityType(1);
 
-            readUnsignedByte(); // readTonalityType(1);
+            helper.readUnsignedByte(this.is); // readTonalityType(1);
 
-            readUnsignedByte(); // readTonalityType(1);
+            helper.readUnsignedByte(this.is); // readTonalityType(1);
 
-            int baseFret = readInt();
+            int baseFret = helper.readInt(this.is);
 
-            int fret1 = readInt();
-            int fret2 = readInt();
-            int fret3 = readInt();
-            int fret4 = readInt();
-            int fret5 = readInt();
-            int fret6 = readInt();
-            int fret7 = readInt();
+            int fret1 = helper.readInt(this.is);
+            int fret2 = helper.readInt(this.is);
+            int fret3 = helper.readInt(this.is);
+            int fret4 = helper.readInt(this.is);
+            int fret5 = helper.readInt(this.is);
+            int fret6 = helper.readInt(this.is);
+            int fret7 = helper.readInt(this.is);
 
-            int numBarres = readUnsignedByte();
+            int numBarres = helper.readUnsignedByte(this.is);
 
             for (int i = 1; i <= 5; i++) {
-                int fretOfBarre = readUnsignedByte();
+                int fretOfBarre = helper.readUnsignedByte(this.is);
             }
             for (int i = 1; i <= 5; i++) {
-                int barreStart = readUnsignedByte();
+                int barreStart = helper.readUnsignedByte(this.is);
             }
             for (int i = 1; i <= 5; i++) {
-                int barreEnd = readUnsignedByte();
+                int barreEnd = helper.readUnsignedByte(this.is);
             }
 
             this.is.skip(8);
 
             for (int i = 1; i <= GP4_NUMBER_OF_STRING; i++) {
-                int fingering = readByte();
+                int fingering = helper.readByte(this.is);
             }
 
-            boolean chordFingeringDisplayed = readBoolean();
+            boolean chordFingeringDisplayed = helper.readBoolean(this.is);
         }
     }
 
@@ -725,4 +733,8 @@ public class GP4Parser extends AbstractGPXParser {
     }
 
 
+    @Inject
+    public void setListener(GP4ParserListener listener) {
+        this.listener = listener;
+    }
 }

@@ -5,24 +5,33 @@
 
 package net.sourceforge.musicsvg.io.gp;
 
+import com.google.inject.Inject;
+import net.sourceforge.musicsvg.io.Parser;
+import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
- *
  * @author Dav
  */
-public class GP5Parser extends AbstractGPXParser {
+public class GP5Parser implements Parser {
 
-    @Override
+    protected FileInputStream is;
+    protected GP4ParserListener listener;
+
     public void openFile(File file) throws IOException {
-        super.openFile(file);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
     public void close() {
-        super.close();
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    
+
+    @Inject
+    public void setListener(GP4ParserListener listener) {
+        this.listener = listener;
+    }
 }
