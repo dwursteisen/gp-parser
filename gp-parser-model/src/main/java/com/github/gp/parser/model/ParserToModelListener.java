@@ -4,6 +4,8 @@ import com.github.gp.parser.model.header.Headers;
 import com.github.gp.parser.model.header.HeadersBuilder;
 import com.github.gp.parser.model.header.PieceInformation;
 import com.github.gp.parser.model.header.PieceInformationBuilder;
+import com.github.gp.parser.model.measures.Measure;
+import com.github.gp.parser.model.measures.MeasureBuilder;
 import com.github.gp.parser.model.measures.MeasureHeader;
 import com.github.gp.parser.model.measures.MeasureHeaderBuilder;
 import com.github.gp.parser.model.tracks.TrackHeader;
@@ -11,8 +13,7 @@ import com.github.gp.parser.model.tracks.TrackHeaderBuilder;
 import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: Wursteisen David
@@ -28,6 +29,8 @@ public class ParserToModelListener implements GP4ParserListener {
     private final List<MeasureHeaderBuilder> measureHeader = new ArrayList<MeasureHeaderBuilder>();
 
     private final List<TrackHeaderBuilder> trackHeaders = new ArrayList<TrackHeaderBuilder>();
+
+    private final Map<MeasureTrackKey, MeasureBuilder> measures = new HashMap<MeasureTrackKey, MeasureBuilder>();
 
     public Headers getHeaders() {
         return headers.createHeaders();
@@ -51,6 +54,15 @@ public class ParserToModelListener implements GP4ParserListener {
             trackHeaderList.add(builder.createTrackHeader());
         }
         return trackHeaderList;
+    }
+
+    public List<Measure> getMeasures() {
+        List<Measure> measureList = new ArrayList<Measure>(measures.size());
+        for (MeasureBuilder builder : measures.values()) {
+            measureList.add(builder.createMeasure());
+        }
+        Collections.sort(measureList);
+        return measureList;
     }
 
     public void open(File file) {
@@ -130,12 +142,24 @@ public class ParserToModelListener implements GP4ParserListener {
         for (int trackIndex = 0; trackIndex < numberOfTracks; trackIndex++) {
             trackHeaders.add(new TrackHeaderBuilder());
         }
+
+
     }
 
     public void readNumberOfMesures(int numberOfMesures) {
         pieceInformation.withNumberOfMeasure(numberOfMesures);
         for (int measureIndex = 0; measureIndex < numberOfMesures; measureIndex++) {
             measureHeader.add(new MeasureHeaderBuilder());
+        }
+
+        // trackHeaders.size may not be the best to know the number of tracks
+        for (int trackIndex = 0; trackIndex < trackHeaders.size(); trackIndex++) {
+            for (int measureIndex = 0; measureIndex < numberOfMesures; measureIndex++) {
+                MeasureBuilder builder = new MeasureBuilder()
+                        .withMeasureIndex(measureIndex)
+                        .withTrackIndex(trackIndex);
+                measures.put(new MeasureTrackKey(trackIndex, measureIndex), builder);
+            }
         }
     }
 
@@ -186,7 +210,7 @@ public class ParserToModelListener implements GP4ParserListener {
     }
 
     public void readNumberOfBeats(int track, int mesure, int numberOfBeats) {
-
+        measures.get(new MeasureTrackKey(track, mesure)).withNumberOfBeats(numberOfBeats);
     }
 
     public void readStringPlayed(int track, int mesure, int beat, int stringsPlayed) {

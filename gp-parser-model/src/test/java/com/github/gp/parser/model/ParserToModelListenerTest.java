@@ -2,6 +2,7 @@ package com.github.gp.parser.model;
 
 import com.github.gp.parser.model.header.Headers;
 import com.github.gp.parser.model.header.PieceInformation;
+import com.github.gp.parser.model.measures.Measure;
 import com.github.gp.parser.model.measures.MeasureHeader;
 import com.github.gp.parser.model.tracks.TrackHeader;
 import net.sourceforge.musicsvg.io.gp.GP4Parser;
@@ -65,5 +66,15 @@ public class ParserToModelListenerTest {
         assertThat(header.getNumberOfFrets()).isEqualTo(24);
         assertThat(header.getNumberOfString()).isEqualTo(6);
         assertThat(header.getName()).isEqualTo("Track 1");
+    }
+
+    @Test
+    public void testGetMeasures() {
+        List<Measure> measures = listener.getMeasures();
+        assertThat(measures).hasSize(3);
+        assertThat(measures.get(1).getNumberOfBeats()).isEqualTo(1);
+        assertThat(measures.get(0).getMeasureIndex()).isEqualTo(0);
+        assertThat(measures.get(1).getMeasureIndex()).isEqualTo(1);
+        assertThat(measures.get(2).getMeasureIndex()).isEqualTo(2);
     }
 }
