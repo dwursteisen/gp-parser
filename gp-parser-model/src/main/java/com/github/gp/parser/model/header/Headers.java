@@ -1,4 +1,4 @@
-package com.github.gp.parser.model;
+package com.github.gp.parser.model.header;
 
 /**
  * User: Wursteisen David

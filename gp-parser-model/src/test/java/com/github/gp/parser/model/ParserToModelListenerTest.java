@@ -1,5 +1,8 @@
 package com.github.gp.parser.model;
 
+import com.github.gp.parser.model.header.Headers;
+import com.github.gp.parser.model.header.PieceInformation;
+import com.github.gp.parser.model.measures.MeasureHeader;
 import net.sourceforge.musicsvg.io.gp.GP4Parser;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -7,6 +10,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -44,5 +48,11 @@ public class ParserToModelListenerTest {
         assertThat(pieceInformation.getTempo()).isEqualTo(120);
         assertThat(pieceInformation.getNumberOfTrack()).isEqualTo(1);
         assertThat(pieceInformation.getNumberOfMeasure()).isEqualTo(3);
+    }
+
+    @Test
+    public void testGetMeasureHeaders() {
+        List<MeasureHeader> measureHeaders = listener.getMeasureHeaders();
+        assertThat(measureHeaders).hasSize(3);
     }
 }

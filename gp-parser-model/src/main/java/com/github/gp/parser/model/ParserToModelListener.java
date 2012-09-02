@@ -1,8 +1,16 @@
 package com.github.gp.parser.model;
 
+import com.github.gp.parser.model.header.Headers;
+import com.github.gp.parser.model.header.HeadersBuilder;
+import com.github.gp.parser.model.header.PieceInformation;
+import com.github.gp.parser.model.header.PieceInformationBuilder;
+import com.github.gp.parser.model.measures.MeasureHeader;
+import com.github.gp.parser.model.measures.MeasureHeaderBuilder;
 import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: Wursteisen David
@@ -15,12 +23,22 @@ public class ParserToModelListener implements GP4ParserListener {
 
     private final PieceInformationBuilder pieceInformation = new PieceInformationBuilder();
 
+    private final List<MeasureHeaderBuilder> measureHeader = new ArrayList<MeasureHeaderBuilder>();
+
     public Headers getHeaders() {
         return headers.createHeaders();
     }
 
     public PieceInformation getPieceInformation() {
         return pieceInformation.createPieceInformation();
+    }
+
+    public List<MeasureHeader> getMeasureHeaders() {
+        List<MeasureHeader> measureHeaders = new ArrayList<MeasureHeader>(measureHeader.size());
+        for (MeasureHeaderBuilder builder : measureHeader) {
+            measureHeaders.add(builder.createMeasureHeader());
+        }
+        return measureHeaders;
     }
 
     public void open(File file) {
@@ -101,6 +119,9 @@ public class ParserToModelListener implements GP4ParserListener {
 
     public void readNumberOfMesures(int numberOfMesures) {
         pieceInformation.withNumberOfMeasure(numberOfMesures);
+        for (int measureIndex = 0; measureIndex < numberOfMesures; measureIndex++) {
+            measureHeader.add(new MeasureHeaderBuilder());
+        }
     }
 
     public void readMesureMarker(int number, String name, int r, int g, int b) {
@@ -112,7 +133,11 @@ public class ParserToModelListener implements GP4ParserListener {
     }
 
     public void readMeasureHeader(int number, int numerator, int denominator, boolean repeatStart, boolean doubleBar, int numberOfAlternateEnding, int numberOfRepetitions) {
-
+        measureHeader.get(number)
+                .withRepeat(repeatStart)
+                .withDoubleBar(doubleBar)
+                .withNumberOfAlternateEnding(numberOfAlternateEnding)
+                .withNumberOfRepeats(numberOfRepetitions);
     }
 
     public void readTrackMidiParameter(int trackIndex, int port, int channelIndex, int effects, int numberOfFrets, int capo, int r, int g, int b) {
