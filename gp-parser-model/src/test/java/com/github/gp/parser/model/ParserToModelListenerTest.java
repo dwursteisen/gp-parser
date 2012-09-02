@@ -1,0 +1,48 @@
+package com.github.gp.parser.model;
+
+import net.sourceforge.musicsvg.io.gp.GP4Parser;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import static org.fest.assertions.Assertions.assertThat;
+
+/**
+ * User: Wursteisen David
+ * Date: 02/09/12
+ * Time: 21:52
+ */
+public class ParserToModelListenerTest {
+
+    private ParserToModelListener listener;
+
+    @BeforeTest
+    public void setUp() throws URISyntaxException, IOException {
+        File file = new File(getClass().getResource("/test_gp4.gp4").toURI());
+        GP4Parser parser = new GP4Parser();
+        listener = new ParserToModelListener();
+
+        parser.setListener(listener);
+        parser.openFile(file);
+        parser.close();
+
+    }
+
+    @Test
+    public void testGetHeaders() throws Exception {
+        Headers headers = listener.getHeaders();
+        assertThat(headers.getVersion()).isEqualTo("FICHIER GUITAR PRO v4.06");
+        assertThat(headers.getTitle()).isEqualTo("title");
+    }
+
+    @Test
+    public void testGetPieceInformation() {
+        PieceInformation pieceInformation = listener.getPieceInformation();
+        assertThat(pieceInformation.getTempo()).isEqualTo(120);
+        assertThat(pieceInformation.getNumberOfTrack()).isEqualTo(1);
+        assertThat(pieceInformation.getNumberOfMeasure()).isEqualTo(3);
+    }
+}

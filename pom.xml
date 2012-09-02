@@ -9,6 +9,7 @@
     <url>https://github.com/dwursteisen/gp-parser</url>
     <modules>
         <module>gp-parser-core</module>
+        <module>gp-parser-model</module>
         <module>gp-parser-example</module>
     </modules>
 
