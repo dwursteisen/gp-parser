@@ -7,10 +7,12 @@ import com.github.gp.parser.model.measures.MeasureHeader;
 import com.github.gp.parser.model.tracks.TrackHeader;
 import net.sourceforge.musicsvg.io.gp.GP4Parser;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -35,6 +37,35 @@ public class ParserToModelListenerTest {
         parser.openFile(file);
         parser.close();
 
+    }
+
+
+    @DataProvider(name = "filename")
+    public Object[][] createData(Method method) {
+        return new Object[][]{
+                {"/test_gp4.gp4"},
+                {"/rythme.gp4"},
+                {"/rythme2.gp4"},
+                {"/rythme_blues.gp4"},
+                {"/solfege.gp4"}
+        };
+    }
+
+    @Test(dataProvider = "filename")
+    public void readFiles(String filename) throws Exception {
+        File file = new File(getClass().getResource(filename).toURI());
+        GP4Parser parser = new GP4Parser();
+        ParserToModelListener listener = new ParserToModelListener();
+
+        parser.setListener(listener);
+        parser.openFile(file);
+        parser.close();
+
+        listener.getPieceInformation();
+        listener.getHeaders();
+        listener.getTrackHeaders();
+        listener.getMeasureHeaders();
+        listener.getMeasures();
     }
 
     @Test
