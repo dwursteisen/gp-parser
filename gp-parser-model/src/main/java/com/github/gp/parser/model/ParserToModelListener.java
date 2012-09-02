@@ -6,6 +6,8 @@ import com.github.gp.parser.model.header.PieceInformation;
 import com.github.gp.parser.model.header.PieceInformationBuilder;
 import com.github.gp.parser.model.measures.MeasureHeader;
 import com.github.gp.parser.model.measures.MeasureHeaderBuilder;
+import com.github.gp.parser.model.tracks.TrackHeader;
+import com.github.gp.parser.model.tracks.TrackHeaderBuilder;
 import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
 
 import java.io.File;
@@ -25,6 +27,8 @@ public class ParserToModelListener implements GP4ParserListener {
 
     private final List<MeasureHeaderBuilder> measureHeader = new ArrayList<MeasureHeaderBuilder>();
 
+    private final List<TrackHeaderBuilder> trackHeaders = new ArrayList<TrackHeaderBuilder>();
+
     public Headers getHeaders() {
         return headers.createHeaders();
     }
@@ -39,6 +43,14 @@ public class ParserToModelListener implements GP4ParserListener {
             measureHeaders.add(builder.createMeasureHeader());
         }
         return measureHeaders;
+    }
+
+    public List<TrackHeader> getTrackHeaders() {
+        List<TrackHeader> trackHeaderList = new ArrayList<TrackHeader>(trackHeaders.size());
+        for (TrackHeaderBuilder builder : trackHeaders) {
+            trackHeaderList.add(builder.createTrackHeader());
+        }
+        return trackHeaderList;
     }
 
     public void open(File file) {
@@ -115,6 +127,9 @@ public class ParserToModelListener implements GP4ParserListener {
 
     public void readNumberOfTracks(int numberOfTracks) {
         pieceInformation.withNumberOfTrack(numberOfTracks);
+        for (int trackIndex = 0; trackIndex < numberOfTracks; trackIndex++) {
+            trackHeaders.add(new TrackHeaderBuilder());
+        }
     }
 
     public void readNumberOfMesures(int numberOfMesures) {
@@ -141,10 +156,16 @@ public class ParserToModelListener implements GP4ParserListener {
     }
 
     public void readTrackMidiParameter(int trackIndex, int port, int channelIndex, int effects, int numberOfFrets, int capo, int r, int g, int b) {
-
+        trackHeaders.get(trackIndex).withCapodastrePosition(capo).withNumberOfFrets(numberOfFrets);
     }
 
     public void readTrackParameter(int trackIndex, String name, int numberOfStrings, boolean isDrumsTrack, boolean is12StringedGuitarTrack, boolean isBanjoTrack) {
+        trackHeaders.get(trackIndex).withName(name)
+                .withNumberOfString(numberOfStrings)
+                .withDrumTrack(isDrumsTrack)
+                .withBanjoTrack(isBanjoTrack)
+                .withTwelveStringTrack(is12StringedGuitarTrack);
+
 
     }
 
