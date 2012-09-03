@@ -1,5 +1,7 @@
 package com.github.gp.parser.model;
 
+import com.github.gp.parser.model.beats.Beat;
+import com.github.gp.parser.model.beats.BeatBuilder;
 import com.github.gp.parser.model.header.Headers;
 import com.github.gp.parser.model.header.HeadersBuilder;
 import com.github.gp.parser.model.header.PieceInformation;
@@ -41,6 +43,9 @@ public class ParserToModelListener implements GP4ParserListener {
 
     private final Map<MeasureTrackKey, MeasureBuilder> measureBuilderMap =
             new HashMap<MeasureTrackKey, MeasureBuilder>();
+
+    private final Map<MeasureTrackBeatKey, BeatBuilder> beatBuilderMap =
+            new HashMap<MeasureTrackBeatKey, BeatBuilder>();
 
     private Headers headers;
 
@@ -226,6 +231,11 @@ public class ParserToModelListener implements GP4ParserListener {
     public void readNumberOfBeats(int track, int mesure, int numberOfBeats) {
         measureBuilderMap.get(new MeasureTrackKey(track, mesure)).withNumberOfBeats(
                 numberOfBeats);
+
+        for (int beatIndex = 0; beatIndex < numberOfBeats; beatIndex++) {
+            beatBuilderMap.put(new MeasureTrackBeatKey(track, mesure, beatIndex),
+                    new BeatBuilder());
+        }
     }
 
     public void readStringPlayed(int track, int mesure, int beat, int stringsPlayed) {
@@ -234,7 +244,8 @@ public class ParserToModelListener implements GP4ParserListener {
 
     public void readNote(int track, int mesure, int beat, int stringPlayer, int numberOfFret,
         int duration) {
-
+        beatBuilderMap.get(new MeasureTrackBeatKey(track, mesure, beat)).withBeatIndex(beat)
+                .withDuration(duration).withFret(numberOfFret).withString(stringPlayer);
     }
 
     public void readNoteParameter(int track, int mesure, int beat, boolean accentuated,
@@ -252,6 +263,11 @@ public class ParserToModelListener implements GP4ParserListener {
         measureHeaders = new ArrayList<MeasureHeader>(measureHeaderBuilders.size());
         for (MeasureHeaderBuilder builder : measureHeaderBuilders) {
             measureHeaders.add(builder.createMeasureHeader());
+        }
+
+        List<Beat> beats = new ArrayList<Beat>();
+        for (BeatBuilder beatBuilder : beatBuilderMap.values()) {
+            beats.add(beatBuilder.createBeat());
         }
 
         trackHeaders = new ArrayList<TrackHeader>(trackHeaderBuilders.size());
