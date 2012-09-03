@@ -1,6 +1,6 @@
 package com.github.gp.parser.model.beats;
 
-public class Beat {
+public class Beat implements Comparable<Beat> {
     private final int beatIndex;
 
     private final int fret;
@@ -9,7 +9,7 @@ public class Beat {
 
     private final int duration; // should be an enum ?
 
-    public Beat(int beatIndex, int fret, int string, int duration) {
+    public Beat(int beatIndex, int string, int fret, int duration) {
         this.beatIndex = beatIndex;
         this.fret = fret;
         this.string = string;
@@ -30,5 +30,21 @@ public class Beat {
 
     public int getDuration() {
         return duration;
+    }
+
+    @Override
+    public int compareTo(Beat o) {
+        if (beatIndex > o.beatIndex) {
+            return 1;
+        } else if (beatIndex < o.beatIndex) {
+            return -1;
+        }
+
+        if (string > o.string) {
+            return 1;
+        } else if (string < o.string) {
+            return -1;
+        }
+        return 0;
     }
 }

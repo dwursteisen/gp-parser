@@ -276,6 +276,7 @@ public class ParserToModelListener implements GP4ParserListener {
             for (BeatBuilder beatBuilder : builders) {
                 beats.add(beatBuilder.createBeat());
             }
+            Collections.sort(beats);
 
             builder.withHeader(measureHeaders.get(builder.getMeasureIndex())); // should be ok...
             builder.withBeats(beats);

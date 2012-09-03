@@ -30,6 +30,6 @@ public class BeatBuilder {
     }
 
     public Beat createBeat() {
-        return new Beat(beatIndex, fret, string, duration);
+        return new Beat(beatIndex, string, fret, duration);
     }
 }
