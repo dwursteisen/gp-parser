@@ -5,17 +5,15 @@ import org.testng.annotations.Test;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * User: Wursteisen David
- * Date: 02/09/12
- * Time: 23:59
+ * User: Wursteisen David Date: 02/09/12 Time: 23:59
  */
 public class MeasureTest {
     @Test
     public void testCompareTo() throws Exception {
-        Measure measure1 = new Measure(0, 1, 5);
-        Measure measure2 = new Measure(0, 2, 5);
-        Measure measure3 = new Measure(1, 1, 5);
-        Measure measure4 = new Measure(1, 2, 5);
+        Measure measure1 = new Measure(0, 1, 5, null);
+        Measure measure2 = new Measure(0, 2, 5, null);
+        Measure measure3 = new Measure(1, 1, 5, null);
+        Measure measure4 = new Measure(1, 2, 5, null);
 
         // expected = 1,3,2,4
         assertThat(measure1.compareTo(measure1)).isEqualTo(0);

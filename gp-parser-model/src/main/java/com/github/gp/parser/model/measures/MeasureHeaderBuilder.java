@@ -2,9 +2,14 @@ package com.github.gp.parser.model.measures;
 
 public class MeasureHeaderBuilder {
     private boolean doubleBar;
+
     private boolean repeat;
+
     private int numberOfAlternateEnding;
+
     private int numberOfRepeats;
+
+    private int measureIndex;
 
     public MeasureHeaderBuilder withDoubleBar(boolean doubleBar) {
         this.doubleBar = doubleBar;
@@ -26,7 +31,13 @@ public class MeasureHeaderBuilder {
         return this;
     }
 
+    public MeasureHeaderBuilder withMeasureIndex(int index) {
+        this.measureIndex = index;
+        return this;
+    }
+
     public MeasureHeader createMeasureHeader() {
-        return new MeasureHeader(doubleBar, repeat, numberOfAlternateEnding, numberOfRepeats);
+        return new MeasureHeader(measureIndex, doubleBar, repeat, numberOfAlternateEnding,
+                numberOfRepeats);
     }
 }

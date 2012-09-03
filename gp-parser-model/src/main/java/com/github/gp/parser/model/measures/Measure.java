@@ -1,22 +1,24 @@
 package com.github.gp.parser.model.measures;
 
 /**
- * User: Wursteisen David
- * Date: 02/09/12
- * Time: 23:35
+ * User: Wursteisen David Date: 02/09/12 Time: 23:35
  */
 public class Measure implements Comparable<Measure> {
 
     private final int trackIndex;
+
     private final int measureIndex;
+
     private final int numberOfBeats;
 
-    public Measure(int trackIndex, int measureIndex, int numberOfBeats) {
+    private final MeasureHeader header;
+
+    public Measure(int trackIndex, int measureIndex, int numberOfBeats, MeasureHeader header) {
         this.trackIndex = trackIndex;
         this.measureIndex = measureIndex;
         this.numberOfBeats = numberOfBeats;
+        this.header = header;
     }
-
 
     public int getTrackIndex() {
         return trackIndex;
@@ -28,6 +30,10 @@ public class Measure implements Comparable<Measure> {
 
     public int getNumberOfBeats() {
         return numberOfBeats;
+    }
+
+    public MeasureHeader getHeader() {
+        return header;
     }
 
     public int compareTo(Measure o) {

@@ -184,12 +184,12 @@ public class ParserToModelListener implements GP4ParserListener {
 
     }
 
-    public void readMeasureHeader(int number, int numerator, int denominator,
+    public void readMeasureHeader(int measureIndex, int numerator, int denominator,
         boolean repeatStart, boolean doubleBar, int numberOfAlternateEnding,
         int numberOfRepetitions) {
-        measureHeaderBuilders.get(number).withRepeat(repeatStart).withDoubleBar(doubleBar)
-                .withNumberOfAlternateEnding(numberOfAlternateEnding).withNumberOfRepeats(
-                        numberOfRepetitions);
+        measureHeaderBuilders.get(measureIndex).withMeasureIndex(measureIndex).withRepeat(
+                repeatStart).withDoubleBar(doubleBar).withNumberOfAlternateEnding(
+                numberOfAlternateEnding).withNumberOfRepeats(numberOfRepetitions);
     }
 
     public void readTrackMidiParameter(int trackIndex, int port, int channelIndex, int effects,
@@ -244,6 +244,9 @@ public class ParserToModelListener implements GP4ParserListener {
 
     @Override
     public void endOfParsing(File file) {
+
+        // TODO: refactoring. the code is not enough clear
+        // (but it build object graph)
         headers = headersBuilder.createHeaders();
         pieceInformation = pieceInformationBuilder.createPieceInformation();
         measureHeaders = new ArrayList<MeasureHeader>(measureHeaderBuilders.size());
@@ -258,6 +261,7 @@ public class ParserToModelListener implements GP4ParserListener {
 
         measures = new ArrayList<Measure>(measureBuilderMap.size());
         for (MeasureBuilder builder : measureBuilderMap.values()) {
+            builder.withHeader(measureHeaders.get(builder.getMeasureIndex())); // should be ok...
             measures.add(builder.createMeasure());
         }
         Collections.sort(measures);
@@ -268,7 +272,7 @@ public class ParserToModelListener implements GP4ParserListener {
             TrackBuilder trackBuilder = new TrackBuilder();
             List<Measure> measureOfTrack =
                     new ArrayList<Measure>(Collections2.filter(measures,
-                            new SameTrackPredicate(trackHeader.getTrackIndex())));
+                            new MeasuresOnTrackPredicate(trackHeader.getTrackIndex())));
 
             trackBuilder.withHeader(trackHeader).withTrackIndex(trackHeader.getTrackIndex())
                     .withMeasures(measureOfTrack);
@@ -279,10 +283,10 @@ public class ParserToModelListener implements GP4ParserListener {
 
     }
 
-    private class SameTrackPredicate implements Predicate<Measure> {
+    private class MeasuresOnTrackPredicate implements Predicate<Measure> {
         private final int trackIndex;
 
-        public SameTrackPredicate(int trackIndex) {
+        public MeasuresOnTrackPredicate(int trackIndex) {
             this.trackIndex = trackIndex;
         }
 
