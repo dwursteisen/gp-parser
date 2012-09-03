@@ -4,6 +4,7 @@ import com.github.gp.parser.model.header.Headers;
 import com.github.gp.parser.model.header.PieceInformation;
 import com.github.gp.parser.model.measures.Measure;
 import com.github.gp.parser.model.measures.MeasureHeader;
+import com.github.gp.parser.model.tracks.Track;
 import com.github.gp.parser.model.tracks.TrackHeader;
 import net.sourceforge.musicsvg.io.gp.GP4Parser;
 import org.testng.annotations.BeforeTest;
@@ -19,9 +20,7 @@ import java.util.List;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * User: Wursteisen David
- * Date: 02/09/12
- * Time: 21:52
+ * User: Wursteisen David Date: 02/09/12 Time: 21:52
  */
 public class ParserToModelListenerTest {
 
@@ -39,16 +38,10 @@ public class ParserToModelListenerTest {
 
     }
 
-
     @DataProvider(name = "filename")
     public Object[][] createData(Method method) {
-        return new Object[][]{
-                {"/test_gp4.gp4"},
-                {"/rythme.gp4"},
-                {"/rythme2.gp4"},
-                {"/rythme_blues.gp4"},
-                {"/solfege.gp4"}
-        };
+        return new Object[][] { { "/test_gp4.gp4" }, { "/rythme.gp4" }, { "/rythme2.gp4" },
+                { "/rythme_blues.gp4" }, { "/solfege.gp4" } };
     }
 
     @Test(dataProvider = "filename")
@@ -61,11 +54,12 @@ public class ParserToModelListenerTest {
         parser.openFile(file);
         parser.close();
 
-        listener.getPieceInformation();
-        listener.getHeaders();
-        listener.getTrackHeaders();
-        listener.getMeasureHeaders();
-        listener.getMeasures();
+        assertThat(listener.getPieceInformation()).isNotNull();
+        assertThat(listener.getHeaders()).isNotNull();
+        assertThat(listener.getTrackHeaders()).isNotNull();
+        assertThat(listener.getMeasureHeaders()).isNotNull();
+        assertThat(listener.getMeasures()).isNotNull();
+        assertThat(listener.getTracks()).isNotNull();
     }
 
     @Test
@@ -108,4 +102,16 @@ public class ParserToModelListenerTest {
         assertThat(measures.get(1).getMeasureIndex()).isEqualTo(1);
         assertThat(measures.get(2).getMeasureIndex()).isEqualTo(2);
     }
+
+    @Test
+    public void testGetTracks() {
+        List<Track> tracks = listener.getTracks();
+        assertThat(tracks).hasSize(1);
+
+        Track firstTrack = tracks.get(0);
+
+        assertThat(firstTrack.getMeasures()).hasSize(3);
+
+    }
+
 }

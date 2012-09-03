@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * To change this template, choose Tools | Templates and open the template in the editor.
  */
 
 package org.sourceforge.musicsvg.example;
@@ -14,7 +13,6 @@ import java.io.File;
  */
 public class SystemOutputGP4ParserListenerImpl implements GP4ParserListener {
 
-
     private void print(String title, String... content) {
         StringBuilder builder = new StringBuilder();
 
@@ -23,8 +21,8 @@ public class SystemOutputGP4ParserListenerImpl implements GP4ParserListener {
             builder.append(" ");
         }
 
-
-        System.out.print("+--------------------+------------------------------------------------------------+\n");
+        System.out
+                .print("+--------------------+------------------------------------------------------------+\n");
         System.out.format("|%20s|%60s|\n", title, builder.toString());
 
     }
@@ -37,7 +35,6 @@ public class SystemOutputGP4ParserListenerImpl implements GP4ParserListener {
         print(title, strings);
     }
 
-
     private void print(String title, int... integers) {
         String strings[] = new String[integers.length];
         for (int i = 0; i < integers.length; i++) {
@@ -45,7 +42,6 @@ public class SystemOutputGP4ParserListenerImpl implements GP4ParserListener {
         }
         print(title, strings);
     }
-
 
     public void open(File file) {
         System.out.println("====================================");
@@ -116,7 +112,8 @@ public class SystemOutputGP4ParserListenerImpl implements GP4ParserListener {
         print("octave", octave);
     }
 
-    public void readMidiChannel(int port, int channel, int instrument, byte volume, byte balance, byte chorus, byte reverb, byte phaser, byte tremolo) {
+    public void readMidiChannel(int port, int channel, int instrument, byte volume,
+        byte balance, byte chorus, byte reverb, byte phaser, byte tremolo) {
         print("Midi Channel[0]", port, channel, instrument, volume, balance);
         print("Midi Channel[1]", chorus, reverb, phaser, tremolo);
     }
@@ -137,15 +134,19 @@ public class SystemOutputGP4ParserListenerImpl implements GP4ParserListener {
 
     }
 
-    public void readMeasureHeader(int number, int numerator, int denominator, boolean repeatStart, boolean doubleBar, int numberOfAlternateEnding, int numberOfRepetitions) {
+    public void readMeasureHeader(int number, int numerator, int denominator,
+        boolean repeatStart, boolean doubleBar, int numberOfAlternateEnding,
+        int numberOfRepetitions) {
 
     }
 
-    public void readTrackMidiParameter(int trackIndex, int port, int channelIndex, int effects, int numberOfFrets, int capo, int r, int g, int b) {
+    public void readTrackMidiParameter(int trackIndex, int port, int channelIndex, int effects,
+        int numberOfFrets, int capo, int r, int g, int b) {
 
     }
 
-    public void readTrackParameter(int trackIndex, String name, int numberOfStrings, boolean isDrumsTrack, boolean is12StringedGuitarTrack, boolean isBanjoTrack) {
+    public void readTrackParameter(int trackIndex, String name, int numberOfStrings,
+        boolean isDrumsTrack, boolean is12StringedGuitarTrack, boolean isBanjoTrack) {
 
     }
 
@@ -157,7 +158,8 @@ public class SystemOutputGP4ParserListenerImpl implements GP4ParserListener {
 
     }
 
-    public void readEmptyBeat(int track, int mesure, int beat, boolean emptyBeat, boolean restBeat) {
+    public void readEmptyBeat(int track, int mesure, int beat, boolean emptyBeat,
+        boolean restBeat) {
 
     }
 
@@ -173,12 +175,19 @@ public class SystemOutputGP4ParserListenerImpl implements GP4ParserListener {
 
     }
 
-    public void readNote(int track, int mesure, int beat, int stringPlayer, int numberOfFret, int duration) {
+    public void readNote(int track, int mesure, int beat, int stringPlayer, int numberOfFret,
+        int duration) {
 
     }
 
-    public void readNoteParameter(int track, int mesure, int beat, boolean accentuated, boolean ghostNote, boolean dotted) {
+    public void readNoteParameter(int track, int mesure, int beat, boolean accentuated,
+        boolean ghostNote, boolean dotted) {
 
+    }
+
+    @Override
+    public void endOfParsing(File file) {
+        System.out.printf("end of parsing");
     }
 
 }

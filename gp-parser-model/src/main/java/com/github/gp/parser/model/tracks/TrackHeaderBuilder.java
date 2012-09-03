@@ -1,13 +1,26 @@
 package com.github.gp.parser.model.tracks;
 
 public class TrackHeaderBuilder {
+    private int trackIndex;
+
     private String name;
+
     private int numberOfString;
+
     private int numberOfFrets;
+
     private int capodastrePosition;
+
     private boolean drumTrack;
+
     private boolean banjoTrack;
+
     private boolean twelveStringTrack;
+
+    public TrackHeaderBuilder withTrackIndex(int trackIndex) {
+        this.trackIndex = trackIndex;
+        return this;
+    }
 
     public TrackHeaderBuilder withName(String name) {
         this.name = name;
@@ -30,7 +43,8 @@ public class TrackHeaderBuilder {
     }
 
     public TrackHeader createTrackHeader() {
-        return new TrackHeader(name, numberOfString, numberOfFrets, capodastrePosition, drumTrack, banjoTrack, twelveStringTrack);
+        return new TrackHeader(trackIndex, name, numberOfString, numberOfFrets,
+                capodastrePosition, drumTrack, banjoTrack, twelveStringTrack);
     }
 
     public TrackHeaderBuilder withDrumTrack(boolean drumTrack) {
