@@ -229,11 +229,7 @@ public class ParserToModelListener implements GP4ParserListener {
         measureBuilderMap.get(key).withNumberOfBeats(
                 numberOfBeats);
 
-        List<BeatBuilder> beats = new ArrayList<BeatBuilder>(numberOfBeats);
-        beatBuilderMap.put(key, beats);
-        for (int beatIndex = 0; beatIndex < numberOfBeats; beatIndex++) {
-            beats.add(new BeatBuilder());
-        }
+        beatBuilderMap.put(key, new ArrayList<BeatBuilder>(numberOfBeats));
     }
 
     public void readStringPlayed(int track, int mesure, int beat, int stringsPlayed) {
@@ -242,8 +238,10 @@ public class ParserToModelListener implements GP4ParserListener {
 
     public void readNote(int track, int mesure, int beat, int stringPlayer, int numberOfFret,
                          int duration) {
-        beatBuilderMap.get(new MeasureTrackKey(track, mesure)).get(beat).withBeatIndex(beat)
-                .withDuration(duration).withFret(numberOfFret).withString(stringPlayer);
+
+        BeatBuilder builder = new BeatBuilder();
+        builder.withBeatIndex(beat).withDuration(duration).withFret(numberOfFret).withString(stringPlayer);
+        beatBuilderMap.get(new MeasureTrackKey(track, mesure)).add(builder);
     }
 
     public void readNoteParameter(int track, int mesure, int beat, boolean accentuated,

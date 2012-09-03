@@ -101,6 +101,8 @@ public class ParserToModelListenerTest {
         assertThat(measures.get(0).getMeasureIndex()).isEqualTo(0);
         assertThat(measures.get(1).getMeasureIndex()).isEqualTo(1);
         assertThat(measures.get(2).getMeasureIndex()).isEqualTo(2);
+
+        assertThat(measures.get(0).getBeats()).hasSize(5);
     }
 
     @Test
