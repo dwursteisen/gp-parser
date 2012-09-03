@@ -40,8 +40,8 @@ public class ParserToModelListenerTest {
 
     @DataProvider(name = "filename")
     public Object[][] createData(Method method) {
-        return new Object[][] { { "/test_gp4.gp4" }, { "/rythme.gp4" }, { "/rythme2.gp4" },
-                { "/rythme_blues.gp4" }, { "/solfege.gp4" } };
+        return new Object[][]{{"/test_gp4.gp4"}, {"/rythme.gp4"}, {"/rythme2.gp4"},
+                {"/rythme_blues.gp4"}, {"/solfege.gp4"}, {"/famous_song.gp4"}};
     }
 
     @Test(dataProvider = "filename")

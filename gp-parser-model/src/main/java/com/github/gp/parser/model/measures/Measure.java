@@ -1,5 +1,9 @@
 package com.github.gp.parser.model.measures;
 
+import com.github.gp.parser.model.beats.Beat;
+
+import java.util.List;
+
 /**
  * User: Wursteisen David Date: 02/09/12 Time: 23:35
  */
@@ -13,11 +17,14 @@ public class Measure implements Comparable<Measure> {
 
     private final MeasureHeader header;
 
-    public Measure(int trackIndex, int measureIndex, int numberOfBeats, MeasureHeader header) {
+    private final List<Beat> beats;
+
+    public Measure(int trackIndex, int measureIndex, int numberOfBeats, MeasureHeader header, List<Beat> beats) {
         this.trackIndex = trackIndex;
         this.measureIndex = measureIndex;
         this.numberOfBeats = numberOfBeats;
         this.header = header;
+        this.beats = beats;
     }
 
     public int getTrackIndex() {
@@ -34,6 +41,10 @@ public class Measure implements Comparable<Measure> {
 
     public MeasureHeader getHeader() {
         return header;
+    }
+
+    public List<Beat> getBeats() {
+        return beats;
     }
 
     public int compareTo(Measure o) {

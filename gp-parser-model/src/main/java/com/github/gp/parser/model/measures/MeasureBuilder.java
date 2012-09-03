@@ -1,5 +1,10 @@
 package com.github.gp.parser.model.measures;
 
+import com.github.gp.parser.model.beats.Beat;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class MeasureBuilder {
     private int trackIndex;
 
@@ -8,6 +13,7 @@ public class MeasureBuilder {
     private int numberOfBeats;
 
     private MeasureHeader header;
+    private List<Beat> beats;
 
     public int getMeasureIndex() {
         return measureIndex;
@@ -37,7 +43,12 @@ public class MeasureBuilder {
         return this;
     }
 
+    public MeasureBuilder withBeats(List<Beat> beats) {
+        this.beats = new ArrayList<Beat>(beats);
+        return this;
+    }
+
     public Measure createMeasure() {
-        return new Measure(trackIndex, measureIndex, numberOfBeats, header);
+        return new Measure(trackIndex, measureIndex, numberOfBeats, header, beats);
     }
 }

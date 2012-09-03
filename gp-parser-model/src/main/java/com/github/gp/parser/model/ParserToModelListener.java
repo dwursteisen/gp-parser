@@ -19,11 +19,7 @@ import com.google.common.collect.Collections2;
 import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: Wursteisen David Date: 02/09/12 Time: 21:12
@@ -44,8 +40,8 @@ public class ParserToModelListener implements GP4ParserListener {
     private final Map<MeasureTrackKey, MeasureBuilder> measureBuilderMap =
             new HashMap<MeasureTrackKey, MeasureBuilder>();
 
-    private final Map<MeasureTrackBeatKey, BeatBuilder> beatBuilderMap =
-            new HashMap<MeasureTrackBeatKey, BeatBuilder>();
+    private final Map<MeasureTrackKey, List<BeatBuilder>> beatBuilderMap =
+            new HashMap<MeasureTrackKey, List<BeatBuilder>>();
 
     private Headers headers;
 
@@ -152,7 +148,7 @@ public class ParserToModelListener implements GP4ParserListener {
     }
 
     public void readMidiChannel(int port, int channel, int instrument, byte volume,
-        byte balance, byte chorus, byte reverb, byte phaser, byte tremolo) {
+                                byte balance, byte chorus, byte reverb, byte phaser, byte tremolo) {
 
     }
 
@@ -190,21 +186,21 @@ public class ParserToModelListener implements GP4ParserListener {
     }
 
     public void readMeasureHeader(int measureIndex, int numerator, int denominator,
-        boolean repeatStart, boolean doubleBar, int numberOfAlternateEnding,
-        int numberOfRepetitions) {
+                                  boolean repeatStart, boolean doubleBar, int numberOfAlternateEnding,
+                                  int numberOfRepetitions) {
         measureHeaderBuilders.get(measureIndex).withMeasureIndex(measureIndex).withRepeat(
                 repeatStart).withDoubleBar(doubleBar).withNumberOfAlternateEnding(
                 numberOfAlternateEnding).withNumberOfRepeats(numberOfRepetitions);
     }
 
     public void readTrackMidiParameter(int trackIndex, int port, int channelIndex, int effects,
-        int numberOfFrets, int capo, int r, int g, int b) {
+                                       int numberOfFrets, int capo, int r, int g, int b) {
         trackHeaderBuilders.get(trackIndex).withCapodastrePosition(capo).withNumberOfFrets(
                 numberOfFrets);
     }
 
     public void readTrackParameter(int trackIndex, String name, int numberOfStrings,
-        boolean isDrumsTrack, boolean is12StringedGuitarTrack, boolean isBanjoTrack) {
+                                   boolean isDrumsTrack, boolean is12StringedGuitarTrack, boolean isBanjoTrack) {
         trackHeaderBuilders.get(trackIndex).withTrackIndex(trackIndex).withName(name)
                 .withNumberOfString(numberOfStrings).withDrumTrack(isDrumsTrack)
                 .withBanjoTrack(isBanjoTrack).withTwelveStringTrack(is12StringedGuitarTrack);
@@ -220,7 +216,7 @@ public class ParserToModelListener implements GP4ParserListener {
     }
 
     public void readEmptyBeat(int track, int mesure, int beat, boolean emptyBeat,
-        boolean restBeat) {
+                              boolean restBeat) {
 
     }
 
@@ -229,12 +225,14 @@ public class ParserToModelListener implements GP4ParserListener {
     }
 
     public void readNumberOfBeats(int track, int mesure, int numberOfBeats) {
-        measureBuilderMap.get(new MeasureTrackKey(track, mesure)).withNumberOfBeats(
+        MeasureTrackKey key = new MeasureTrackKey(track, mesure);
+        measureBuilderMap.get(key).withNumberOfBeats(
                 numberOfBeats);
 
+        List<BeatBuilder> beats = new ArrayList<BeatBuilder>(numberOfBeats);
+        beatBuilderMap.put(key, beats);
         for (int beatIndex = 0; beatIndex < numberOfBeats; beatIndex++) {
-            beatBuilderMap.put(new MeasureTrackBeatKey(track, mesure, beatIndex),
-                    new BeatBuilder());
+            beats.add(new BeatBuilder());
         }
     }
 
@@ -243,13 +241,13 @@ public class ParserToModelListener implements GP4ParserListener {
     }
 
     public void readNote(int track, int mesure, int beat, int stringPlayer, int numberOfFret,
-        int duration) {
-        beatBuilderMap.get(new MeasureTrackBeatKey(track, mesure, beat)).withBeatIndex(beat)
+                         int duration) {
+        beatBuilderMap.get(new MeasureTrackKey(track, mesure)).get(beat).withBeatIndex(beat)
                 .withDuration(duration).withFret(numberOfFret).withString(stringPlayer);
     }
 
     public void readNoteParameter(int track, int mesure, int beat, boolean accentuated,
-        boolean ghostNote, boolean dotted) {
+                                  boolean ghostNote, boolean dotted) {
 
     }
 
@@ -265,11 +263,6 @@ public class ParserToModelListener implements GP4ParserListener {
             measureHeaders.add(builder.createMeasureHeader());
         }
 
-        List<Beat> beats = new ArrayList<Beat>();
-        for (BeatBuilder beatBuilder : beatBuilderMap.values()) {
-            beats.add(beatBuilder.createBeat());
-        }
-
         trackHeaders = new ArrayList<TrackHeader>(trackHeaderBuilders.size());
         for (TrackHeaderBuilder builder : trackHeaderBuilders) {
             trackHeaders.add(builder.createTrackHeader());
@@ -277,7 +270,17 @@ public class ParserToModelListener implements GP4ParserListener {
 
         measures = new ArrayList<Measure>(measureBuilderMap.size());
         for (MeasureBuilder builder : measureBuilderMap.values()) {
+
+            MeasureTrackKey key = new MeasureTrackKey(builder.getTrackIndex(), builder.getMeasureIndex());
+            List<BeatBuilder> builders = beatBuilderMap.get(key);
+
+            List<Beat> beats = new ArrayList<Beat>(builders.size());
+            for (BeatBuilder beatBuilder : builders) {
+                beats.add(beatBuilder.createBeat());
+            }
+
             builder.withHeader(measureHeaders.get(builder.getMeasureIndex())); // should be ok...
+            builder.withBeats(beats);
             measures.add(builder.createMeasure());
         }
         Collections.sort(measures);
@@ -311,5 +314,6 @@ public class ParserToModelListener implements GP4ParserListener {
             return measure.getTrackIndex() == trackIndex;
         }
     }
+
 
 }
