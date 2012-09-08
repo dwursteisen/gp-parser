@@ -43,7 +43,7 @@ public class TrackHeaderBuilder {
     }
 
     public TrackHeader createTrackHeader() {
-        return new TrackHeader(trackIndex, name, numberOfString, numberOfFrets,
+        return new TrackHeader(new TrackId(trackIndex), name, numberOfString, numberOfFrets,
                 capodastrePosition, drumTrack, banjoTrack, twelveStringTrack);
     }
 

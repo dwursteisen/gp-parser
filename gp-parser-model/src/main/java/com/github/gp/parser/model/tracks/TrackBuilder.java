@@ -27,6 +27,6 @@ public class TrackBuilder {
     }
 
     public Track createTrack() {
-        return new Track(trackIndex, measures, header);
+        return new Track(new TrackId(trackIndex), measures, header);
     }
 }

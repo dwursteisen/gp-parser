@@ -1,6 +1,7 @@
 package com.github.gp.parser.model.measures;
 
 import com.github.gp.parser.model.beats.Beat;
+import com.google.common.primitives.Ints;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class Measure implements Comparable<Measure> {
 
     private final int trackIndex;
 
-    private final int measureIndex;
+    private final MeasureId measureIndex;
 
     private final int numberOfBeats;
 
@@ -19,7 +20,7 @@ public class Measure implements Comparable<Measure> {
 
     private final List<Beat> beats;
 
-    public Measure(int trackIndex, int measureIndex, int numberOfBeats, MeasureHeader header, List<Beat> beats) {
+    public Measure(int trackIndex, MeasureId measureIndex, int numberOfBeats, MeasureHeader header, List<Beat> beats) {
         this.trackIndex = trackIndex;
         this.measureIndex = measureIndex;
         this.numberOfBeats = numberOfBeats;
@@ -31,7 +32,7 @@ public class Measure implements Comparable<Measure> {
         return trackIndex;
     }
 
-    public int getMeasureIndex() {
+    public MeasureId getMeasureIndex() {
         return measureIndex;
     }
 
@@ -48,16 +49,12 @@ public class Measure implements Comparable<Measure> {
     }
 
     public int compareTo(Measure o) {
-        boolean isSameMeasure = o.getMeasureIndex() == measureIndex;
-        boolean isSameTrack = o.getTrackIndex() == trackIndex;
-        if (isSameMeasure && isSameTrack) {
-            return 0;
+
+        int measureCompare = this.measureIndex.compareTo(o.measureIndex);
+        if (measureCompare != 0) {
+            return measureCompare;
         }
 
-        if (isSameMeasure) {
-            return trackIndex < o.getTrackIndex() ? -1 : 1;
-        }
-
-        return measureIndex < o.getMeasureIndex() ? -1 : 1;
+        return Ints.compare(this.trackIndex, o.trackIndex);
     }
 }

@@ -10,10 +10,10 @@ import static org.fest.assertions.Assertions.assertThat;
 public class MeasureTest {
     @Test
     public void testCompareTo() throws Exception {
-        Measure measure1 = new Measure(0, 1, 5, null, null);
-        Measure measure2 = new Measure(0, 2, 5, null, null);
-        Measure measure3 = new Measure(1, 1, 5, null, null);
-        Measure measure4 = new Measure(1, 2, 5, null, null);
+        Measure measure1 = new Measure(0, new MeasureId(1), 5, null, null);
+        Measure measure2 = new Measure(0, new MeasureId(2), 5, null, null);
+        Measure measure3 = new Measure(1, new MeasureId(1), 5, null, null);
+        Measure measure4 = new Measure(1, new MeasureId(2), 5, null, null);
 
         // expected = 1,3,2,4
         assertThat(measure1.compareTo(measure1)).isEqualTo(0);

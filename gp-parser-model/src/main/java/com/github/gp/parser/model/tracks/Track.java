@@ -6,19 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Track {
-    private final int trackIndex;
+    private final TrackId trackIndex;
 
     private final List<Measure> measures;
 
     private final TrackHeader header;
 
-    public Track(int trackIndex, List<Measure> measures, TrackHeader header) {
+    public Track(TrackId trackIndex, List<Measure> measures, TrackHeader header) {
         this.trackIndex = trackIndex;
         this.measures = measures;
         this.header = header;
     }
 
-    public int getTrackIndex() {
+    public TrackId getTrackIndex() {
         return trackIndex;
     }
 

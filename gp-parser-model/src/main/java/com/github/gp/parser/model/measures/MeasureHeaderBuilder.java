@@ -37,7 +37,7 @@ public class MeasureHeaderBuilder {
     }
 
     public MeasureHeader createMeasureHeader() {
-        return new MeasureHeader(measureIndex, doubleBar, repeat, numberOfAlternateEnding,
+        return new MeasureHeader(new MeasureId(measureIndex), doubleBar, repeat, numberOfAlternateEnding,
                 numberOfRepeats);
     }
 }

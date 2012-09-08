@@ -49,6 +49,6 @@ public class MeasureBuilder {
     }
 
     public Measure createMeasure() {
-        return new Measure(trackIndex, measureIndex, numberOfBeats, header, beats);
+        return new Measure(trackIndex, new MeasureId(measureIndex), numberOfBeats, header, beats);
     }
 }

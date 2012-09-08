@@ -6,14 +6,8 @@ import com.github.gp.parser.model.header.Headers;
 import com.github.gp.parser.model.header.HeadersBuilder;
 import com.github.gp.parser.model.header.PieceInformation;
 import com.github.gp.parser.model.header.PieceInformationBuilder;
-import com.github.gp.parser.model.measures.Measure;
-import com.github.gp.parser.model.measures.MeasureBuilder;
-import com.github.gp.parser.model.measures.MeasureHeader;
-import com.github.gp.parser.model.measures.MeasureHeaderBuilder;
-import com.github.gp.parser.model.tracks.Track;
-import com.github.gp.parser.model.tracks.TrackBuilder;
-import com.github.gp.parser.model.tracks.TrackHeader;
-import com.github.gp.parser.model.tracks.TrackHeaderBuilder;
+import com.github.gp.parser.model.measures.*;
+import com.github.gp.parser.model.tracks.*;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import net.sourceforge.musicsvg.io.gp.listeners.GP4ParserListener;
@@ -249,6 +243,7 @@ public class ParserToModelListener implements GP4ParserListener {
 
     }
 
+
     @Override
     public void endOfParsing(File file) {
 
@@ -256,15 +251,12 @@ public class ParserToModelListener implements GP4ParserListener {
         // (but it build object graph)
         headers = headersBuilder.createHeaders();
         pieceInformation = pieceInformationBuilder.createPieceInformation();
-        measureHeaders = new ArrayList<MeasureHeader>(measureHeaderBuilders.size());
-        for (MeasureHeaderBuilder builder : measureHeaderBuilders) {
-            measureHeaders.add(builder.createMeasureHeader());
-        }
 
-        trackHeaders = new ArrayList<TrackHeader>(trackHeaderBuilders.size());
-        for (TrackHeaderBuilder builder : trackHeaderBuilders) {
-            trackHeaders.add(builder.createTrackHeader());
-        }
+        Map<MeasureId, MeasureHeader> measureHeaderMap = buildMapMeasureHeaders(measureHeaderBuilders);
+        measureHeaders = new ArrayList<MeasureHeader>(measureHeaderMap.values());
+
+        Map<TrackId, TrackHeader> trackHeaderMap = buildMapTrackHeards(trackHeaderBuilders);
+        trackHeaders = new ArrayList<TrackHeader>(trackHeaderMap.values());
 
         measures = new ArrayList<Measure>(measureBuilderMap.size());
         for (MeasureBuilder builder : measureBuilderMap.values()) {
@@ -278,7 +270,8 @@ public class ParserToModelListener implements GP4ParserListener {
             }
             Collections.sort(beats);
 
-            builder.withHeader(measureHeaders.get(builder.getMeasureIndex())); // should be ok...
+            MeasureHeader measureHeader = measureHeaderMap.get(new MeasureId(builder.getMeasureIndex()));
+            builder.withHeader(measureHeader);
             builder.withBeats(beats);
             measures.add(builder.createMeasure());
         }
@@ -290,15 +283,33 @@ public class ParserToModelListener implements GP4ParserListener {
             TrackBuilder trackBuilder = new TrackBuilder();
             List<Measure> measureOfTrack =
                     new ArrayList<Measure>(Collections2.filter(measures,
-                            new MeasuresOnTrackPredicate(trackHeader.getTrackIndex())));
+                            new MeasuresOnTrackPredicate(trackHeader.getTrackIndex().getIndex())));
 
-            trackBuilder.withHeader(trackHeader).withTrackIndex(trackHeader.getTrackIndex())
+            trackBuilder.withHeader(trackHeader).withTrackIndex(trackHeader.getTrackIndex().getIndex())
                     .withMeasures(measureOfTrack);
 
             tracks.add(trackBuilder.createTrack());
 
         }
 
+    }
+
+    Map<MeasureId, MeasureHeader> buildMapMeasureHeaders(Collection<MeasureHeaderBuilder> headersBuilder) {
+        Map<MeasureId, MeasureHeader> result = new HashMap<MeasureId, MeasureHeader>(headersBuilder.size());
+        for (MeasureHeaderBuilder builder : headersBuilder) {
+            MeasureHeader header = builder.createMeasureHeader();
+            result.put(header.getMeasureIndex(), header);
+        }
+        return result;
+    }
+
+    Map<TrackId, TrackHeader> buildMapTrackHeards(Collection<TrackHeaderBuilder> builders) {
+        Map<TrackId, TrackHeader> result = new HashMap<TrackId, TrackHeader>();
+        for (TrackHeaderBuilder builder : builders) {
+            TrackHeader header = builder.createTrackHeader();
+            result.put(header.getTrackIndex(), header);
+        }
+        return result;
     }
 
     private class MeasuresOnTrackPredicate implements Predicate<Measure> {

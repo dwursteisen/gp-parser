@@ -4,6 +4,8 @@ import com.github.gp.parser.model.header.Headers;
 import com.github.gp.parser.model.header.PieceInformation;
 import com.github.gp.parser.model.measures.Measure;
 import com.github.gp.parser.model.measures.MeasureHeader;
+import com.github.gp.parser.model.measures.MeasureHeaderBuilder;
+import com.github.gp.parser.model.measures.MeasureId;
 import com.github.gp.parser.model.tracks.Track;
 import com.github.gp.parser.model.tracks.TrackHeader;
 import net.sourceforge.musicsvg.io.gp.GP4Parser;
@@ -15,7 +17,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -98,9 +102,9 @@ public class ParserToModelListenerTest {
         List<Measure> measures = listener.getMeasures();
         assertThat(measures).hasSize(3);
         assertThat(measures.get(1).getNumberOfBeats()).isEqualTo(1);
-        assertThat(measures.get(0).getMeasureIndex()).isEqualTo(0);
-        assertThat(measures.get(1).getMeasureIndex()).isEqualTo(1);
-        assertThat(measures.get(2).getMeasureIndex()).isEqualTo(2);
+        assertThat(measures.get(0).getMeasureIndex()).isEqualTo(new MeasureId(0));
+        assertThat(measures.get(1).getMeasureIndex()).isEqualTo(new MeasureId(1));
+        assertThat(measures.get(2).getMeasureIndex()).isEqualTo(new MeasureId(2));
 
         assertThat(measures.get(0).getBeats()).hasSize(5);
     }
@@ -114,6 +118,16 @@ public class ParserToModelListenerTest {
 
         assertThat(firstTrack.getMeasures()).hasSize(3);
 
+    }
+
+    @Test
+    public void shouldBuildMapMeasureHeaders() {
+        List<MeasureHeaderBuilder> headersBuilder = new ArrayList<MeasureHeaderBuilder>();
+        headersBuilder.add(new MeasureHeaderBuilder().withMeasureIndex(1));
+        Map<MeasureId, MeasureHeader> result = listener.buildMapMeasureHeaders(headersBuilder);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(new MeasureId(1))).isNotNull();
     }
 
 }

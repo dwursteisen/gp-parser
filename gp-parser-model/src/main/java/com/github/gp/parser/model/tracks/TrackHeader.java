@@ -4,7 +4,7 @@ package com.github.gp.parser.model.tracks;
  * User: Wursteisen David Date: 02/09/12 Time: 23:04
  */
 public class TrackHeader {
-    private final int trackIndex;
+    private final TrackId trackIndex;
 
     private final String name;
 
@@ -20,9 +20,9 @@ public class TrackHeader {
 
     private final boolean twelveStringTrack;
 
-    public TrackHeader(int trackIndex, String name, int numberOfString, int numberOfFrets,
-            int capodastrePosition, boolean drumTrack, boolean banjoTrack,
-            boolean twelveStringTrack) {
+    public TrackHeader(TrackId trackIndex, String name, int numberOfString, int numberOfFrets,
+                       int capodastrePosition, boolean drumTrack, boolean banjoTrack,
+                       boolean twelveStringTrack) {
         this.trackIndex = trackIndex;
         this.name = name;
         this.numberOfString = numberOfString;
@@ -33,7 +33,7 @@ public class TrackHeader {
         this.twelveStringTrack = twelveStringTrack;
     }
 
-    public int getTrackIndex() {
+    public TrackId getTrackIndex() {
         return trackIndex;
     }
 

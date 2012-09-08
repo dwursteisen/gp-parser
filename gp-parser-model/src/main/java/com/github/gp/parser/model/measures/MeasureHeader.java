@@ -13,10 +13,10 @@ public class MeasureHeader {
 
     private final int numberOfRepeats;
 
-    private final int measureIndex;
+    private final MeasureId measureIndex;
 
-    public MeasureHeader(int measureIndex, boolean doubleBar, boolean repeat,
-            int numberOfAlternateEnding, int numberOfRepeats) {
+    public MeasureHeader(MeasureId measureIndex, boolean doubleBar, boolean repeat,
+                         int numberOfAlternateEnding, int numberOfRepeats) {
         this.doubleBar = doubleBar;
         this.repeat = repeat;
         this.numberOfAlternateEnding = numberOfAlternateEnding;
@@ -24,7 +24,7 @@ public class MeasureHeader {
         this.measureIndex = measureIndex;
     }
 
-    public int getMeasureIndex() {
+    public MeasureId getMeasureIndex() {
         return measureIndex;
     }
 
